@@ -1,0 +1,6 @@
+<% l_fips = 1 -%>
+<% if not @fips then l_fips = 0 -%><% end %>
+default 0
+label 0
+        kernel <%= @kernel %>
+        append initrd=<%= @initrd %> ks=<%= @ks %> fips=<%= l_fips %> <% if !@extra.eql?("nil") then %><%= @extra %><% end %>

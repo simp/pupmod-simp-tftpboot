@@ -1,0 +1,9 @@
+---
+fixtures:
+  symlinks:
+    tftpboot: "#{source_dir}"
+    common: "#{source_dir}/../common"
+    iptables: "#{source_dir}/../iptables"
+    rsync: "#{source_dir}/../rsync"
+    stdlib: "#{source_dir}/../stdlib"
+    xinetd: "#{source_dir}/../xinetd"
