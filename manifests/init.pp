@@ -57,14 +57,14 @@ class tftpboot (
   # We're only tidying the top directory so that custom templates can be added
   # by hand to the templates directory created below.
   file { '/tftpboot/linux-install/pxelinux.cfg':
-    ensure        => 'directory',
-    owner         => 'root',
-    group         => 'nobody',
-    mode          => '0640',
-    purge         => $purge_configs,
-    recurse       => true,
-    recurselimit  => '1',
-    require       => [
+    ensure       => 'directory',
+    owner        => 'root',
+    group        => 'nobody',
+    mode         => '0640',
+    purge        => $purge_configs,
+    recurse      => true,
+    recurselimit => '1',
+    require      => [
       Package['tftp-server'],
       File['/tftpboot/linux-install']
     ]

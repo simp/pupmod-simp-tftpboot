@@ -41,11 +41,11 @@ define tftpboot::linux_model (
   $fips = hiera('use_fips', false)
 ){
   file { "/tftpboot/linux-install/pxelinux.cfg/templates/${name}":
-    ensure   => $ensure,
-    owner    => 'root',
-    group    => 'nobody',
-    content  => template('tftpboot/entry.erb'),
-    mode     => '0644'
+    ensure  => $ensure,
+    owner   => 'root',
+    group   => 'nobody',
+    content => template('tftpboot/entry.erb'),
+    mode    => '0644'
   }
 
   validate_string($kernel)
