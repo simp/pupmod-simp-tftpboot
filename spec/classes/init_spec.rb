@@ -57,7 +57,7 @@ describe 'tftpboot' do
       'target' => '/tftpboot',
       'server' => 'rsync.bar.baz',
       'timeout' => '2',
-      'exclude' => 'pxelinux.cfg'
+      'exclude' => ['pxelinux.cfg','menu.c32','pxelinux.0']
     })
   end
 
@@ -79,5 +79,17 @@ describe 'tftpboot' do
     })
   end
 
+  it do
+    should contain_package('syslinux-tftpboot')
+  end
 
+  it do
+    should contain_file('/tftpboot/linux-install/pxelinux.0').with_source('file:///var/lib/tftpboot/pxelinux.0')
+    should contain_file('/tftpboot/linux-install/pxelinux.0').that_requires('Package[syslinux-tftpboot]')
+  end
+
+  it do
+    should contain_file('/tftpboot/linux-install/menu.c32').with_source('file:///var/lib/tftpboot/menu.c32')
+    should contain_file('/tftpboot/linux-install/menu.c32').that_requires('Package[syslinux-tftpboot]')
+  end
 end
