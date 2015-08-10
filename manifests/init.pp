@@ -105,7 +105,7 @@ class tftpboot (
       ensure  => 'file',
       owner   => 'root',
       group   => 'nobody',
-      mode    => '0640',
+      mode    => '0644',
       source  => 'file:///var/lib/tftpboot/pxelinux.0',
       require => Package['syslinux-tftpboot']
     }
@@ -114,7 +114,7 @@ class tftpboot (
       ensure  => 'file',
       owner   => 'root',
       group   => 'nobody',
-      mode    => '0640',
+      mode    => '0644',
       source  => 'file:///var/lib/tftpboot/menu.c32',
       require => Package['syslinux-tftpboot']
     }
