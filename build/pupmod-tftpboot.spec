@@ -1,7 +1,7 @@
 Summary: TFTPBoot Puppet Module
 Name: pupmod-tftpboot
 Version: 4.1.0
-Release: 7
+Release: 8
 License: Apache License, Version 2.0
 Group: Applications/System
 Source: %{name}-%{version}-%{release}.tar.gz
@@ -58,6 +58,9 @@ fi
 # Post uninstall stuff
 
 %changelog
+* Mon Nov 09 2015 Chris Tessmer <chris.tessmer@onypoint.com> - 4.1.0-8
+- migration to simplib and simpcat (lib/ only)
+
 * Mon Jul 27 2015 Trevor Vaughan <tvaughan@onyxpoint.com> - 4.1.0-7
 - Updated to use the system-provided files where possible.
 
