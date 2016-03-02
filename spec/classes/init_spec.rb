@@ -2,10 +2,10 @@ require 'spec_helper'
 
 describe 'tftpboot' do
 
-  it { should create_class('tftpboot') }
+  it { is_expected.to create_class('tftpboot') }
 
   it do
-    should contain_file('/tftpboot').with({
+    is_expected.to contain_file('/tftpboot').with({
       'ensure' => 'directory',
       'owner' => 'root',
       'group' => 'nobody',
@@ -15,7 +15,7 @@ describe 'tftpboot' do
   end
 
   it do
-    should contain_file('/tftpboot/linux-install').with({
+    is_expected.to contain_file('/tftpboot/linux-install').with({
       'ensure' => 'directory',
       'owner' => 'root',
       'group' => 'nobody',
@@ -24,7 +24,7 @@ describe 'tftpboot' do
   end
 
   it do
-    should contain_file('/tftpboot/linux-install/pxelinux.cfg').with({
+    is_expected.to contain_file('/tftpboot/linux-install/pxelinux.cfg').with({
       'ensure' => 'directory',
       'owner' => 'root',
       'group' => 'nobody',
@@ -37,7 +37,7 @@ describe 'tftpboot' do
   end
 
   it do
-    should contain_file('/tftpboot/linux-install/pxelinux.cfg/templates').with({
+    is_expected.to contain_file('/tftpboot/linux-install/pxelinux.cfg/templates').with({
       'ensure' => 'directory',
       'owner' => 'root',
       'group' => 'nobody',
@@ -47,10 +47,10 @@ describe 'tftpboot' do
     })
   end
 
-  it { should contain_package('tftp-server') }
+  it { is_expected.to contain_package('tftp-server') }
 
   it do
-    should contain_rsync('tftpboot').with({
+    is_expected.to contain_rsync('tftpboot').with({
       'user' => 'tftpboot_rsync',
       'password' => /^.+$/,
       'source' => 'tftpboot/*',
@@ -62,7 +62,7 @@ describe 'tftpboot' do
   end
 
   it do
-    should contain_xinetd__service('tftp').with({
+    is_expected.to contain_xinetd__service('tftp').with({
       'x_type' => 'unlisted',
       'socket_type' => 'dgram',
       'protocol' => 'udp',
@@ -80,16 +80,16 @@ describe 'tftpboot' do
   end
 
   it do
-    should contain_package('syslinux-tftpboot')
+    is_expected.to contain_package('syslinux-tftpboot')
   end
 
   it do
-    should contain_file('/tftpboot/linux-install/pxelinux.0').with_source('file:///var/lib/tftpboot/pxelinux.0')
-    should contain_file('/tftpboot/linux-install/pxelinux.0').that_requires('Package[syslinux-tftpboot]')
+    is_expected.to contain_file('/tftpboot/linux-install/pxelinux.0').with_source('file:///var/lib/tftpboot/pxelinux.0')
+    is_expected.to contain_file('/tftpboot/linux-install/pxelinux.0').that_requires('Package[syslinux-tftpboot]')
   end
 
   it do
-    should contain_file('/tftpboot/linux-install/menu.c32').with_source('file:///var/lib/tftpboot/menu.c32')
-    should contain_file('/tftpboot/linux-install/menu.c32').that_requires('Package[syslinux-tftpboot]')
+    is_expected.to contain_file('/tftpboot/linux-install/menu.c32').with_source('file:///var/lib/tftpboot/menu.c32')
+    is_expected.to contain_file('/tftpboot/linux-install/menu.c32').that_requires('Package[syslinux-tftpboot]')
   end
 end

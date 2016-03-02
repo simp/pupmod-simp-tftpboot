@@ -7,7 +7,7 @@ describe 'tftpboot::generic_model' do
   let(:params) { {:content => 'foobarbaz'} }
 
   it do
-    should contain_file('/tftpboot/pxe-linux/templates/rhel_model').with({
+    is_expected.to contain_file('/tftpboot/pxe-linux/templates/rhel_model').with({
       'ensure' => 'present',
       'owner'  => 'root',
       'group'  => 'nobody',

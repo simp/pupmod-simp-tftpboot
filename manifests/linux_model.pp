@@ -40,6 +40,13 @@ define tftpboot::linux_model (
   $ensure = 'present',
   $fips = hiera('use_fips', false)
 ){
+  validate_string($kernel)
+  validate_string($initrd)
+  validate_string($ks)
+  if $extra != 'nil' { validate_string($extra) }
+  validate_re($ensure, '^(absent|present)$')
+  validate_bool($fips)
+
   file { "/tftpboot/linux-install/pxelinux.cfg/templates/${name}":
     ensure  => $ensure,
     owner   => 'root',
@@ -47,11 +54,4 @@ define tftpboot::linux_model (
     content => template('tftpboot/entry.erb'),
     mode    => '0644'
   }
-
-  validate_string($kernel)
-  validate_string($initrd)
-  validate_string($ks)
-  if $extra != 'nil' { validate_string($extra) }
-  validate_re($ensure, '^(absent|present)$')
-  validate_bool($fips)
 }

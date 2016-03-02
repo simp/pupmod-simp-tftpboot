@@ -22,6 +22,9 @@ define tftpboot::generic_model (
   $content,
   $ensure = 'present'
 ) {
+    validate_string($content)
+    validate_re($ensure, '^(absent|present)$')
+
     file { "/tftpboot/pxe-linux/templates/${name}":
         ensure  => $ensure,
         owner   => 'root',
@@ -29,7 +32,4 @@ define tftpboot::generic_model (
         mode    => '0640',
         content => $content
     }
-
-    validate_string($content)
-    validate_re($ensure, '^(absent|present)$')
 }

@@ -8,7 +8,7 @@ describe 'tftpboot::linux_model' do
                   :ks => 'http://localhost/ks/pupclient_x86_64.cfg'} }
 
   it do
-    should contain_file("/tftpboot/linux-install/pxelinux.cfg/templates/rhel_model").with({
+    is_expected.to contain_file("/tftpboot/linux-install/pxelinux.cfg/templates/rhel_model").with({
       'ensure' => 'present',
       'owner' => 'root',
       'group' => 'nobody',

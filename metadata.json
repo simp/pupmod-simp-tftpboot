@@ -1,0 +1,41 @@
+{
+  "name":    "pupmod-simp-tftpboot",
+  "version": "4.1.0",
+  "author":  "simp",
+  "summary": "A Puppet module to automate configuration of tftpboot",
+  "license": "Apache-2.0",
+  "source":  "https://github.com/simp/pupmod-simp-tftpboot",
+  "project_page": "https://github.com/simp/pupmod-simp-tftpboot",
+  "issues_url":   "https://simp-project.atlassian.net",
+  "tags": [ "simp", "tftpboot" ],
+  "dependencies": [
+    {
+      "name": "puppetlabs-stdlib",
+      "version_requirement": ">= 4.1.0"
+    },
+    {
+      "name": "simp-xinetd",
+      "version_requirement": ">= 2.0.0"
+    },
+    {
+      "name": "simp-rsync",
+      "version_requirement": ">= 2.0.0"
+    }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    }
+  ]
+}

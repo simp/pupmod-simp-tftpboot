@@ -7,7 +7,7 @@ describe 'tftpboot::assign_host' do
   let(:params) { {:model => 'rhel-6-x86_64-base'} }
 
   it do
-    should contain_file('/tftpboot/linux-install/pxelinux.cfg/default').with({
+    is_expected.to contain_file('/tftpboot/linux-install/pxelinux.cfg/default').with({
       'ensure' => 'link',
       'target' => 'templates/rhel-6-x86_64-base',
       'force'  => true
@@ -19,14 +19,14 @@ describe 'tftpboot::assign_host' do
     let(:params) { {:model => '64_bit_rhel6'} }
 
     it do
-      should contain_file('/tftpboot/linux-install/pxelinux.cfg/de-ad-be-ef-00-01').with({
+      is_expected.to contain_file('/tftpboot/linux-install/pxelinux.cfg/de-ad-be-ef-00-01').with({
         'ensure' => 'link',
         'target' => 'templates/64_bit_rhel6',
         'force' => true
       })
     end
     it do
-      should contain_file('/tftpboot/linux-install/pxelinux.cfg/DE-AD-BE-EF-00-01').with({
+      is_expected.to contain_file('/tftpboot/linux-install/pxelinux.cfg/DE-AD-BE-EF-00-01').with({
         'ensure' => 'link',
         'target' => 'templates/64_bit_rhel6',
         'force' => true
