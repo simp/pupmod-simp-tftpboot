@@ -9,28 +9,35 @@ describe 'tftpboot::assign_host' do
   it do
     is_expected.to contain_file('/tftpboot/linux-install/pxelinux.cfg/default').with({
       'ensure' => 'link',
-      'target' => 'templates/rhel-6-x86_64-base',
+      'target' => "templates/#{params[:model]}",
       'force'  => true
     })
   end
 
-  context 'with name => DE-AD-BE-EF-00-01 and model => 64_bit_rhel6' do
-    let(:title) { 'DE-AD-BE-EF-00-01' }
-    let(:params) { {:model => '64_bit_rhel6'} }
+  require 'securerandom'
 
-    it do
-      is_expected.to contain_file('/tftpboot/linux-install/pxelinux.cfg/de-ad-be-ef-00-01').with({
-        'ensure' => 'link',
-        'target' => 'templates/64_bit_rhel6',
-        'force' => true
-      })
-    end
-    it do
-      is_expected.to contain_file('/tftpboot/linux-install/pxelinux.cfg/DE-AD-BE-EF-00-01').with({
-        'ensure' => 'link',
-        'target' => 'templates/64_bit_rhel6',
-        'force' => true
-      })
+  [
+    SecureRandom.uuid,
+    '01-DE-AD-BE-EF-00-01',
+    'C000025B'
+  ].each do |entry|
+    context "with name => #{entry} and model => 64_bit_rhel6" do
+      let(:title) { entry }
+      let(:params) { {:model => '64_bit_rhel6'} }
+  
+      it do
+        is_expected.to contain_file("/tftpboot/linux-install/pxelinux.cfg/#{entry.downcase}").with({
+          'ensure' => 'link',
+          'target' => "templates/#{params[:model]}",
+          'force' => true
+        })
+  
+        is_expected.to contain_file("/tftpboot/linux-install/pxelinux.cfg/#{entry.upcase}").with({
+          'ensure' => 'link',
+          'target' => "templates/#{params[:model]}",
+          'force' => true
+        })
+      end
     end
   end
 end
