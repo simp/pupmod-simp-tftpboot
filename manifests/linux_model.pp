@@ -24,8 +24,14 @@
 #   Can be set to 'absent' or 'present'.
 #   Defaults to present.
 #
+# [*set_fips_initrd*]
+#   Boolean.  If true, enables [*fips*] logic in the initrd configuration, otherwise
+#   fips is omitted.  WARNING: setting this to true while using the stock EL7
+#   initrd image will cause kickstart to fail if SSL is utilized (https by default).
+#   Defaults to false.
+#
 # [*fips*]
-#   Boolean.  If true, enables FIPS in the grub configuration.
+#   Boolean.  If true, enables FIPS in the grub and initrd configuration.
 #   Defaults to false.
 #
 # == Authors
@@ -38,7 +44,8 @@ define tftpboot::linux_model (
   $ks,
   $extra = 'nil',
   $ensure = 'present',
-  $fips = hiera('use_fips', false)
+  $set_fips_initrd = false,
+  $fips = hiera('use_fips', false),
 ){
   validate_string($kernel)
   validate_string($initrd)
@@ -46,6 +53,7 @@ define tftpboot::linux_model (
   if $extra != 'nil' { validate_string($extra) }
   validate_re($ensure, '^(absent|present)$')
   validate_bool($fips)
+  validate_bool($set_fips_initrd)
 
   file { "/tftpboot/linux-install/pxelinux.cfg/templates/${name}":
     ensure  => $ensure,
