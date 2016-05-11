@@ -28,16 +28,18 @@ define tftpboot::assign_host (
   $ensure = 'present'
 ) {
   validate_string($model)
-  validate_re($ensure,'^(absent|present)$')
+  validate_re($ensure,'^(absent|present|file|link)$')
 
-  $upname = inline_template('<%= @name.upcase %>')
-  $downname = inline_template('<%= @name.downcase %>')
+  $_upname = inline_template('<%= @name.upcase %>')
+  $_downname = inline_template('<%= @name.downcase %>')
   $_ensure = $ensure ? {
-    'present' => link,
+    'present' => 'link',
+    'file'    => 'link',
+    'link'    => 'link',
     default   => 'absent'
   }
 
-  file { "/tftpboot/linux-install/pxelinux.cfg/${downname}":
+  file { "/tftpboot/linux-install/pxelinux.cfg/${_downname}":
     ensure => $_ensure,
     owner  => 'root',
     group  => 'nobody',
@@ -46,9 +48,9 @@ define tftpboot::assign_host (
     force  => true
   }
 
-  $l_a_downname = split($downname,' ')
-  if ( $downname != 'default' ) and ( ! ( $upname in $l_a_downname ) ) {
-    file { "/tftpboot/linux-install/pxelinux.cfg/${upname}":
+  $_downname_parts = split($_downname,' ')
+  if ( $_downname != 'default' ) and ( ! ( $_upname in $_downname_parts ) ) {
+    file { "/tftpboot/linux-install/pxelinux.cfg/${_upname}":
       ensure => $_ensure,
       owner  => 'root',
       group  => 'nobody',

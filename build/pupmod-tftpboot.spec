@@ -1,7 +1,7 @@
 Summary: TFTPBoot Puppet Module
 Name: pupmod-tftpboot
-Version: 4.1.0
-Release: 9
+Version: 4.1.1
+Release: 0
 License: Apache License, Version 2.0
 Group: Applications/System
 Source: %{name}-%{version}-%{release}.tar.gz
@@ -58,6 +58,10 @@ fi
 # Post uninstall stuff
 
 %changelog
+* Wed May 11 2016 Nick Markowski <nmarkowski@keywcorp.com> - 4.1.1-0
+- Inclusion of FIPS in the initrd kickstart option list is now optional.
+  By default, we no longer set fips=1 in initrd.
+
 * Wed Mar 02 2016 Chris Tessmer <chris.tessmer@onyxpoint.com> - 4.1.0-9
 - Minor linting fixes
 
