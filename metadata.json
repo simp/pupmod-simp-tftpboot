@@ -1,6 +1,6 @@
 {
-  "name":    "pupmod-simp-tftpboot",
-  "version": "4.1.1",
+  "name":    "simp-tftpboot",
+  "version": "4.1.2",
   "author":  "simp",
   "summary": "A Puppet module to automate configuration of tftpboot",
   "license": "Apache-2.0",
@@ -10,15 +10,15 @@
   "tags": [ "simp", "tftpboot" ],
   "dependencies": [
     {
-      "name": "puppetlabs-stdlib",
+      "name": "puppetlabs/stdlib",
       "version_requirement": ">= 4.1.0"
     },
     {
-      "name": "simp-xinetd",
+      "name": "simp/xinetd",
       "version_requirement": ">= 2.0.0"
     },
     {
-      "name": "simp-rsync",
+      "name": "simp/rsync",
       "version_requirement": ">= 2.0.0"
     }
   ],

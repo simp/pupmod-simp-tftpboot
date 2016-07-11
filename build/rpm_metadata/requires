@@ -1,0 +1,3 @@
+Requires: pupmod-xinetd >= 2.0.0-0
+Requires: pupmod-rsync >= 2.0.0-0
+Obsoletes: pupmod-tftpboot-test >= 0.0.1
