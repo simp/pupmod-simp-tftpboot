@@ -1,9 +1,10 @@
----
-fixtures:
-  symlinks:
-    tftpboot: "#{source_dir}"
-    common: "#{source_dir}/../common"
-    iptables: "#{source_dir}/../iptables"
-    rsync: "#{source_dir}/../rsync"
-    stdlib: "#{source_dir}/../stdlib"
-    xinetd: "#{source_dir}/../xinetd"
+--- 
+  fixtures: 
+    symlinks: 
+      compliance_markup: "#{source_dir}/../compliance_markup"
+      iptables: "#{source_dir}/../iptables"
+      rsync: "#{source_dir}/../rsync"
+      simplib: "#{source_dir}/../simplib"
+      stdlib: "#{source_dir}/../stdlib"
+      tftpboot: "#{source_dir}"
+      xinetd: "#{source_dir}/../xinetd"
