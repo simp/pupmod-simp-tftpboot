@@ -1,13 +1,1 @@
----
-fixtures:
-  repositories:
-    compliance_markup: "https://github.com/simp/pupmod-simp-compliance_markup"
-    iptables:    'https://github.com/simp/pupmod-simp-iptables'
-    rsync:       'https://github.com/simp/pupmod-simp-rsync'
-    simplib:     'https://github.com/simp/pupmod-simp-simplib'
-    stdlib:
-      repo: 'https://github.com/simp/puppetlabs-stdlib'
-      branch: 'simp-master'
-    xinetd:      'https://github.com/simp/pupmod-simp-xinetd'
-  symlinks:
-    tftpboot: "#{source_dir}"
+w
