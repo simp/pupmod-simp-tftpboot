@@ -54,9 +54,9 @@ describe 'tftpboot' do
 
       it do
         is_expected.to contain_rsync('tftpboot').with({
-          'user' => 'tftpboot_rsync',
+          'user' => "tftpboot_rsync_#{environment}",
           'password' => /^.+$/,
-          'source' => 'tftpboot/*',
+          'source' => "tftpboot_#{environment}/*",
           'target' => '/tftpboot',
           'server' => 'rsync.bar.baz',
           'timeout' => '2',
