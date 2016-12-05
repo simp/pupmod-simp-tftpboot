@@ -1,3 +1,6 @@
+* Thu Dec 01 2016 Trevor Vaughan <tvaughan@onyxpoint.com> - 6.0.0-0
+- Updated to use the environment-aware rsync in SIMP 6
+
 * Tue Nov 22 2016 Jeanne Greulich <jgreulich@onypoint.com> - 5.0.0-0
 - bump major version for SIMP6
 

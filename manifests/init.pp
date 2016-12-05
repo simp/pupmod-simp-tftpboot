@@ -42,19 +42,20 @@
 # * Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 class tftpboot (
-  $client_nets = hiera('client_nets'),
-  $rsync_server = hiera('rsync::server'),
+  $client_nets   = hiera('client_nets'),
+  $rsync_source  = "tftpboot_${::environment}/*",
+  $rsync_server  = hiera('rsync::server'),
   $rsync_timeout = hiera('rsync::timeout','2'),
   $purge_configs = true,
-  $use_os_files = true
+  $use_os_files  = true
 ){
   validate_string($rsync_server)
   validate_net_list($client_nets)
   validate_integer($rsync_timeout)
   validate_bool($purge_configs)
 
-  include 'xinetd'
-  include 'rsync'
+  include '::xinetd'
+  include '::rsync'
 
   file { '/tftpboot':
     ensure  => 'directory',
@@ -130,9 +131,9 @@ class tftpboot (
   }
 
   rsync { 'tftpboot':
-    user     => 'tftpboot_rsync',
-    password => passgen('tftpboot_rsync'),
-    source   => 'tftpboot/*',
+    user     => "tftpboot_rsync_${::environment}",
+    password => passgen("tftpboot_rsync_${::environment}"),
+    source   => $rsync_source,
     target   => '/tftpboot',
     server   => $rsync_server,
     timeout  => $rsync_timeout,
