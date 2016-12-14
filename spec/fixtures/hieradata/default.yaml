@@ -1,5 +1,5 @@
 ---
-client_nets :
+simp_options::trusted_nets :
   - 1.2.3.4/255.255.224.0
   - 5.6.7.8/22
-rsync::server : 'rsync.bar.baz'
+simp_options::rsync::server : 'rsync.bar.baz'

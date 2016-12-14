@@ -23,7 +23,12 @@
     {
       "name": "simp/rsync",
       "version_requirement": ">= 6.0.0 < 7.0.0"
+    },
+    {
+      "name": "simp/simplib",
+      "version_requirement": ">= 2.1.0 < 3.0.0"
     }
+
   ],
   "operatingsystem_support": [
     {

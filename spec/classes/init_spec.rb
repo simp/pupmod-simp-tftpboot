@@ -66,19 +66,19 @@ describe 'tftpboot' do
 
       it do
         is_expected.to contain_xinetd__service('tftp').with({
-          'x_type' => 'unlisted',
+          'x_type' => 'UNLISTED',
           'socket_type' => 'dgram',
           'protocol' => 'udp',
           'x_wait' => 'yes',
-          'port' => '69',
+          'port' => 69,
           'server' => '/usr/sbin/in.tftpd',
           'server_args' => '-s /tftpboot',
           'libwrap_name' => 'in.tftpd',
-          'per_source' => '11',
-          'cps' => '100 2',
-          'flags' => 'IPv4',
-          'only_from' => /1.2.0.0/,
-          'log_on_success' => 'HOST PID DURATION'
+          'per_source' => 11,
+          'cps' => [100,2],
+          'flags' => ['IPv4'],
+          'trusted_nets' => /1.2.0.0/,
+          'log_on_success' => ['HOST','PID','DURATION']
         })
       end
 
