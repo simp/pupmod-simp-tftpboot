@@ -1,35 +1,27 @@
-# == Define: tftpboot:generic_model
+# define tftpboot:generic_model
 #
 # This is for generic entries
 #
 # == Parameters
 #
-# [*name*]
-#   Should describe the purpose of the file.
+# @attr name Should describe the purpose of the file.
 #
-# [*content*]
-#   The actual verbatim content of the entry.
+# @param content The actual verbatim content of the entry.
 #
-# [*ensure*]
-#   'absent' or 'present'
-#   Defaults to 'present'
+# @param ensure Ensure for files managed.
 #
-# == Authors
-#
-# * Trevor Vaughan <tvaughan@onyxpoint.com>
+# @author Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 define tftpboot::generic_model (
-  $content,
-  $ensure = 'present'
+  String $content,
+  Enum['absent','present'] $ensure = 'present'
 ) {
-    validate_string($content)
-    validate_re($ensure, '^(absent|present)$')
 
-    file { "/tftpboot/pxe-linux/templates/${name}":
-        ensure  => $ensure,
-        owner   => 'root',
-        group   => 'nobody',
-        mode    => '0640',
-        content => $content
-    }
+  file { "/tftpboot/pxe-linux/templates/${name}":
+    ensure  => $ensure,
+    owner   => 'root',
+    group   => 'nobody',
+    mode    => '0640',
+    content => $content
+  }
 }

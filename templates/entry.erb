@@ -3,4 +3,4 @@
 default 0
 label 0
         kernel <%= @kernel %>
-        append initrd=<%= @initrd %> ks=<%= @ks %> fips=<%= _fips %> <% if !@extra.eql?("nil") then %><%= @extra %><% end %>
+        append initrd=<%= @initrd %> ks=<%= @ks %> fips=<%= _fips %> <% if @extra then %><%= @extra %><% end %>

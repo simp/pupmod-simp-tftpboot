@@ -1,34 +1,26 @@
-# == Define: tftpboot:assign_host
+# define tftpboot:assign_host
 #
 #  Sets up links to /tftpboot/linux-install/pxelinux.cfg/templates/$model
 #
 # == Parameters
 #
-# [*name*]
-#   Should be the PXE boot identifier per the PXE documentation.
+# @attr name  Should be the PXE boot identifier per the PXE documentation.
 #   Search order:
-#     - First UUID
-#     - Then 01-MAC (for Ethernet)
-#     - Last descending IP address ranges in HEX
-#     - Finally, the file 'default'
+#   - First UUID
+#   - Then 01-MAC (for Ethernet)
+#   - Last descending IP address ranges in HEX
+#   - Finally, the file 'default'
 #
-# [*model*]
-#   Should be the name of a previously defined model
+# @param model Should be the name of a previously defined model
 #
-# [*ensure*]
-#   'absent' or 'present'.
-#   Defaults to: 'present'
+# @param ensure Ensure for files managed.
 #
-# == Authors
-#
-# * Trevor Vaughan <tvaughan@onyxpoint.com>
+# @author Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 define tftpboot::assign_host (
-  $model,
-  $ensure = 'present'
+  String $model,
+  Enum['absent','present','file','link'] $ensure = 'present'
 ) {
-  validate_string($model)
-  validate_re($ensure,'^(absent|present|file|link)$')
 
   $_upname = inline_template('<%= @name.upcase %>')
   $_downname = inline_template('<%= @name.downcase %>')
