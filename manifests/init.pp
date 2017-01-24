@@ -24,12 +24,12 @@
 # @author Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 class tftpboot (
-  Array[String] $trusted_nets            = simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1', '::1'] }),
-  String $rsync_source                   = "tftpboot_${::environment}/*",
-  String $rsync_server                   = simplib::lookup('simp_options::rsync::server',  { 'default_value' => '127.0.0.1' }),
-  Stdlib::Compat::Integer $rsync_timeout = simplib::lookup('simp_options::rsync::timeout', { 'default_value' => '2' }),
-  Boolean $purge_configs                 = true,
-  Boolean $use_os_files                  = true
+  Array[String]  $trusted_nets         = simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1', '::1'] }),
+  String         $rsync_source         = "tftpboot_${::environment}_${facts['os']['name']}/*",
+  String         $rsync_server         = simplib::lookup('simp_options::rsync::server',  { 'default_value' => '127.0.0.1' }),
+  Integer        $rsync_timeout        = simplib::lookup('simp_options::rsync::timeout', { 'default_value' => 2 }),
+  Boolean        $purge_configs        = true,
+  Boolean        $use_os_files         = true
 ){
   validate_net_list($trusted_nets)
 
@@ -108,10 +108,11 @@ class tftpboot (
   else {
     $_rsync_exclude = [ 'pxelinux.cfg' ]
   }
+  $_downcase_osname = downcase($facts['os']['name'])
 
   rsync { 'tftpboot':
-    user     => "tftpboot_rsync_${::environment}",
-    password => passgen("tftpboot_rsync_${::environment}"),
+    user     => "tftpboot_rsync_${::environment}_${_downcase_osname}",
+    password => passgen("tftpboot_rsync_${::environment}_${_downcase_osname}"),
     source   => $rsync_source,
     target   => '/tftpboot',
     server   => $rsync_server,
