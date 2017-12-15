@@ -55,27 +55,27 @@ This module requires the following:
 
 #### Parameters
 
-* **`trusted\_nets`** (`Array[String]`) *(defaults to: `simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1', '::1'] })`)*
+* **`trusted_nets`** (`Array[String]`) *(defaults to: `simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1', '::1'] })`)*
 
 See only\_from in xinetd.conf(5). This will be converted to DDQ format automatically.
 
-* **`rsync\_source`** (`String`) *(defaults to: `"tftpboot_${::environment}_${facts['os']['name']}/*"`)*
+* **`rsync_source`** (`String`) *(defaults to: `"tftpboot_${::environment}_${facts['os']['name']}/*"`)*
 
 The source of the content to be rsync'd.
 
-* **`rsync\_server`** (`String`) *(defaults to: `simplib::lookup('simp_options::rsync::server',  { 'default_value' => '127.0.0.1' })`)*
+* **`rsync_server`** (`String`) *(defaults to: `simplib::lookup('simp_options::rsync::server',  { 'default_value' => '127.0.0.1' })`)*
 
 The rsync server FQDN from which to pull the tftpboot configuration. This should contain the entire PXEboot hierarchy if you wish to use this to PXEboot servers.
 
-* **`rsync\_timeout`** (`Integer`) *(defaults to: `simplib::lookup('simp_options::rsync::timeout', { 'default_value' => 2 })`)*
+* **`rsync_timeout`** (`Integer`) *(defaults to: `simplib::lookup('simp_options::rsync::timeout', { 'default_value' => 2 })`)*
 
 The connection timeout for the rsync connections.
 
-* **`purge\_configs`** (`Boolean`) *(defaults to: `true`)*
+* **`purge_configs`** (`Boolean`) *(defaults to: `true`)*
 
 Determines if non puppet-managed configuration files in /tftpboot/linux-install/pxelinux.cfg get purged.
 
-* **`use\_os\_files`** (`Boolean`) *(defaults to: `true`)*
+* **`use_os_files`** (`Boolean`) *(defaults to: `true`)*
 
 If true, use the OS provided syslinux packages to obtain the pxelinux.0 file.
 
