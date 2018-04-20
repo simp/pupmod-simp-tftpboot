@@ -1,0 +1,9 @@
+<% _fips = 0 -%>
+<% _fips = 1 if @fips -%>
+set default="0"
+set timeout=1
+
+menuentry <%= "'" + @name + "'" %> {
+        linuxefi <%= @_kernel %> ks=<%= @ks %> fips=<%= _fips %> <% if @extra then %><%= @extra %><% end %>
+        initrdefi <%= @_initrd %>
+}

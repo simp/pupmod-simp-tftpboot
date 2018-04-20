@@ -2,6 +2,12 @@
 #
 # Sets up a tftpboot server.
 #
+# @param tftpboot_root_dir The root directory of tftboot.
+#
+# @param linux_install_dir The name of a sub-directory of
+#   $tftpboot_root_dir (relative path) that contains files used
+#   to PXEboot a server.
+#
 # @param trusted_nets  See only_from in xinetd.conf(5).
 #   This will be converted to DDQ format automatically.
 #
@@ -14,111 +20,47 @@
 # @param rsync_timeout The connection timeout for the rsync connections.
 #
 # @param purge_configs Determines if non puppet-managed configuration
-#   files in /tftpboot/linux-install/pxelinux.cfg get purged.
+#   files in `$tftpboot_root_dir/$linux_install_dir/pxelinux.cfg`
+#   get purged. At this time, there is no purge mechanism for
+#   `$tftpboot_root_dir/$linux_install_dir/efi`, which contains both
+#   configuration and initial boot files.
 #
-# @param use_os_files If true, use the OS provided syslinux packages
-#   to obtain the pxelinux.0 file.
+# @param use_os_files If `true`, use the OS provided syslinux and grub
+#   packages to obtain the initial boot files (e.g., `pxelinux.0`,
+#   `menu.c32`, `grub.efi`, `grubx64.efi`, `shim.efi`).
 #
-# @todo Ensure that this module can be used with any target location.
+# @param os_file_info Hash of Hashes containing the mapping of OS
+#   packages to initial boot files.  The outer Hash key is either
+#   'bios' or 'efi', corresponding to BIOS or UEFI boot, respectively.
+#   The inner Hash is a Hash of Arrays. Each inner Hash key is an
+#   OS package.  Each inner Hash value is the list of PXEboot files
+#   provided by the named package.  See the module data for specifics.
 #
-# @author Trevor Vaughan <tvaughan@onyxpoint.com>
+# @param package_ensure The ensure status of packages to be installed.
+#
+#
+# @author https://github.com/simp/pupmod-simp-tftpboot/graphs/contributors
 #
 class tftpboot (
-  Array[String]  $trusted_nets         = simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1', '::1'] }),
-  String         $rsync_source         = "tftpboot_${::environment}_${facts['os']['name']}/*",
-  String         $rsync_server         = simplib::lookup('simp_options::rsync::server',  { 'default_value' => '127.0.0.1' }),
-  Integer        $rsync_timeout        = simplib::lookup('simp_options::rsync::timeout', { 'default_value' => 2 }),
-  Boolean        $purge_configs        = true,
-  Boolean        $use_os_files         = true
+  Stdlib::Absolutepath $tftpboot_root_dir = '/var/lib/tftpboot',
+  String               $linux_install_dir = 'linux-install',
+  Simplib::Netlist     $trusted_nets      = simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1', '::1'] }),
+  String               $rsync_source      = "tftpboot_${::environment}_${facts['os']['name']}/*",
+  String               $rsync_server      = simplib::lookup('simp_options::rsync::server',  { 'default_value' => '127.0.0.1' }),
+  Integer              $rsync_timeout     = simplib::lookup('simp_options::rsync::timeout', { 'default_value' => 2 }),
+  Boolean              $purge_configs     = true,
+  Boolean              $use_os_files      = true,
+  Hash                 $os_file_info,     # data-in-modules
+  String               $package_ensure    = simplib::lookup('simp_options::package_ensure', { 'default_value' => 'installed' })
 ){
-  validate_net_list($trusted_nets)
+  $install_root_dir = "${tftpboot_root_dir}/${linux_install_dir}"
 
-  include '::xinetd'
-  include '::rsync'
+  include 'tftpboot::config'
+  include 'xinetd'
 
-  file { '/tftpboot':
-    ensure  => 'directory',
-    owner   => 'root',
-    group   => 'nobody',
-    mode    => '0750',
-    require => Package['tftp-server']
-  }
+  package { 'tftp-server': ensure => $::tftpboot::package_ensure }
 
-  file { '/tftpboot/linux-install':
-    ensure => 'directory',
-    owner  => 'root',
-    group  => 'nobody',
-    mode   => '0640',
-  }
-
-  # We're only tidying the top directory so that custom templates can be added
-  # by hand to the templates directory created below.
-  file { '/tftpboot/linux-install/pxelinux.cfg':
-    ensure       => 'directory',
-    owner        => 'root',
-    group        => 'nobody',
-    mode         => '0640',
-    purge        => $purge_configs,
-    recurse      => true,
-    recurselimit => '1',
-    require      => [
-      Package['tftp-server'],
-      File['/tftpboot/linux-install']
-    ]
-  }
-
-  file { '/tftpboot/linux-install/pxelinux.cfg/templates':
-    ensure  => 'directory',
-    owner   => 'root',
-    group   => 'nobody',
-    mode    => '0640',
-    recurse => true,
-    require => Package['tftp-server'],
-  }
-
-  package { 'tftp-server': ensure => 'latest' }
-
-  if $use_os_files {
-    package { 'syslinux-tftpboot': ensure => 'latest' }
-
-    file { '/tftpboot/linux-install/pxelinux.0':
-      ensure  => 'file',
-      owner   => 'root',
-      group   => 'nobody',
-      mode    => '0644',
-      source  => 'file:///var/lib/tftpboot/pxelinux.0',
-      require => Package['syslinux-tftpboot']
-    }
-
-    file { '/tftpboot/linux-install/menu.c32':
-      ensure  => 'file',
-      owner   => 'root',
-      group   => 'nobody',
-      mode    => '0644',
-      source  => 'file:///var/lib/tftpboot/menu.c32',
-      require => Package['syslinux-tftpboot']
-    }
-
-    $_rsync_exclude = [
-      'pxelinux.cfg',
-      'menu.c32',
-      'pxelinux.0'
-    ]
-  }
-  else {
-    $_rsync_exclude = [ 'pxelinux.cfg' ]
-  }
-  $_downcase_osname = downcase($facts['os']['name'])
-
-  rsync { 'tftpboot':
-    user     => "tftpboot_rsync_${::environment}_${_downcase_osname}",
-    password => passgen("tftpboot_rsync_${::environment}_${_downcase_osname}"),
-    source   => $rsync_source,
-    target   => '/tftpboot',
-    server   => $rsync_server,
-    timeout  => $rsync_timeout,
-    exclude  => $_rsync_exclude
-  }
+  Package['tftp-server'] -> Class['tftpboot::config']
 
   xinetd::service { 'tftp':
     x_type         => 'UNLISTED',
@@ -127,12 +69,13 @@ class tftpboot (
     x_wait         => 'yes',
     port           => 69,
     server         => '/usr/sbin/in.tftpd',
-    server_args    => '-s /tftpboot',
+    server_args    => "-s ${tftpboot_root_dir}",
     libwrap_name   => 'in.tftpd',
     per_source     => 11,
     cps            => [100,2],
     flags          => ['IPv4'],
     trusted_nets   => nets2ddq($trusted_nets),
-    log_on_success => ['HOST', 'PID', 'DURATION']
+    log_on_success => ['HOST', 'PID', 'DURATION'],
+    require        => [ Package['tftp-server'], File[$tftpboot_root_dir] ]
   }
 }

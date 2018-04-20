@@ -1,0 +1,10 @@
+<% _fips = 0 -%>
+<% _fips = 1 if @fips -%>
+default=0
+timeout=1
+hiddenmenu
+
+title <%= "'" + @name + "'" %>
+        root (nd)
+        kernel <%= @_kernel %> ks=<%= @ks %> fips=<%= _fips %> <% if @extra then %><%= @extra %><% end %>
+        initrd <%= @_initrd %>
