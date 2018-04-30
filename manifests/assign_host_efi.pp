@@ -88,7 +88,7 @@ define tftpboot::assign_host_efi (
     }
   } else {
     if $legacy_grub {
-      $_prefix = ''
+      $_prefix = '' # lint:ignore:empty_string_assignment
     } else {
       $_prefix = 'grub.cfg-'
     }

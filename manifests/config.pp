@@ -6,10 +6,10 @@ class tftpboot::config {
   assert_private()
 
   file { $::tftpboot::tftpboot_root_dir:
-    ensure => 'directory',
-    owner  => 'root',
-    group  => 'nobody',
-    mode   => '0750',
+    ensure  => 'directory',
+    owner   => 'root',
+    group   => 'nobody',
+    mode    => '0750',
     seltype => 'tftpdir_t'
   }
 
@@ -35,7 +35,7 @@ class tftpboot::config {
 
   if $::tftpboot::rsync_enabled {
     include 'rsync'
-    
+
     rsync { 'tftpboot':
       user     => "tftpboot_rsync_${::environment}_${_downcase_osname}",
       password => simplib::passgen("tftpboot_rsync_${::environment}_${_downcase_osname}"),
