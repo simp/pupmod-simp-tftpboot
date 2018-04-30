@@ -5,8 +5,6 @@
 class tftpboot::config {
   assert_private()
 
-  include 'rsync'
-
   file { $::tftpboot::tftpboot_root_dir:
     ensure => 'directory',
     owner  => 'root',
@@ -36,6 +34,8 @@ class tftpboot::config {
   $_downcase_osname = downcase($facts['os']['name'])
 
   if $::tftpboot::rsync_enabled {
+    include 'rsync'
+    
     rsync { 'tftpboot':
       user     => "tftpboot_rsync_${::environment}_${_downcase_osname}",
       password => simplib::passgen("tftpboot_rsync_${::environment}_${_downcase_osname}"),
