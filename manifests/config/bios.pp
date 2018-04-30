@@ -7,8 +7,8 @@ class tftpboot::config::bios {
 
   # We're only tidying the top directory so that custom templates can be added
   # by hand to the templates directory created below.
-  $install_dir = $::tftpboot::install_root_dir
-  file { "${install_dir}/pxelinux.cfg":
+  $_install_dir = $::tftpboot::install_root_dir
+  file { "${_install_dir}/pxelinux.cfg":
     ensure       => 'directory',
     owner        => 'root',
     group        => 'nobody',
@@ -17,10 +17,10 @@ class tftpboot::config::bios {
     purge        => $::tftpboot::purge_configs,
     recurse      => true,
     recurselimit => '1',
-    require      => File[ $install_dir ]
+    require      => File[ $_install_dir ]
   }
 
-  file { "${install_dir}/pxelinux.cfg/templates":
+  file { "${_install_dir}/pxelinux.cfg/templates":
     ensure  => 'directory',
     owner   => 'root',
     group   => 'nobody',
@@ -30,7 +30,29 @@ class tftpboot::config::bios {
   }
 
   if $::tftpboot::use_os_files {
-    tftpboot::install_boot_files($::tftpboot::os_file_info['bios'],
-      $install_dir, $::tftpboot::package_ensure)
+    # Ensure all the OS packages containing the needed boot files
+    # are installed
+    $_os_packages = keys($::tftpboot::os_file_info['bios'])
+    $_os_packages.each |String $pkg_name| {
+      unless defined(Package[$pkg_name]) {
+        package { $pkg_name: ensure => $::tftpboot::package_ensure }
+      }
+    }
+
+    # Install each boot file
+    $::tftpboot::os_file_info['bios'].each | String $pkg, Array $files| {
+      $files.each | String $file | {
+        $installed_file = sprintf('%s/%s',$_install_dir, basename($file))
+        file { $installed_file:
+          ensure  => 'file',
+          owner   => 'root',
+          group   => 'nobody',
+          mode    => '0644',
+          seltype => 'tftpdir_t',
+          source  => "file://${file}",
+          require => Package[$pkg]
+        }
+      }
+    }
   }
 }

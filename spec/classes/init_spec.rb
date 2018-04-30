@@ -213,7 +213,6 @@ describe 'tftpboot' do
         end
       end
 
-
       context 'with install location overrides' do
         let(:params) {{
           :tftpboot_root_dir => '/opt/tftpboot',
@@ -235,10 +234,20 @@ describe 'tftpboot' do
         it { is_expected.to contain_xinetd__service('tftp').with('server_args' => '-s /opt/tftpboot') }
       end
 
+      context 'with rsync_enabled = false' do
+        let(:params) {{
+          :rsync_enabled => false
+        }}
+
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to_not contain_rsync('tftpboot') }
+      end
+
       context 'with purge_configs => false' do
         let(:params) {{
           :purge_configs => false
         }}
+
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_file('/var/lib/tftpboot/linux-install/pxelinux.cfg').with_purge(false) }
       end

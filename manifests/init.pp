@@ -11,6 +11,12 @@
 # @param trusted_nets  See only_from in xinetd.conf(5).
 #   This will be converted to DDQ format automatically.
 #
+# @param rsync_enabled Whether to use rsync to efficiently pull initial
+#   boot files from a central location (i.e., the rsync server) and
+#   install them into `$tftpboot_root_dir/$linux_install_dir`.  When
+#   set to `false`, you must provide some other mechanism to install
+#   the initial boot files into $tftpboot_root_dir/$linux_install_dir.
+#
 # @param rsync_source The source of the content to be rsync'd.
 #
 # @param rsync_server The rsync server FQDN from which to pull the
@@ -45,6 +51,7 @@ class tftpboot (
   Stdlib::Absolutepath $tftpboot_root_dir = '/var/lib/tftpboot',
   String               $linux_install_dir = 'linux-install',
   Simplib::Netlist     $trusted_nets      = simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1', '::1'] }),
+  Boolean              $rsync_enabled     = true,
   String               $rsync_source      = "tftpboot_${::environment}_${facts['os']['name']}/*",
   String               $rsync_server      = simplib::lookup('simp_options::rsync::server',  { 'default_value' => '127.0.0.1' }),
   Integer              $rsync_timeout     = simplib::lookup('simp_options::rsync::timeout', { 'default_value' => 2 }),

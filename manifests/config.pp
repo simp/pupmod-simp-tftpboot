@@ -28,20 +28,22 @@ class tftpboot::config {
 
   if $::tftpboot::use_os_files {
     $_os_files = tftpboot::get_os_base_filenames($::tftpboot::os_file_info)
-    $_rsync_exclude = concat([ 'pxelinux.cfg' ], $_os_files)
+    $_rsync_exclude = [ 'pxelinux.cfg' ] + $_os_files
   } else {
     $_rsync_exclude = [ 'pxelinux.cfg' ]
   }
 
   $_downcase_osname = downcase($facts['os']['name'])
 
-  rsync { 'tftpboot':
-    user     => "tftpboot_rsync_${::environment}_${_downcase_osname}",
-    password => simplib::passgen("tftpboot_rsync_${::environment}_${_downcase_osname}"),
-    source   => $::tftpboot::rsync_source,
-    target   => $::tftpboot::tftpboot_root_dir,
-    server   => $::tftpboot::rsync_server,
-    timeout  => $::tftpboot::rsync_timeout,
-    exclude  => $_rsync_exclude
+  if $::tftpboot::rsync_enabled {
+    rsync { 'tftpboot':
+      user     => "tftpboot_rsync_${::environment}_${_downcase_osname}",
+      password => simplib::passgen("tftpboot_rsync_${::environment}_${_downcase_osname}"),
+      source   => $::tftpboot::rsync_source,
+      target   => $::tftpboot::tftpboot_root_dir,
+      server   => $::tftpboot::rsync_server,
+      timeout  => $::tftpboot::rsync_timeout,
+      exclude  => $_rsync_exclude
+    }
   }
 }

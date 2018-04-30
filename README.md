@@ -68,6 +68,14 @@ used to PXEboot a server.
 
 See only\_from in xinetd.conf(5). This will be converted to DDQ format automatically.
 
+* **`rsync_enabled`** (`Boolean`) *(defaults to: `true`)*
+
+Whether to use rsync to efficiently pull initial boot files from a
+central location (i.e., the rsync server) and install them into
+`$tftpboot_root_dir/$linux_install_dir`.  When set to `false`, you
+must provide some other mechanism to install the initial boot files
+into `$tftpboot_root_dir/$linux_install_dir`.
+
 * **`rsync_source`** (`String`) *(defaults to: `"tftpboot_${::environment}_${facts['os']['name']}/*"`)*
 
 The source of the content to be rsync'd.
