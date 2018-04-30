@@ -1,3 +1,20 @@
+* Tue Apr 24 2018 Liz Nemsick <lnemsick.simp@gmail.com> - 6.1.0-0
+- Added support for UEFI PXEboot.
+  - Added tftpboot::linux_model_efi.
+    Added tftpboot::assign_host_efi.
+  - Tested primarily on CentOS 7 (grub2). Testing of CentOS 6 UEFI
+    boot with legacy grub is **pending**.
+- **Moved** the tftproot root directory from /tftpboot to /var/lib/tftpboot
+  to satisfy the STIG RHEL-07-040520 check.
+- Added tftpboot::tftpboot_root_dir to allow users to override
+  the new default root directory (e.g., to set it back to /tftpboot).
+- Added tftpboot::linux_install_dir and tftpboot::package_ensure
+  to allow more fine-grained control of this module.
+- Explicitly set selinux context on tfptboot files/directories to
+  tftpdir_t in order to restrict their access to read-only tftpd
+  operation.
+- Internally, refactored configuration to use small, private classes.
+
 * Tue Dec 05 2017 Steven Pritchard <steven.pritchard@onyxpoint.com> - 6.0.2-0
 - Update README.md from puppet strings
 

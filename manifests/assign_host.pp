@@ -1,55 +1,77 @@
 # define tftpboot:assign_host
 #
-#  Sets up links to /tftpboot/linux-install/pxelinux.cfg/templates/$model
+#  Sets up links to `templates/$model` in the `tftpboot.cfg/`
+#  sub-directory of `$::tftpboot::install_root_dir`
 #
-# == Parameters
-#
-# @attr name  Should be the PXE boot identifier per the PXE documentation.
-#   Search order:
-#   - First UUID
-#   - Then 01-MAC (for Ethernet)
-#   - Last descending IP address ranges in HEX
-#   - Finally, the file 'default'
+# @attr name  Should be the PXE boot identifier per the PXE
+#   documentation or 'default', the appropriate default filename for
+#   BIOS boot. This identifier will map directly to a single file named
+#   downcase($name) or a pair of files named downcase($name) and
+#   upcase($name), all in `tftpboot.cfg/`. These filenames support
+#   the configuration file search shown below:
+#     (1) UUID
+#     (2) 01-MAC (for Ethernet)
+#     (3) Descending IP address ranges in HEX.
+#         For example:
+#         C000025B
+#         C000025
+#         ...
+#         C
+#     (4) The file 'default'
 #
 # @param model Should be the name of a previously defined model
 #
 # @param ensure Ensure for files managed.
 #
-# @author Trevor Vaughan <tvaughan@onyxpoint.com>
-#
 define tftpboot::assign_host (
-  String $model,
-  Enum['absent','present','file','link'] $ensure = 'present'
+  String                $model,
+  Enum['absent','link'] $ensure = 'link'
 ) {
 
-  $_upname = inline_template('<%= @name.upcase %>')
-  $_downname = inline_template('<%= @name.downcase %>')
-  $_ensure = $ensure ? {
-    'present' => 'link',
-    'file'    => 'link',
-    'link'    => 'link',
-    default   => 'absent'
+  include 'tftpboot'
+
+  if ! ($name =~ /^\S+$/) {
+    fail("tftpboot::assign_host '${name}' invalid: name cannot have whitespace")
   }
 
-  file { "/tftpboot/linux-install/pxelinux.cfg/${_downname}":
-    ensure => $_ensure,
-    owner  => 'root',
-    group  => 'nobody',
-    mode   => '0644',
-    target => "templates/${model}",
-    force  => true
-  }
+  $_install_dir = "${::tftpboot::install_root_dir}/pxelinux.cfg"
 
-  $_downname_parts = split($_downname,' ')
-  if ( $_downname != 'default' ) and ( ! array_include($_downname_parts, $_upname) ) {
+  if $name == 'default' {
+    file { "${_install_dir}/default":
+      ensure  => $ensure,
+      owner   => 'root',
+      group   => 'nobody',
+      mode    => '0644',
+      seltype => 'tftpdir_t',
+      target  => "templates/${model}",
+      force   => true
+    }
+  } else {
+    $_upname = upcase($name)
+    $_downname = downcase($name)
 
-    file { "/tftpboot/linux-install/pxelinux.cfg/${_upname}":
-      ensure => $_ensure,
-      owner  => 'root',
-      group  => 'nobody',
-      mode   => '0644',
-      target => "templates/${model}",
-      force  => true
+    file { "${_install_dir}/${_downname}":
+      ensure  => $ensure,
+      owner   => 'root',
+      group   => 'nobody',
+      mode    => '0644',
+      seltype => 'tftpdir_t',
+      target  => "templates/${model}",
+      force   => true
+    }
+
+    # normal comparison operators (==, !=, =~, etc.) are case invariant
+    # in Puppet, so have to compare via a different method
+    if !member([$_downname], $_upname) {
+      file { "${_install_dir}/${_upname}":
+        ensure  => $ensure,
+        owner   => 'root',
+        group   => 'nobody',
+        mode    => '0644',
+        seltype => 'tftpdir_t',
+        target  => "templates/${model}",
+        force   => true
+      }
     }
   }
 }
