@@ -1,0 +1,9 @@
+---
+tftpboot::os_file_info:
+  bios:
+    syslinux-tftpboot:
+      - "/var/lib/tftpboot/menu.c32"
+      - "/var/lib/tftpboot/pxelinux.0"
+  efi:
+    grub:
+      - "/boot/efi/EFI/redhat/grub.efi"

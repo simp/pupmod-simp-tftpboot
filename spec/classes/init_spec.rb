@@ -1,21 +1,25 @@
 require 'spec_helper'
 
 default_rsync_exclude = {
-  'centos-6' => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grub.efi'],
-  'centos-7' => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grubx64.efi', 'shim.efi'],
-  'redhat-6' => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grub.efi'],
-  'redhat-7' => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grubx64.efi', 'shim.efi'],
+  'centos-6-x86_64'      => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grub.efi'],
+  'centos-7-x86_64'      => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grubx64.efi', 'shim.efi'],
+  'redhat-6-x86_64'      => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grub.efi'],
+  'redhat-7-x86_64'      => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grubx64.efi', 'shim.efi'],
+  'oraclelinux-6-x86_64' => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grub.efi'],
+  'oraclelinux-7-x86_64' => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grubx64.efi', 'shim.efi']
 }
 
 default_packages = {
-  'centos-6' => ['tftp-server', 'syslinux-tftpboot', 'grub'],
-  'centos-7' => ['tftp-server', 'syslinux-tftpboot', 'grub2-efi-x64', 'shim-x64'],
-  'redhat-6' => ['tftp-server', 'syslinux-tftpboot', 'grub'],
-  'redhat-7' => ['tftp-server', 'syslinux-tftpboot', 'grub2-efi-x64', 'shim-x64']
+  'centos-6-x86_64'      => ['tftp-server', 'syslinux-tftpboot', 'grub'],
+  'centos-7-x86_64'      => ['tftp-server', 'syslinux-tftpboot', 'grub2-efi-x64', 'shim-x64'],
+  'redhat-6-x86_64'      => ['tftp-server', 'syslinux-tftpboot', 'grub'],
+  'redhat-7-x86_64'      => ['tftp-server', 'syslinux-tftpboot', 'grub2-efi-x64', 'shim-x64'],
+  'oraclelinux-6-x86_64' => ['tftp-server', 'syslinux-tftpboot', 'grub'],
+  'oraclelinux-7-x86_64' => ['tftp-server', 'syslinux', 'grub2-efi-x64', 'shim-x64'],
 }
 
 default_boot_files = {
-  'centos-6' => {
+  'centos-6-x86_64' => {
     '/var/lib/tftpboot/linux-install/menu.c32' => {
       :src => '/var/lib/tftpboot/menu.c32',
       :pkg => 'syslinux-tftpboot'
@@ -29,7 +33,7 @@ default_boot_files = {
       :pkg => 'grub'
     },
   },
-  'centos-7' => {
+  'centos-7-x86_64' => {
     '/var/lib/tftpboot/linux-install/menu.c32' => {
       :src => '/var/lib/tftpboot/menu.c32',
       :pkg => 'syslinux-tftpboot'
@@ -47,7 +51,7 @@ default_boot_files = {
       :pkg => 'shim-x64'
     }
   },
-  'redhat-6' => {
+  'redhat-6-x86_64' => {
     '/var/lib/tftpboot/linux-install/menu.c32' => {
       :src => '/var/lib/tftpboot/menu.c32',
       :pkg => 'syslinux-tftpboot'
@@ -61,7 +65,7 @@ default_boot_files = {
       :pkg => 'grub'
     },
   },
-  'redhat-7' => {
+  'redhat-7-x86_64' => {
     '/var/lib/tftpboot/linux-install/menu.c32' => {
       :src => '/var/lib/tftpboot/menu.c32',
       :pkg => 'syslinux-tftpboot'
@@ -78,6 +82,38 @@ default_boot_files = {
       :src => '/boot/efi/EFI/redhat/shim.efi',
       :pkg => 'shim-x64'
     }
+  },
+  'oraclelinux-6-x86_64' => {
+    '/var/lib/tftpboot/linux-install/menu.c32' => {
+      :src => '/var/lib/tftpboot/menu.c32',
+      :pkg => 'syslinux-tftpboot'
+    },
+    '/var/lib/tftpboot/linux-install/pxelinux.0' => {
+      :src => '/var/lib/tftpboot/pxelinux.0',
+      :pkg => 'syslinux-tftpboot'
+    },
+    '/var/lib/tftpboot/linux-install/efi/grub.efi' => {
+      :src => '/boot/efi/EFI/redhat/grub.efi',
+      :pkg => 'grub'
+    },
+  },
+  'oraclelinux-7-x86_64' => {
+    '/var/lib/tftpboot/linux-install/menu.c32' => {
+      :src => '/usr/share/syslinux/menu.c32',
+      :pkg => 'syslinux'
+    },
+    '/var/lib/tftpboot/linux-install/pxelinux.0' => {
+      :src => '/usr/share/syslinux/pxelinux.0',
+      :pkg => 'syslinux'
+    },
+    '/var/lib/tftpboot/linux-install/efi/grubx64.efi' => {
+      :src => '/boot/efi/EFI/redhat/grubx64.efi',
+      :pkg => 'grub2-efi-x64'
+    },
+    '/var/lib/tftpboot/linux-install/efi/shim.efi' => {
+      :src => '/boot/efi/EFI/redhat/shim.efi',
+      :pkg => 'shim-x64'
+    }
   }
 }
 
@@ -85,6 +121,7 @@ default_boot_files = {
 describe 'tftpboot' do
   on_supported_os.each do |os, facts|
     context "on #{os}" do
+     puts os
      let(:facts) { facts }
 
       context 'with default parameters' do
@@ -160,11 +197,12 @@ describe 'tftpboot' do
           })
         end
 
-        default_packages[os[0..7]].each do |pkg|
+        default_packages[os].each do |pkg|
+          puts os[0..7]
           it { is_expected.to contain_package(pkg).with_ensure('installed') }
         end
 
-        default_boot_files[os[0..7]].each do |file, info_hash|
+        default_boot_files[os].each do |file, info_hash|
           it do
             is_expected.to contain_file(file).with( {
               'ensure'  => 'file',
@@ -180,7 +218,7 @@ describe 'tftpboot' do
 
 
         it do
-          expected_exclude = default_rsync_exclude[os[0..7]]
+          expected_exclude = default_rsync_exclude[os]
           is_expected.to contain_rsync('tftpboot').with({
             'user' => "tftpboot_rsync_#{environment}_#{facts[:os][:name].downcase}",
             'password' => /^.+$/,
@@ -225,7 +263,7 @@ describe 'tftpboot' do
         it { is_expected.to contain_file('/opt/tftpboot/install/pxelinux.cfg/templates').with_ensure('directory') }
         it { is_expected.to contain_file('/opt/tftpboot/install/efi').with_ensure('directory') }
         it { is_expected.to contain_file('/opt/tftpboot/install/efi/templates').with_ensure('directory') }
-        default_boot_files[os[0..7]].each do |file, info_hash|
+        default_boot_files[os].each do |file, info_hash|
           expected_file = file.gsub('/var/lib/tftpboot','/opt/tftpboot')
           expected_file.gsub!('linux-install', 'install')
           it { is_expected.to contain_file(expected_file).with_source("file://#{info_hash[:src]}") }
@@ -259,12 +297,12 @@ describe 'tftpboot' do
 
         it { is_expected.to compile.with_all_deps }
 
-        default_packages[os[0..7]].each do |pkg|
+        default_packages[os].each do |pkg|
           next if pkg == 'tftp-server'
           it { is_expected.to_not contain_package(pkg) }
         end
 
-        default_boot_files[os[0..7]].each do |file, info_hash|
+        default_boot_files[os].each do |file, info_hash|
           it { is_expected.to_not contain_file(file) }
         end
 
@@ -277,7 +315,7 @@ describe 'tftpboot' do
         }}
 
         it { is_expected.to compile.with_all_deps }
-        default_packages[os[0..7]].each do |pkg|
+        default_packages[os].each do |pkg|
           it { is_expected.to contain_package(pkg).with_ensure('latest') }
         end
       end
