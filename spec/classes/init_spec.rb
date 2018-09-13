@@ -121,7 +121,6 @@ default_boot_files = {
 describe 'tftpboot' do
   on_supported_os.each do |os, facts|
     context "on #{os}" do
-     puts os
      let(:facts) { facts }
 
       context 'with default parameters' do
@@ -198,7 +197,6 @@ describe 'tftpboot' do
         end
 
         default_packages[os].each do |pkg|
-          puts os[0..7]
           it { is_expected.to contain_package(pkg).with_ensure('installed') }
         end
 
