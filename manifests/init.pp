@@ -48,6 +48,7 @@
 # @author https://github.com/simp/pupmod-simp-tftpboot/graphs/contributors
 #
 class tftpboot (
+  Hash                 $os_file_info,     # data-in-modules
   Stdlib::Absolutepath $tftpboot_root_dir = '/var/lib/tftpboot',
   String               $linux_install_dir = 'linux-install',
   Simplib::Netlist     $trusted_nets      = simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1', '::1'] }),
@@ -57,7 +58,6 @@ class tftpboot (
   Integer              $rsync_timeout     = simplib::lookup('simp_options::rsync::timeout', { 'default_value' => 2 }),
   Boolean              $purge_configs     = true,
   Boolean              $use_os_files      = true,
-  Hash                 $os_file_info,     # data-in-modules
   String               $package_ensure    = simplib::lookup('simp_options::package_ensure', { 'default_value' => 'installed' })
 ){
   $install_root_dir = "${tftpboot_root_dir}/${linux_install_dir}"
