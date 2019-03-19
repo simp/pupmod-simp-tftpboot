@@ -81,7 +81,7 @@ class tftpboot (
     per_source     => 11,
     cps            => [100,2],
     flags          => ['IPv4'],
-    trusted_nets   => nets2ddq($trusted_nets),
+    trusted_nets   => simplib::nets2ddq($trusted_nets),
     log_on_success => ['HOST', 'PID', 'DURATION'],
     require        => [ Package['tftp-server'], File[$tftpboot_root_dir] ]
   }
