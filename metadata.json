@@ -1,6 +1,6 @@
 {
   "name": "simp-tftpboot",
-  "version": "6.2.2",
+  "version": "6.2.3",
   "author": "SIMP Team",
   "summary": "A Puppet module to automate configuration of tftpboot",
   "license": "Apache-2.0",
