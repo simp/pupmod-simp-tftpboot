@@ -40,7 +40,7 @@ class tftpboot::config {
       user     => "tftpboot_rsync_${::environment}_${_downcase_osname}",
       password => simplib::passgen("tftpboot_rsync_${::environment}_${_downcase_osname}"),
       source   => $::tftpboot::rsync_source,
-      target   => $::tftpboot::tftpboot_root_dir,
+      target   => "${::tftpboot::tftpboot_root_dir}/${::tftpboot::linux_install_dir}",
       server   => $::tftpboot::rsync_server,
       timeout  => $::tftpboot::rsync_timeout,
       exclude  => $_rsync_exclude
