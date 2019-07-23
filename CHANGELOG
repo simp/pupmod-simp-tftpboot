@@ -1,3 +1,6 @@
+* Tue Dec 03 2019 Mike Renfro <mike+github@renf.ro> - 6.3.1-0
+- Fix rsync target to match README
+
 * Fri Aug 02 2019 Robert Vincent <pillarsdotnet@gmail.com> - 6.3.0-0
 - Remove Puppet 4 support
 - Add Puppet 6 support

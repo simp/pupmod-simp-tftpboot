@@ -221,7 +221,7 @@ describe 'tftpboot' do
             'user' => "tftpboot_rsync_#{environment}_#{facts[:os][:name].downcase}",
             'password' => /^.+$/,
             'source' => "tftpboot_#{environment}_#{facts[:os][:name]}/*",
-            'target' => '/var/lib/tftpboot',
+            'target' => '/var/lib/tftpboot/linux-install',
             'server' => 'rsync.bar.baz',
             'timeout' => 2,
             'exclude' => expected_exclude
@@ -266,7 +266,7 @@ describe 'tftpboot' do
           expected_file.gsub!('linux-install', 'install')
           it { is_expected.to contain_file(expected_file).with_source("file://#{info_hash[:src]}") }
         end
-        it { is_expected.to contain_rsync('tftpboot').with_target('/opt/tftpboot') }
+        it { is_expected.to contain_rsync('tftpboot').with_target('/opt/tftpboot/install') }
         it { is_expected.to contain_xinetd__service('tftp').with('server_args' => '-s /opt/tftpboot') }
       end
 
