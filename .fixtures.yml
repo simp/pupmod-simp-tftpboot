@@ -3,6 +3,9 @@ fixtures:
   repositories:
     iptables: https://github.com/simp/pupmod-simp-iptables
     rsync: https://github.com/simp/pupmod-simp-rsync
+    selinux_core:
+      repo: https://github.com/simp/pupmod-puppetlabs-selinux_core.git
+      puppet_version: ">= 6.0.0"
     simplib: https://github.com/simp/pupmod-simp-simplib
     stdlib: https://github.com/simp/puppetlabs-stdlib
     xinetd: https://github.com/simp/pupmod-simp-xinetd

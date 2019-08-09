@@ -1,5 +1,7 @@
-* Fri Aug 02 2019 Robert Vincent <pillarsdotnet@gmail.com> - 6.2.3-0
-- Support puppetlabs/stdlib 6.x and puppet 6.x.
+* Fri Aug 02 2019 Robert Vincent <pillarsdotnet@gmail.com> - 6.3.0-0
+- Remove Puppet 4 support
+- Add Puppet 6 support
+- Add puppetlabs-stdlib 6 support
 
 * Tue Mar 19 2019 Liz Nemsick <lnemsick.simp@gmail.com> - 6.2.2-0
 - Use simplib::nets2ddq in lieu of deprecated Puppet 3 nets2ddq
