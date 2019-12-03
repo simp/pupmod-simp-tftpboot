@@ -23,18 +23,18 @@ class tftpboot::config::efi {
     seltype => 'tftpdir_t'
   }
 
-  if $::tftpboot::use_os_files {
+  if $tftpboot::use_os_files {
     # Ensure all the OS packages containing the needed boot files
     # are installed
-    $_os_packages = keys($::tftpboot::os_file_info['efi'])
+    $_os_packages = keys($tftpboot::os_file_info['efi'])
     $_os_packages.each |String $pkg_name| {
       unless defined(Package[$pkg_name]) {
-        package { $pkg_name: ensure => $::tftpboot::package_ensure }
+        package { $pkg_name: ensure => $tftpboot::package_ensure }
       }
     }
 
     # Install each boot file
-    $::tftpboot::os_file_info['efi'].each | String $pkg, Array $files| {
+    $tftpboot::os_file_info['efi'].each | String $pkg, Array $files| {
       $files.each | String $file | {
         $installed_file = sprintf('%s/%s',$_install_dir, basename($file))
         file { $installed_file:

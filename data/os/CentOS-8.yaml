@@ -1,0 +1,11 @@
+---
+tftpboot::os_file_info:
+  bios:
+    syslinux-tftpboot:
+      - "/tftpboot/menu.c32"
+      - "/tftpboot/pxelinux.0"
+  efi:
+    grub2-efi-x64:
+      - "/boot/efi/EFI/centos/grubx64.efi"
+    shim-ia32:
+      - "/boot/efi/EFI/centos/shim.efi"
