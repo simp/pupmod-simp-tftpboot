@@ -1,4 +1,13 @@
-* Tue Dec 03 2019 Mike Renfro <mike+github@renf.ro> - 6.3.1-0
+* Tue Dec 03 2019 Trevor Vaughan <tvaughan@onyxpoint.com> - 6.3.0-0
+- Update README.md
+- Add REFERENCE.md
+- Add EL8 support
+- Update GitLab configuration
+- Add a basic acceptance test
+- Update dependency versions in metadata.json
+- Fix manifest ordering
+
+* Tue Dec 03 2019 Mike Renfro <mike+github@renf.ro> - 6.3.0-0
 - Fix rsync target to match README
 
 * Fri Aug 02 2019 Robert Vincent <pillarsdotnet@gmail.com> - 6.3.0-0

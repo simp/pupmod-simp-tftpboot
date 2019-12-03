@@ -3,8 +3,10 @@ require 'spec_helper'
 default_rsync_exclude = {
   'centos-6-x86_64'      => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grub.efi'],
   'centos-7-x86_64'      => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grubx64.efi', 'shim.efi'],
+  'centos-8-x86_64'      => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grubx64.efi', 'shim.efi'],
   'redhat-6-x86_64'      => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grub.efi'],
   'redhat-7-x86_64'      => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grubx64.efi', 'shim.efi'],
+  'redhat-8-x86_64'      => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grubx64.efi', 'shim.efi'],
   'oraclelinux-6-x86_64' => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grub.efi'],
   'oraclelinux-7-x86_64' => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grubx64.efi', 'shim.efi']
 }
@@ -12,8 +14,10 @@ default_rsync_exclude = {
 default_packages = {
   'centos-6-x86_64'      => ['tftp-server', 'syslinux-tftpboot', 'grub'],
   'centos-7-x86_64'      => ['tftp-server', 'syslinux-tftpboot', 'grub2-efi-x64', 'shim-x64'],
+  'centos-8-x86_64'      => ['tftp-server', 'syslinux-tftpboot', 'grub2-efi-x64', 'shim-ia32'],
   'redhat-6-x86_64'      => ['tftp-server', 'syslinux-tftpboot', 'grub'],
   'redhat-7-x86_64'      => ['tftp-server', 'syslinux-tftpboot', 'grub2-efi-x64', 'shim-x64'],
+  'redhat-8-x86_64'      => ['tftp-server', 'syslinux-tftpboot', 'grub2-efi-x64', 'shim-ia32'],
   'oraclelinux-6-x86_64' => ['tftp-server', 'syslinux-tftpboot', 'grub'],
   'oraclelinux-7-x86_64' => ['tftp-server', 'syslinux', 'grub2-efi-x64', 'shim-x64'],
 }
@@ -51,6 +55,24 @@ default_boot_files = {
       :pkg => 'shim-x64'
     }
   },
+  'centos-8-x86_64' => {
+    '/var/lib/tftpboot/linux-install/menu.c32' => {
+      :src => '/tftpboot/menu.c32',
+      :pkg => 'syslinux-tftpboot'
+    },
+    '/var/lib/tftpboot/linux-install/pxelinux.0' => {
+      :src => '/tftpboot/pxelinux.0',
+      :pkg => 'syslinux-tftpboot'
+    },
+    '/var/lib/tftpboot/linux-install/efi/grubx64.efi' => {
+      :src => '/boot/efi/EFI/centos/grubx64.efi',
+      :pkg => 'grub2-efi-x64'
+    },
+    '/var/lib/tftpboot/linux-install/efi/shim.efi' => {
+      :src => '/boot/efi/EFI/centos/shim.efi',
+      :pkg => 'shim-ia32'
+    }
+  },
   'redhat-6-x86_64' => {
     '/var/lib/tftpboot/linux-install/menu.c32' => {
       :src => '/var/lib/tftpboot/menu.c32',
@@ -81,6 +103,24 @@ default_boot_files = {
     '/var/lib/tftpboot/linux-install/efi/shim.efi' => {
       :src => '/boot/efi/EFI/redhat/shim.efi',
       :pkg => 'shim-x64'
+    }
+  },
+  'redhat-8-x86_64' => {
+    '/var/lib/tftpboot/linux-install/menu.c32' => {
+      :src => '/tftpboot/menu.c32',
+      :pkg => 'syslinux-tftpboot'
+    },
+    '/var/lib/tftpboot/linux-install/pxelinux.0' => {
+      :src => '/tftpboot/pxelinux.0',
+      :pkg => 'syslinux-tftpboot'
+    },
+    '/var/lib/tftpboot/linux-install/efi/grubx64.efi' => {
+      :src => '/boot/efi/EFI/redhat/grubx64.efi',
+      :pkg => 'grub2-efi-x64'
+    },
+    '/var/lib/tftpboot/linux-install/efi/shim.efi' => {
+      :src => '/boot/efi/EFI/redhat/shim.efi',
+      :pkg => 'shim-ia32'
     }
   },
   'oraclelinux-6-x86_64' => {
@@ -116,7 +156,6 @@ default_boot_files = {
     }
   }
 }
-
 
 describe 'tftpboot' do
   on_supported_os.each do |os, facts|
@@ -221,7 +260,7 @@ describe 'tftpboot' do
             'user' => "tftpboot_rsync_#{environment}_#{facts[:os][:name].downcase}",
             'password' => /^.+$/,
             'source' => "tftpboot_#{environment}_#{facts[:os][:name]}/*",
-            'target' => '/var/lib/tftpboot/linux-install',
+            'target' => '/var/lib/tftpboot',
             'server' => 'rsync.bar.baz',
             'timeout' => 2,
             'exclude' => expected_exclude
@@ -266,7 +305,7 @@ describe 'tftpboot' do
           expected_file.gsub!('linux-install', 'install')
           it { is_expected.to contain_file(expected_file).with_source("file://#{info_hash[:src]}") }
         end
-        it { is_expected.to contain_rsync('tftpboot').with_target('/opt/tftpboot/install') }
+        it { is_expected.to contain_rsync('tftpboot').with_target('/opt/tftpboot') }
         it { is_expected.to contain_xinetd__service('tftp').with('server_args' => '-s /opt/tftpboot') }
       end
 
