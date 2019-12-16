@@ -8,7 +8,8 @@ default_rsync_exclude = {
   'redhat-7-x86_64'      => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grubx64.efi', 'shim.efi'],
   'redhat-8-x86_64'      => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grubx64.efi', 'shim.efi'],
   'oraclelinux-6-x86_64' => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grub.efi'],
-  'oraclelinux-7-x86_64' => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grubx64.efi', 'shim.efi']
+  'oraclelinux-7-x86_64' => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grubx64.efi', 'shim.efi'],
+  'oraclelinux-8-x86_64' => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grubx64.efi', 'shimx64.efi']
 }
 
 default_packages = {
@@ -20,6 +21,7 @@ default_packages = {
   'redhat-8-x86_64'      => ['tftp-server', 'syslinux-tftpboot', 'grub2-efi-x64', 'shim-ia32'],
   'oraclelinux-6-x86_64' => ['tftp-server', 'syslinux-tftpboot', 'grub'],
   'oraclelinux-7-x86_64' => ['tftp-server', 'syslinux', 'grub2-efi-x64', 'shim-x64'],
+  'oraclelinux-8-x86_64' => ['tftp-server', 'syslinux', 'grub2-efi-x64', 'shim-x64'],
 }
 
 default_boot_files = {
@@ -152,6 +154,24 @@ default_boot_files = {
     },
     '/var/lib/tftpboot/linux-install/efi/shim.efi' => {
       :src => '/boot/efi/EFI/redhat/shim.efi',
+      :pkg => 'shim-x64'
+    }
+  },
+  'oraclelinux-8-x86_64' => {
+    '/var/lib/tftpboot/linux-install/menu.c32' => {
+      :src => '/usr/share/syslinux/menu.c32',
+      :pkg => 'syslinux'
+    },
+    '/var/lib/tftpboot/linux-install/pxelinux.0' => {
+      :src => '/usr/share/syslinux/pxelinux.0',
+      :pkg => 'syslinux'
+    },
+    '/var/lib/tftpboot/linux-install/efi/grubx64.efi' => {
+      :src => '/boot/efi/EFI/redhat/grubx64.efi',
+      :pkg => 'grub2-efi-x64'
+    },
+    '/var/lib/tftpboot/linux-install/efi/shimx64.efi' => {
+      :src => '/boot/efi/EFI/redhat/shimx64.efi',
       :pkg => 'shim-x64'
     }
   }

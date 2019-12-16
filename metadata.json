@@ -49,6 +49,7 @@
     {
       "operatingsystem": "OracleLinux",
       "operatingsystemrelease": [
+        "8",
         "7",
         "6"
       ]
