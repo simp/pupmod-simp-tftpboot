@@ -7,9 +7,6 @@
 -%>
 HOSTS:
   el6:
-    roles:
-      - server
-      - default
     platform: el-6-x86_64
     box: centos/6
     hypervisor: <%= hypervisor %>
@@ -21,8 +18,6 @@ HOSTS:
 
   el7:
     roles:
-      - server
-      - client
       - default
     platform: el-7-x86_64
     box: centos/7
@@ -34,12 +29,10 @@ HOSTS:
           - https://packages.chef.io/chef.asc
 
   el8:
-    roles:
-      - client
     platform: el-8-x86_64
     box: generic/centos8
-   hypervisor: <%= hypervisor %>
-   yum_repos:
+    hypervisor: <%= hypervisor %>
+    yum_repos:
       chef-current:
        baseurl: 'https://packages.chef.io/repos/yum/current/el/8/$basearch'
        gpgkeys:
