@@ -13,6 +13,7 @@ spec/rp_env/
 Gemfile.lock
 vendor/
 junit/
+sec_results/
 log/
 doc/
 .idea/
