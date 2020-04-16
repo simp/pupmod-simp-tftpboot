@@ -1,30 +1,55 @@
 # The testing matrix considers ruby/puppet versions supported by SIMP and PE:
+# ------------------------------------------------------------------------------
+# Release       Puppet   Ruby   EOL
+# SIMP 6.4      5.5      2.4    TBD
+# PE 2018.1     5.5      2.4    2020-11 (LTS)
+# PE 2019.2     6.10     2.5    2019-08 (STS)
 #
 # https://puppet.com/docs/pe/2018.1/component_versions_in_recent_pe_releases.html
 # https://puppet.com/misc/puppet-enterprise-lifecycle
 # https://puppet.com/docs/pe/2018.1/overview/getting_support_for_pe.html
-# ------------------------------------------------------------------------------
-# Release       Puppet   Ruby   EOL
-# SIMP 6.2      4.10     2.1.9  TBD
-# PE 2016.4     4.10     2.1.9  2018-12-31 (LTS)
-# PE 2017.3     5.3      2.4.4  2018-12-31
-# SIMP 6.3      5.5      2.4.4  TBD***
-# PE 2018.1     5.5      2.4.4  2020-05 (LTS)***
-# PE 2019.0     6.0      2.5.1  2019-08-31^^^
+# ==============================================================================
 #
-# *** = Modules created for SIMP 6.3+ are not required to support Puppet < 5.5
-# ^^^ = SIMP doesn't support 6 yet; tests are info-only and allowed to fail
-
+# Travis CI Repo options for this pipeline:
+#
+#   Travis CI Env Var      Type      Notes
+#   ---------------------  --------  -------------------------------------------
+#   GITHUB_OAUTH_TOKEN     Secure    Required for automated GitHub releases
+#   PUPPETFORGE_API_TOKEN  Secure    Required for automated Forge releases
+#   SKIP_GITHUB_PUBLISH    Optional  Skips publishing GitHub releases if "true"
+#   SKIP_FORGE_PUBLISH     Optional  Skips publishing to Puppet Forge if "true"
+#
+#   The secure env vars will be filtered in Travis CI log output, and aren't
+#   provided to untrusted builds (i.e, triggered by PR from another repository)
+#
+# ------------------------------------------------------------------------------
+#
+# Travis CI Trigger options for this pipeline:
+#
+#   To validate if $GITHUB_OAUTH_TOKEN is able to publish a GitHub release,
+#   trigger a custom Travis CI build for this branch using the CUSTOM CONFIG:
+#
+#     env: VALIDATE_TOKENS=yes
+#
+# ------------------------------------------------------------------------------
+#
+# Release Engineering notes:
+#
+#   To automagically publish a release to GitHub and PuppetForge:
+#
+#   - Set GITHUB_OAUTH_TOKEN and PUPPETFORGE_API_TOKEN as secure env variables
+#     in this repo's Travis CI settings
+#   - Push a git tag that matches the version in the module's `metadata.json`
+#   - The tag SHOULD be annotated with release notes, but nothing enforces this
+#     convention at present
+#
+# ------------------------------------------------------------------------------
 ---
+
 language: ruby
 cache: bundler
-sudo: false
-
-stages:
-  - check
-  - spec
-  - name: deploy
-    if: 'tag IS present'
+version: ~> 1.0
+os: linux
 
 bundler_args: --without development system_tests --path .vendor
 
@@ -37,16 +62,29 @@ addons:
       - rpm
 
 before_install:
+  - for x in ${HOME}/.rvm/gems/*; do gem uninstall -I -x -i "${x}" -v '>= 1.17' bundler || true; gem uninstall -I -x -i "${x}@global" -v '>= 1.17' bundler || true; done
+  - gem install -v '~> 1.17' bundler
   - rm -f Gemfile.lock
 
-global:
-  - STRICT_VARIABLES=yes
+env:
+  global:
+    - 'FORGE_USER_AGENT="TravisCI-ForgeReleng-Script/0.3.3 (Purpose/forge-ops-for-${TRAVIS_REPO_SLUG})"'
+
+stages:
+  - name: 'validate tokens'
+    if: 'env(VALIDATE_TOKENS) = yes'
+  - name: check
+    if: 'NOT env(VALIDATE_TOKENS) = yes'
+  - name: spec
+    if: 'NOT env(VALIDATE_TOKENS) = yes'
+  - name: deploy
+    if: 'tag IS present AND NOT env(VALIDATE_TOKENS) = yes'
 
 jobs:
   include:
     - stage: check
       name: 'Syntax, style, and validation checks'
-      rvm: 2.4.5
+      rvm: 2.4.9
       env: PUPPET_VERSION="~> 5"
       script:
         - bundle exec rake check:dot_underscore
@@ -59,52 +97,70 @@ jobs:
         - bundle exec puppet module build
 
     - stage: spec
-      name: 'Puppet 5.3 (PE 2017.3)'
-      rvm: 2.4.5
-      env: PUPPET_VERSION="~> 5.3.0"
-      script:
-        - bundle exec rake spec
-
-    - stage: spec
-      rvm: 2.4.5
-      name: 'Puppet 5.5 (SIMP 6.3, PE 2018.1)'
+      rvm: 2.4.9
+      name: 'Puppet 5.5 (SIMP 6.4, PE 2018.1)'
       env: PUPPET_VERSION="~> 5.5.0"
       script:
         - bundle exec rake spec
 
     - stage: spec
-      name: 'Latest Puppet 5.x'
-      rvm: 2.4.5
+      name: 'Puppet 5.x (Latest)'
+      rvm: 2.4.9
       env: PUPPET_VERSION="~> 5.0"
       script:
         - bundle exec rake spec
 
     - stage: spec
-      name: 'Latest Puppet 6.x'
-      rvm: 2.5.1
-      env: PUPPET_VERSION="~> 6.0"
+      name: 'Puppet 6.10 (PE 2019.2)'
+      rvm: 2.5.7
+      env: PUPPET_VERSION="~> 6.10.0"
       script:
         - bundle exec rake spec
 
     - stage: deploy
-      rvm: 2.4.5
+      rvm: 2.4.9
+      env: PUPPET_VERSION="~> 5.5.0"
       script:
         - true
       before_deploy:
         - "export PUPMOD_METADATA_VERSION=`ruby -r json -e \"puts JSON.parse(File.read('metadata.json')).fetch('version')\"`"
-        - '[[ $TRAVIS_TAG =~ ^simp-${PUPMOD_METADATA_VERSION}$|^${PUPMOD_METADATA_VERSION}$ ]]'
+        - '[[ $TRAVIS_TAG =~ ^poxvup-${PUPMOD_METADATA_VERSION}$|^${PUPMOD_METADATA_VERSION}$ ]]'
+        - 'gem install -v "~> 5.5.0" puppet'
+        - 'git clean -f -x -d'
+        - 'puppet module build'
+        - 'find pkg -name ''*.tar.gz'''
       deploy:
-        - provider: releases
-          api_key:
-            secure: "YJsN80ZjwCcPu/GkzD6U/gxkiqjQYF/vtg7FmKC7lShebFJv/YHAH1ScA2fJrzDwS0k1KYE3cMRyL3nPvI7zm9n0j5YggqygoXA0Cm+2q5JhmdAd6rnXj2InwIqE1QDiQ4lGrzYxXFkT3fc21ap3yaioUcf0CMXnnGzzLy/4IJBCjIGs0yGLDELur5xr9/fUs3HKdbWjuawiR/e/3HplxF4E7b/U+y2iljV4txCGLa7D2hEQbmYXj74quDPslmQy2gaRPiKUxnfUyivUmayoOK6HJukst2T7ppn5134laXbyAQ7cpBy3Vv8LvxKbiLkJMaSOmCkVbcp2qY+TosFV7evRawKyTcZIbV4URgfb6ApKbUYA8CyFh2nC8osFgiIuU0z9om1AidFj+Pi3Psn5jLQnxzzj9wWlqnfbMFDdatYPggqcuY6TOn6g+MerqSVQhtaWgfzCVqveS3qxyvsSAz6BlkRlefA2W3xb0QOL55B3H7txEZ1PLzkv3sMaBnDgTv26yUwRo/rKKDAPLZqBOrujX5p/Ng1NNKv1p4c+fxRIfV9lxarcyQfk9mSBUxouDhP7xq0xP2sSnGi0fD/S56Ks3+gqGqCHeebw3I/J2vFur/ORJQiXq7rIVMJC0Vm1pwWZYw9i4+Nf+PfhCp/Z+cQ6eCEv79xpOCboRbWd7aQ="
+        - provider: script
           skip_cleanup: true
+          script: 'curl -sS --fail -A "$FORGE_USER_AGENT" -H "Authorization: Bearer ${PUPPETFORGE_API_TOKEN}" -X POST -F "file=@$(find $PWD/pkg -name ''*.tar.gz'')" https://forgeapi.puppet.com/v3/releases'
           on:
             tags: true
             condition: '($SKIP_FORGE_PUBLISH != true)'
-        - provider: puppetforge
-          user: simp
-          password:
-            secure: "dRCuNGMAOrFLalMG9kDmGoZQFBBfPm/ZlB6vG63d9LqoPf9UMXxHvdWf7L/7gEDnWfhE3IMtkXTScWEKF145zDo+lil/STo6HAZZ3N1p7lYPiF5ovoXVb15OVGncimPpXnXBUapJ1LHxI7wovShdVPG++geNEd+MkbwO4sUgtprOTTNow+DbRMys0eTOjcmC/2KrQogo7y4+7EATQms6Z+tipUigGL25E0FGNWkp6oyx0MKCFSoI8iRyTaJBQLmMOEdxNoYq7Z7o9mt524YIue2eD0EGrc2Hb+raOknlWbvvEdgNoJZUdKQU6jk/xfoPr5HFzIR1tPrfr3XUzg+4nGKcbxESH3jFQBK1RpvFKHDZxoCJrY3FBSTGmf1b/O/KVHTEw1sssLRQjsJ5/BAbmV2+vURENlszyjcsuBlwfH8dYdGG96uJ4DVciwdxCXOAxys69y4XXgyUQwU8sP9VZchoh2UdUC+ca+y37HYQ3iONLO6hS77fppF/3ZgyoGbNFpWiEFZ0b2xdm9vS+1YmB8oWxsLheYH/jv3L3EOwysD0OkmFPNtME93IjWguZNipfBe5qvN+M2yYJt9IafaqsrxlDWN6mDTzJOK4XdFTSmVIBmwP2kCfCOBJrOHtvv2M1EEODC2vfJFIvkXPnRMIELoJY0rn7YWHw/89JUSh3ec="
+        - provider: releases
+          token: $GITHUB_OAUTH_TOKEN
           on:
             tags: true
-            condition: '($SKIP_FORGE_PUBLISH != true)'
+            condition: '($SKIP_GITHUB_PUBLISH != true)'
+
+    - stage: 'validate tokens'
+      language: shell
+      before_install: skip
+      install: skip
+      name:  'validate CI GitHub OAuth token has sufficient scope to release'
+      script:
+      - 'echo; echo "===== GITHUB_OAUTH_TOKEN validation";echo "  (TRAVIS_SECURE_ENV_VARS=$TRAVIS_SECURE_ENV_VARS)"; echo'
+      - 'OWNER="$(echo $TRAVIS_REPO_SLUG | cut -d/ -f1)"'
+      - 'curl -H "Authorization: token ${GITHUB_OAUTH_TOKEN}"
+          "https://api.github.com/users/$OWNER"
+          -I | grep ^X-OAuth-Scopes | egrep -w "repo|public_repo"'
+
+    - stage: 'validate tokens'
+      name:  'validate CI Puppet Forge token authenticates with API'
+      language: shell
+      before_install: skip
+      install: skip
+      script:
+      - 'echo; echo "===== PUPPETFORGE_API_TOKEN validation"; echo "  (TRAVIS_SECURE_ENV_VARS=$TRAVIS_SECURE_ENV_VARS)"; echo'
+      - 'curl -sS --fail -A "$FORGE_USER_AGENT"
+         -H "Authorization: Bearer ${PUPPETFORGE_API_TOKEN:-default_content_to_cause_401_response}"
+         https://forgeapi.puppet.com/v3/users > /dev/null'
