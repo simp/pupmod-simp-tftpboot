@@ -37,18 +37,13 @@ class tftpboot::config {
     include 'rsync'
 
     rsync { 'tftpboot':
-      user            => "tftpboot_rsync_${::environment}_${_downcase_osname}",
-      password        => simplib::passgen("tftpboot_rsync_${::environment}_${_downcase_osname}"),
-      source          => $tftpboot::rsync_source,
-      target          => $tftpboot::tftpboot_root_dir,
-      server          => $tftpboot::rsync_server,
-      timeout         => $tftpboot::rsync_timeout,
-      exclude         => $_rsync_exclude,
-      preserve_owner  => false,
-      preserve_group  => false,
-      preserve_perms  => false,
-      preserve_acl    => false,
-      preserve_xattrs => false,
+      user     => "tftpboot_rsync_${::environment}_${_downcase_osname}",
+      password => simplib::passgen("tftpboot_rsync_${::environment}_${_downcase_osname}"),
+      source   => $tftpboot::rsync_source,
+      target   => $tftpboot::tftpboot_root_dir,
+      server   => $tftpboot::rsync_server,
+      timeout  => $tftpboot::rsync_timeout,
+      exclude  => $_rsync_exclude,
     }
   }
 }
