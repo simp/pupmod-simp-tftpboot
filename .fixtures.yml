@@ -2,17 +2,17 @@
 fixtures:
   repositories:
     disa_stig-el7-baseline:
-      repo: https://github.com/simp/inspec-profile-disa_stig-el7
+      repo: https://github.com/simp/inspec-profile-disa_stig-el7.git
       branch: master
       target: spec/fixtures/inspec_deps/inspec_profiles/profiles
-    iptables: https://github.com/simp/pupmod-simp-iptables
-    rsync: https://github.com/simp/pupmod-simp-rsync
+    iptables: https://github.com/simp/pupmod-simp-iptables.git
+    rsync: https://github.com/simp/pupmod-simp-rsync.git
     selinux_core:
       repo: https://github.com/simp/pupmod-puppetlabs-selinux_core.git
       puppet_version: ">= 6.0.0"
-    simplib: https://github.com/simp/pupmod-simp-simplib
-    stdlib: https://github.com/simp/puppetlabs-stdlib
-    xinetd: https://github.com/simp/pupmod-simp-xinetd
-    compliance_markup: https://github.com/simp/pupmod-simp-compliance_markup
+    simplib: https://github.com/simp/pupmod-simp-simplib.git
+    stdlib: https://github.com/simp/puppetlabs-stdlib.git
+    xinetd: https://github.com/simp/pupmod-simp-xinetd.git
+    compliance_markup: https://github.com/simp/pupmod-simp-compliance_markup.git
   symlinks:
     tftpboot: "#{source_dir}"
