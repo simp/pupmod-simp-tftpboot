@@ -1,3 +1,6 @@
+* Wed Jul 14 2021 Trevor Vaughan <tvaughan@onyxpoint.com> - 6.4.1
+- Updated PXE file lists for EL8 systems
+
 * Thu Jun 17 2021 Chris Tessmer <chris.tessmer@onyxpoint.com> - 6.4.0
 - Removed support for Puppet 5
 - Ensured support for Puppet 7 in requirements and stdlib
