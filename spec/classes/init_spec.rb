@@ -3,13 +3,13 @@ require 'spec_helper'
 default_rsync_exclude = {
   'centos-6-x86_64'      => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grub.efi'],
   'centos-7-x86_64'      => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grubx64.efi', 'shim.efi'],
-  'centos-8-x86_64'      => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grubx64.efi', 'shim.efi'],
+  'centos-8-x86_64'      => ['pxelinux.cfg', 'chain.c32', 'ldlinux.c32', 'libcom32.c32', 'libutil.c32', 'memdisk', 'menu.c32', 'pxechn.c32', 'pxelinux.0', 'grubx64.efi', 'shim.efi'],
   'redhat-6-x86_64'      => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grub.efi'],
   'redhat-7-x86_64'      => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grubx64.efi', 'shim.efi'],
-  'redhat-8-x86_64'      => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grubx64.efi', 'shim.efi'],
+  'redhat-8-x86_64'      => ['pxelinux.cfg', 'chain.c32', 'ldlinux.c32', 'libcom32.c32', 'libutil.c32', 'memdisk', 'menu.c32', 'pxechn.c32', 'pxelinux.0', 'grubx64.efi', 'shim.efi'],
   'oraclelinux-6-x86_64' => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grub.efi'],
   'oraclelinux-7-x86_64' => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grubx64.efi', 'shim.efi'],
-  'oraclelinux-8-x86_64' => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grubx64.efi', 'shimx64.efi']
+  'oraclelinux-8-x86_64' => ['pxelinux.cfg', 'chain.c32', 'ldlinux.c32', 'libcom32.c32', 'libutil.c32', 'memdisk', 'menu.c32', 'pxechn.c32', 'pxelinux.0', 'grubx64.efi', 'shimx64.efi'],
 }
 
 default_packages = {
