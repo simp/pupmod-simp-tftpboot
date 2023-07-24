@@ -1,3 +1,6 @@
+* Mon Jul 24 2023 Chris Tessmer <chris.tessmer@onyxpoint.com> - 6.5.0
+- Add RockyLinux 8 support
+
 * Wed Jul 14 2021 Trevor Vaughan <tvaughan@onyxpoint.com> - 6.4.1
 - Updated PXE file lists for EL8 systems
 

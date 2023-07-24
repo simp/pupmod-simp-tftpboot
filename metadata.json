@@ -1,6 +1,6 @@
 {
   "name": "simp-tftpboot",
-  "version": "6.4.1",
+  "version": "6.5.0",
   "author": "SIMP Team",
   "summary": "A Puppet module to automate configuration of tftpboot",
   "license": "Apache-2.0",
@@ -14,7 +14,7 @@
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 6.6.0 < 8.0.0"
+      "version_requirement": ">= 8.0.0 < 9.0.0"
     },
     {
       "name": "simp/xinetd",
@@ -49,6 +49,12 @@
       "operatingsystemrelease": [
         "8",
         "7"
+      ]
+    },
+    {
+      "operatingsystem": "Rocky",
+      "operatingsystemrelease": [
+        "8"
       ]
     }
   ],
