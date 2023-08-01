@@ -37,8 +37,8 @@ class tftpboot::config {
     include 'rsync'
 
     rsync { 'tftpboot':
-      user     => "tftpboot_rsync_${::environment}_${_downcase_osname}",
-      password => simplib::passgen("tftpboot_rsync_${::environment}_${_downcase_osname}"),
+      user     => "tftpboot_rsync_${environment}_${_downcase_osname}",
+      password => simplib::passgen("tftpboot_rsync_${environment}_${_downcase_osname}"),
       source   => $tftpboot::rsync_source,
       target   => $tftpboot::tftpboot_root_dir,
       server   => $tftpboot::rsync_server,

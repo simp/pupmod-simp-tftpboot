@@ -60,7 +60,7 @@ class tftpboot (
   String               $linux_install_dir = 'linux-install',
   Simplib::Netlist     $trusted_nets      = simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1', '::1'] }),
   Boolean              $rsync_enabled     = true,
-  String               $rsync_source      = "tftpboot_${::environment}_${facts['os']['name']}/*",
+  String               $rsync_source      = "tftpboot_${environment}_${facts['os']['name']}/*",
   String               $rsync_server      = simplib::lookup('simp_options::rsync::server',  { 'default_value' => '127.0.0.1' }),
   Integer              $rsync_timeout     = simplib::lookup('simp_options::rsync::timeout', { 'default_value' => 2 }),
   Boolean              $purge_configs     = true,
