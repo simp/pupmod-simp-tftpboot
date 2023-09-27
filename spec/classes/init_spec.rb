@@ -11,6 +11,7 @@ default_rsync_exclude = {
   'oraclelinux-7-x86_64' => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grubx64.efi', 'shim.efi'],
   'oraclelinux-8-x86_64' => ['pxelinux.cfg', 'chain.c32', 'ldlinux.c32', 'libcom32.c32', 'libutil.c32', 'memdisk', 'menu.c32', 'pxechn.c32', 'pxelinux.0', 'grubx64.efi', 'shimx64.efi'],
   'rocky-8-x86_64'       => ['pxelinux.cfg', 'chain.c32', 'ldlinux.c32', 'libcom32.c32', 'libutil.c32', 'memdisk', 'menu.c32', 'pxechn.c32', 'pxelinux.0', 'grubx64.efi', 'shim.efi'],
+  'almalinux-8-x86_64'   => ['pxelinux.cfg', 'chain.c32', 'ldlinux.c32', 'libcom32.c32', 'libutil.c32', 'memdisk', 'menu.c32', 'pxechn.c32', 'pxelinux.0', 'grubx64.efi', 'shim.efi'],
 }
 
 default_packages = {
@@ -24,6 +25,7 @@ default_packages = {
   'oraclelinux-7-x86_64' => ['tftp-server', 'syslinux', 'grub2-efi-x64', 'shim-x64'],
   'oraclelinux-8-x86_64' => ['tftp-server', 'syslinux', 'grub2-efi-x64', 'shim-x64'],
   'rocky-8-x86_64'       => ['tftp-server', 'syslinux-tftpboot', 'grub2-efi-x64', 'shim-ia32'],
+  'almalinux-8-x86_64'   => ['tftp-server', 'syslinux-tftpboot', 'grub2-efi-x64', 'shim-ia32'],
 }
 
 default_boot_files = {
@@ -194,7 +196,25 @@ default_boot_files = {
       :src => '/boot/efi/EFI/rocky/shim.efi',
       :pkg => 'shim-ia32'
     }
-  }
+  },
+  'almalinux-8-x86_64' => {
+    '/var/lib/tftpboot/linux-install/menu.c32' => {
+      :src => '/tftpboot/menu.c32',
+      :pkg => 'syslinux-tftpboot',
+    },
+    '/var/lib/tftpboot/linux-install/pxelinux.0' => {
+      :src => '/tftpboot/pxelinux.0',
+      :pkg => 'syslinux-tftpboot',
+    },
+    '/var/lib/tftpboot/linux-install/efi/grubx64.efi' => {
+      :src => '/boot/efi/EFI/almalinux/grubx64.efi',
+      :pkg => 'grub2-efi-x64',
+    },
+    '/var/lib/tftpboot/linux-install/efi/shim.efi' => {
+      :src => '/boot/efi/EFI/almalinux/shim.efi',
+      :pkg => 'shim-ia32',
+    },
+  },
 }
 
 describe 'tftpboot' do

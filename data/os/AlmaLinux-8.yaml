@@ -1,0 +1,17 @@
+---
+tftpboot::os_file_info:
+  bios:
+    syslinux-tftpboot:
+      - "/tftpboot/chain.c32"
+      - "/tftpboot/ldlinux.c32"
+      - "/tftpboot/libcom32.c32"
+      - "/tftpboot/libutil.c32"
+      - "/tftpboot/memdisk"
+      - "/tftpboot/menu.c32"
+      - "/tftpboot/pxechn.c32"
+      - "/tftpboot/pxelinux.0"
+  efi:
+    grub2-efi-x64:
+      - "/boot/efi/EFI/almalinux/grubx64.efi"
+    shim-ia32:
+      - "/boot/efi/EFI/almalinux/shim.efi"
