@@ -1,0 +1,17 @@
+---
+tftpboot::os_file_info:
+  bios:
+    syslinux:
+      - "/usr/share/syslinux/chain.c32"
+      - "/usr/share/syslinux/ldlinux.c32"
+      - "/usr/share/syslinux/libcom32.c32"
+      - "/usr/share/syslinux/libutil.c32"
+      - "/usr/share/syslinux/memdisk"
+      - "/usr/share/syslinux/menu.c32"
+      - "/usr/share/syslinux/pxechn.c32"
+      - "/usr/share/syslinux/pxelinux.0"
+  efi:
+    grub2-efi-x64:
+      - "/boot/efi/EFI/redhat/grubx64.efi"
+    shim-x64:
+      - "/boot/efi/EFI/redhat/shimx64.efi"
