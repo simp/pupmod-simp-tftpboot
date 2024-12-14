@@ -2,7 +2,6 @@ require 'spec_helper'
 require 'securerandom'
 
 describe 'tftpboot::assign_host' do
-
   on_supported_os.each do |os, os_facts|
     context "on #{os}" do
       let(:facts) do
@@ -12,35 +11,35 @@ describe 'tftpboot::assign_host' do
       context 'valid parameters' do
         context "'default' name" do
           let(:title) { 'default' }
-          let(:params) { {:model => 'rhel-6-x86_64-base'} }
+          let(:params) { { model: 'rhel-6-x86_64-base' } }
 
           it do
             is_expected.to contain_file('/var/lib/tftpboot/linux-install/pxelinux.cfg/default').with({
-              'ensure'  => 'link',
+                                                                                                       'ensure' => 'link',
               'owner'   => 'root',
               'group'   => 'nobody',
               'seltype' => 'tftpdir_t',
               'target'  => "templates/#{params[:model]}",
               'force'   => true
-            })
+                                                                                                     })
           end
 
-          it { is_expected.to_not contain_file('/var/lib/tftpboot/linux-install/pxeclinux.cfg/DEFAULT') }
+          it { is_expected.not_to contain_file('/var/lib/tftpboot/linux-install/pxeclinux.cfg/DEFAULT') }
         end
 
         context 'uppercase name equals lowercase name' do
           let(:title) { '01020304' }
-          let(:params) { {:model => 'rhel-6-x86_64-base'} }
+          let(:params) { { model: 'rhel-6-x86_64-base' } }
 
           it do
             is_expected.to contain_file("/var/lib/tftpboot/linux-install/pxelinux.cfg/#{title}").with({
-              'ensure'  => 'link',
+                                                                                                        'ensure' => 'link',
               'owner'   => 'root',
               'group'   => 'nobody',
               'seltype' => 'tftpdir_t',
               'target'  => "templates/#{params[:model]}",
               'force'   => true
-            })
+                                                                                                      })
           end
         end
 
@@ -54,32 +53,32 @@ describe 'tftpboot::assign_host' do
           'C000',
           'C00',
           'C0',
-          'C'
+          'C',
         ].each do |entry|
           context "with name => #{entry}" do
             let(:title) { entry }
-            let(:params) { {:model => '64_bit_rhel6'} }
+            let(:params) { { model: '64_bit_rhel6' } }
 
             it do
               is_expected.to contain_file("/var/lib/tftpboot/linux-install/pxelinux.cfg/#{entry.downcase}").with({
-                'ensure'  => 'link',
+                                                                                                                   'ensure' => 'link',
                 'owner'   => 'root',
                 'group'   => 'nobody',
                 'seltype' => 'tftpdir_t',
                 'target'  => "templates/#{params[:model]}",
                 'force'   => true
-              })
+                                                                                                                 })
             end
 
             it do
               is_expected.to contain_file("/var/lib/tftpboot/linux-install/pxelinux.cfg/#{entry.upcase}").with({
-                'ensure'  => 'link',
+                                                                                                                 'ensure' => 'link',
                 'owner'   => 'root',
                 'group'   => 'nobody',
                 'seltype' => 'tftpdir_t',
                 'target'  => "templates/#{params[:model]}",
                 'force'   => true
-              })
+                                                                                                               })
             end
           end
         end
@@ -89,17 +88,16 @@ describe 'tftpboot::assign_host' do
         [
           "\tstarts_with_whitespace",
           'ends_with_whitespace ',
-          'name contains whitespace'
+          'name contains whitespace',
         ].each do |invalid_name|
           context "invalid name '#{invalid_name}'" do
             let(:title) { invalid_name }
-            let(:params) { {:model => 'rhel-6-x86_64-base'} }
+            let(:params) { { model: 'rhel-6-x86_64-base' } }
 
-            it { is_expected.to raise_error(/tftpboot..assign_host '#{title}' invalid. name cannot have whitespace/) }
+            it { is_expected.to raise_error(%r{tftpboot..assign_host '#{title}' invalid. name cannot have whitespace}) }
           end
         end
       end
     end
   end
-
 end
