@@ -1,74 +1,30 @@
 require 'spec_helper'
 
 default_rsync_exclude = {
-  'centos-7-x86_64'      => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grubx64.efi', 'shim.efi'],
-  'centos-8-x86_64'      => ['pxelinux.cfg', 'chain.c32', 'ldlinux.c32', 'libcom32.c32', 'libutil.c32', 'memdisk', 'menu.c32', 'pxechn.c32', 'pxelinux.0', 'grubx64.efi', 'shim.efi'],
-  'centos-9-x86_64'      => ['pxelinux.cfg', 'chain.c32', 'ldlinux.c32', 'libcom32.c32', 'libutil.c32', 'memdisk', 'menu.c32', 'pxechn.c32', 'pxelinux.0', 'grubx64.efi', 'shim.efi'],
-  'redhat-7-x86_64'      => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grubx64.efi', 'shim.efi'],
+  'centos-9-x86_64'      => ['pxelinux.cfg', 'chain.c32', 'ldlinux.c32', 'libcom32.c32', 'libutil.c32', 'memdisk', 'menu.c32', 'pxechn.c32', 'pxelinux.0', 'grubx64.efi', 'shimx64.efi'],
   'redhat-8-x86_64'      => ['pxelinux.cfg', 'chain.c32', 'ldlinux.c32', 'libcom32.c32', 'libutil.c32', 'memdisk', 'menu.c32', 'pxechn.c32', 'pxelinux.0', 'grubx64.efi', 'shim.efi'],
-  'redhat-9-x86_64'      => ['pxelinux.cfg', 'chain.c32', 'ldlinux.c32', 'libcom32.c32', 'libutil.c32', 'memdisk', 'menu.c32', 'pxechn.c32', 'pxelinux.0', 'grubx64.efi', 'shim.efi'],
-  'oraclelinux-7-x86_64' => ['pxelinux.cfg', 'menu.c32', 'pxelinux.0', 'grubx64.efi', 'shim.efi'],
+  'redhat-9-x86_64'      => ['pxelinux.cfg', 'chain.c32', 'ldlinux.c32', 'libcom32.c32', 'libutil.c32', 'memdisk', 'menu.c32', 'pxechn.c32', 'pxelinux.0', 'grubx64.efi', 'shimx64.efi'],
   'oraclelinux-8-x86_64' => ['pxelinux.cfg', 'chain.c32', 'ldlinux.c32', 'libcom32.c32', 'libutil.c32', 'memdisk', 'menu.c32', 'pxechn.c32', 'pxelinux.0', 'grubx64.efi', 'shimx64.efi'],
   'oraclelinux-9-x86_64' => ['pxelinux.cfg', 'chain.c32', 'ldlinux.c32', 'libcom32.c32', 'libutil.c32', 'memdisk', 'menu.c32', 'pxechn.c32', 'pxelinux.0', 'grubx64.efi', 'shimx64.efi'],
   'rocky-8-x86_64'       => ['pxelinux.cfg', 'chain.c32', 'ldlinux.c32', 'libcom32.c32', 'libutil.c32', 'memdisk', 'menu.c32', 'pxechn.c32', 'pxelinux.0', 'grubx64.efi', 'shim.efi'],
-  'rocky-9-x86_64'       => ['pxelinux.cfg', 'chain.c32', 'ldlinux.c32', 'libcom32.c32', 'libutil.c32', 'memdisk', 'menu.c32', 'pxechn.c32', 'pxelinux.0', 'grubx64.efi', 'shim.efi'],
+  'rocky-9-x86_64'       => ['pxelinux.cfg', 'chain.c32', 'ldlinux.c32', 'libcom32.c32', 'libutil.c32', 'memdisk', 'menu.c32', 'pxechn.c32', 'pxelinux.0', 'grubx64.efi', 'shimx64.efi'],
   'almalinux-8-x86_64'   => ['pxelinux.cfg', 'chain.c32', 'ldlinux.c32', 'libcom32.c32', 'libutil.c32', 'memdisk', 'menu.c32', 'pxechn.c32', 'pxelinux.0', 'grubx64.efi', 'shim.efi'],
-  'almalinux-9-x86_64'   => ['pxelinux.cfg', 'chain.c32', 'ldlinux.c32', 'libcom32.c32', 'libutil.c32', 'memdisk', 'menu.c32', 'pxechn.c32', 'pxelinux.0', 'grubx64.efi', 'shim.efi'],
+  'almalinux-9-x86_64'   => ['pxelinux.cfg', 'chain.c32', 'ldlinux.c32', 'libcom32.c32', 'libutil.c32', 'memdisk', 'menu.c32', 'pxechn.c32', 'pxelinux.0', 'grubx64.efi', 'shimx64.efi'],
 }
 
 default_packages = {
-  'centos-7-x86_64'      => ['tftp-server', 'syslinux-tftpboot', 'grub2-efi-x64', 'shim-x64'],
-  'centos-8-x86_64'      => ['tftp-server', 'syslinux-tftpboot', 'grub2-efi-x64', 'shim-ia32'],
-  'centos-9-x86_64'      => ['tftp-server', 'syslinux-tftpboot', 'grub2-efi-x64', 'shim-ia32'],
-  'redhat-7-x86_64'      => ['tftp-server', 'syslinux-tftpboot', 'grub2-efi-x64', 'shim-x64'],
+  'centos-9-x86_64'      => ['tftp-server', 'syslinux-tftpboot', 'grub2-efi-x64', 'shim-x64'],
   'redhat-8-x86_64'      => ['tftp-server', 'syslinux-tftpboot', 'grub2-efi-x64', 'shim-ia32'],
-  'redhat-9-x86_64'      => ['tftp-server', 'syslinux-tftpboot', 'grub2-efi-x64', 'shim-ia32'],
-  'oraclelinux-7-x86_64' => ['tftp-server', 'syslinux', 'grub2-efi-x64', 'shim-x64'],
+  'redhat-9-x86_64'      => ['tftp-server', 'syslinux-tftpboot', 'grub2-efi-x64', 'shim-x64'],
   'oraclelinux-8-x86_64' => ['tftp-server', 'syslinux', 'grub2-efi-x64', 'shim-x64'],
   'oraclelinux-9-x86_64' => ['tftp-server', 'syslinux', 'grub2-efi-x64', 'shim-x64'],
   'rocky-8-x86_64'       => ['tftp-server', 'syslinux-tftpboot', 'grub2-efi-x64', 'shim-ia32'],
-  'rocky-9-x86_64'       => ['tftp-server', 'syslinux-tftpboot', 'grub2-efi-x64', 'shim-ia32'],
+  'rocky-9-x86_64'       => ['tftp-server', 'syslinux-tftpboot', 'grub2-efi-x64', 'shim-x64'],
   'almalinux-8-x86_64'   => ['tftp-server', 'syslinux-tftpboot', 'grub2-efi-x64', 'shim-ia32'],
-  'almalinux-9-x86_64'   => ['tftp-server', 'syslinux-tftpboot', 'grub2-efi-x64', 'shim-ia32'],
+  'almalinux-9-x86_64'   => ['tftp-server', 'syslinux-tftpboot', 'grub2-efi-x64', 'shim-x64'],
 }
 
 default_boot_files = {
-  'centos-7-x86_64' => {
-    '/var/lib/tftpboot/linux-install/menu.c32' => {
-      :src => '/var/lib/tftpboot/menu.c32',
-      :pkg => 'syslinux-tftpboot'
-    },
-    '/var/lib/tftpboot/linux-install/pxelinux.0' => {
-      :src => '/var/lib/tftpboot/pxelinux.0',
-      :pkg => 'syslinux-tftpboot'
-    },
-    '/var/lib/tftpboot/linux-install/efi/grubx64.efi' => {
-      :src => '/boot/efi/EFI/centos/grubx64.efi',
-      :pkg => 'grub2-efi-x64'
-    },
-    '/var/lib/tftpboot/linux-install/efi/shim.efi' => {
-      :src => '/boot/efi/EFI/centos/shim.efi',
-      :pkg => 'shim-x64'
-    }
-  },
-  'centos-8-x86_64' => {
-    '/var/lib/tftpboot/linux-install/menu.c32' => {
-      :src => '/tftpboot/menu.c32',
-      :pkg => 'syslinux-tftpboot'
-    },
-    '/var/lib/tftpboot/linux-install/pxelinux.0' => {
-      :src => '/tftpboot/pxelinux.0',
-      :pkg => 'syslinux-tftpboot'
-    },
-    '/var/lib/tftpboot/linux-install/efi/grubx64.efi' => {
-      :src => '/boot/efi/EFI/centos/grubx64.efi',
-      :pkg => 'grub2-efi-x64'
-    },
-    '/var/lib/tftpboot/linux-install/efi/shim.efi' => {
-      :src => '/boot/efi/EFI/centos/shim.efi',
-      :pkg => 'shim-ia32'
-    }
-  },
   'centos-9-x86_64' => {
     '/var/lib/tftpboot/linux-install/menu.c32' => {
       :src => '/tftpboot/menu.c32',
@@ -83,25 +39,7 @@ default_boot_files = {
       :pkg => 'grub2-efi-x64'
     },
     '/var/lib/tftpboot/linux-install/efi/shim.efi' => {
-      :src => '/boot/efi/EFI/centos/shim.efi',
-      :pkg => 'shim-ia32'
-    }
-  },
-  'redhat-7-x86_64' => {
-    '/var/lib/tftpboot/linux-install/menu.c32' => {
-      :src => '/var/lib/tftpboot/menu.c32',
-      :pkg => 'syslinux-tftpboot'
-    },
-    '/var/lib/tftpboot/linux-install/pxelinux.0' => {
-      :src => '/var/lib/tftpboot/pxelinux.0',
-      :pkg => 'syslinux-tftpboot'
-    },
-    '/var/lib/tftpboot/linux-install/efi/grubx64.efi' => {
-      :src => '/boot/efi/EFI/redhat/grubx64.efi',
-      :pkg => 'grub2-efi-x64'
-    },
-    '/var/lib/tftpboot/linux-install/efi/shim.efi' => {
-      :src => '/boot/efi/EFI/redhat/shim.efi',
+      :src => '/boot/efi/EFI/centos/shimx64.efi',
       :pkg => 'shim-x64'
     }
   },
@@ -137,25 +75,7 @@ default_boot_files = {
       :pkg => 'grub2-efi-x64'
     },
     '/var/lib/tftpboot/linux-install/efi/shim.efi' => {
-      :src => '/boot/efi/EFI/redhat/shim.efi',
-      :pkg => 'shim-ia32'
-    }
-  },
-  'oraclelinux-7-x86_64' => {
-    '/var/lib/tftpboot/linux-install/menu.c32' => {
-      :src => '/usr/share/syslinux/menu.c32',
-      :pkg => 'syslinux'
-    },
-    '/var/lib/tftpboot/linux-install/pxelinux.0' => {
-      :src => '/usr/share/syslinux/pxelinux.0',
-      :pkg => 'syslinux'
-    },
-    '/var/lib/tftpboot/linux-install/efi/grubx64.efi' => {
-      :src => '/boot/efi/EFI/redhat/grubx64.efi',
-      :pkg => 'grub2-efi-x64'
-    },
-    '/var/lib/tftpboot/linux-install/efi/shim.efi' => {
-      :src => '/boot/efi/EFI/redhat/shim.efi',
+      :src => '/boot/efi/EFI/redhat/shimx64.efi',
       :pkg => 'shim-x64'
     }
   },
@@ -208,9 +128,9 @@ default_boot_files = {
       :src => '/boot/efi/EFI/rocky/grubx64.efi',
       :pkg => 'grub2-efi-x64'
     },
-    '/var/lib/tftpboot/linux-install/efi/shim.efi' => {
-      :src => '/boot/efi/EFI/rocky/shim.efi',
-      :pkg => 'shim-ia32'
+    '/var/lib/tftpboot/linux-install/efi/shimx64.efi' => {
+      :src => '/boot/efi/EFI/rocky/shimx64.efi',
+      :pkg => 'shim-x64'
     }
   },
   'rocky-9-x86_64' => {
@@ -226,9 +146,9 @@ default_boot_files = {
       :src => '/boot/efi/EFI/rocky/grubx64.efi',
       :pkg => 'grub2-efi-x64'
     },
-    '/var/lib/tftpboot/linux-install/efi/shim.efi' => {
-      :src => '/boot/efi/EFI/rocky/shim.efi',
-      :pkg => 'shim-ia32'
+    '/var/lib/tftpboot/linux-install/efi/shimx64.efi' => {
+      :src => '/boot/efi/EFI/rocky/shimx64.efi',
+      :pkg => 'shim-x64'
     }
   },
   'almalinux-8-x86_64' => {
@@ -263,8 +183,8 @@ default_boot_files = {
       :pkg => 'grub2-efi-x64',
     },
     '/var/lib/tftpboot/linux-install/efi/shim.efi' => {
-      :src => '/boot/efi/EFI/almalinux/shim.efi',
-      :pkg => 'shim-ia32',
+      :src => '/boot/efi/EFI/almalinux/shimx64.efi',
+      :pkg => 'shim-x64',
     },
   },
 }

@@ -1,6 +1,5 @@
 ---
 HOSTS:
-# el8 for default https://github.com/simp/pupmod-simp-tftpboot/issues/86
   el8:
     platform: el-8-x86_64
     box: generic/rocky8
