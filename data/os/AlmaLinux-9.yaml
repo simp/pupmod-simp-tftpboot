@@ -13,5 +13,5 @@ tftpboot::os_file_info:
   efi:
     grub2-efi-x64:
       - "/boot/efi/EFI/almalinux/grubx64.efi"
-    shim-ia32:
-      - "/boot/efi/EFI/almalinux/shim.efi"
+    shim-x64:
+      - "/boot/efi/EFI/almalinux/shimx64.efi"

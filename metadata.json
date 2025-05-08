@@ -1,6 +1,6 @@
 {
   "name": "simp-tftpboot",
-  "version": "6.8.1",
+  "version": "7.0.0",
   "author": "SIMP Team",
   "summary": "A Puppet module to automate configuration of tftpboot",
   "license": "Apache-2.0",
@@ -17,10 +17,6 @@
       "version_requirement": ">= 8.0.0 < 10.0.0"
     },
     {
-      "name": "simp/xinetd",
-      "version_requirement": ">= 4.0.0 < 5.0.0"
-    },
-    {
       "name": "simp/rsync",
       "version_requirement": ">= 6.1.1 < 7.0.0"
     },
@@ -33,8 +29,6 @@
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
-        "8",
-        "7",
         "9"
       ]
     },
@@ -42,7 +36,6 @@
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
         "8",
-        "7",
         "9"
       ]
     },
@@ -50,7 +43,6 @@
       "operatingsystem": "OracleLinux",
       "operatingsystemrelease": [
         "8",
-        "7",
         "9"
       ]
     },

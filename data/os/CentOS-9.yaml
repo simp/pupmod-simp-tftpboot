@@ -13,5 +13,5 @@ tftpboot::os_file_info:
   efi:
     grub2-efi-x64:
       - "/boot/efi/EFI/centos/grubx64.efi"
-    shim-ia32:
-      - "/boot/efi/EFI/centos/shim.efi"
+    shim-x64:
+      - "/boot/efi/EFI/centos/shimx64.efi"

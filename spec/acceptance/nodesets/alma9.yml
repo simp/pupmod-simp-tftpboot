@@ -1,11 +1,10 @@
 ---
 HOSTS:
-# el8 for default https://github.com/simp/pupmod-simp-tftpboot/issues/86
-  el8:
-    platform: el-8-x86_64
-    box: generic/rocky8
+  el9:
+    platform: el-9-x86_64
+    box: generic/alma9
     hypervisor: "<%= ENV.fetch('BEAKER_HYPERVISOR', 'vagrant') %>"
-    family: rocky-linux-cloud/rocky-linux-8
+    family: almalinux-cloud/almalinux-9
     gce_machine_type: n1-standard-2
 CONFIG:
   log_level: verbose
