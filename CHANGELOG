@@ -1,3 +1,8 @@
+* Mon Aug 18 2025 Mike Riddle <mike@sicura.us> - 7.0.0
+- Removed el7 support
+- Added el10 support
+- Removed xinetd dependency
+
 * Wed Jan 17 2024 Richard Gardner <rick@sicura.us> - 6.8.1
 - Updated hiera.yaml facts to support puppet 8
 

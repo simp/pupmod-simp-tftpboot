@@ -1,19 +1,8 @@
 ---
 HOSTS:
-  el7:
+  el8:
     roles:
     - default
-    platform: el-7-x86_64
-    box: centos/7
-    hypervisor: "<%= ENV.fetch('BEAKER_HYPERVISOR', 'vagrant') %>"
-    yum_repos:
-      chef-current:
-        baseurl: https://packages.chef.io/repos/yum/current/el/7/$basearch
-        gpgkeys:
-        - https://packages.chef.io/chef.asc
-    family: centos-cloud/centos-7
-    gce_machine_type: n1-standard-2
-  el8:
     platform: el-8-x86_64
     box: generic/centos8
     hypervisor: "<%= ENV.fetch('BEAKER_HYPERVISOR', 'vagrant') %>"
@@ -24,9 +13,22 @@ HOSTS:
         - https://packages.chef.io/chef.asc
     family: centos-cloud/centos-stream-8
     gce_machine_type: n1-standard-2
+  el9:
+    roles:
+    - default
+    platform: el-9-x86_64
+    box: generic/centos9s
+    hypervisor: "<%= ENV.fetch('BEAKER_HYPERVISOR', 'vagrant') %>"
+    yum_repos:
+      chef-current:
+        baseurl: https://packages.chef.io/repos/yum/current/el/9/$basearch
+        gpgkeys:
+        - https://packages.chef.io/chef.asc
+    family: centos-cloud/centos-stream-9
+    gce_machine_type: n1-standard-2
 CONFIG:
   log_level: verbose
   synced_folder: disabled
   type: aio
   vagrant_memsize: 256
-  puppet_collection: "<%= ENV.fetch('BEAKER_PUPPET_COLLECTION', 'puppet7') %>"
+  puppet_collection: "<%= ENV.fetch('BEAKER_PUPPET_COLLECTION', 'openvox8') %>"

@@ -27,14 +27,13 @@ define tftpboot::assign_host (
   String                $model,
   Enum['absent','link'] $ensure = 'link'
 ) {
-
   include 'tftpboot'
 
   if ! ($name =~ /^\S+$/) {
     fail("tftpboot::assign_host '${name}' invalid: name cannot have whitespace")
   }
 
-  $_install_dir = "${::tftpboot::install_root_dir}/pxelinux.cfg"
+  $_install_dir = "${tftpboot::install_root_dir}/pxelinux.cfg"
 
   if $name == 'default' {
     file { "${_install_dir}/default":
@@ -44,7 +43,7 @@ define tftpboot::assign_host (
       mode    => '0644',
       seltype => 'tftpdir_t',
       target  => "templates/${model}",
-      force   => true
+      force   => true,
     }
   } else {
     $_upname = upcase($name)
@@ -57,7 +56,7 @@ define tftpboot::assign_host (
       mode    => '0644',
       seltype => 'tftpdir_t',
       target  => "templates/${model}",
-      force   => true
+      force   => true,
     }
 
     # normal comparison operators (==, !=, =~, etc.) are case invariant
@@ -70,7 +69,7 @@ define tftpboot::assign_host (
         mode    => '0644',
         seltype => 'tftpdir_t',
         target  => "templates/${model}",
-        force   => true
+        force   => true,
       }
     }
   }

@@ -13,7 +13,7 @@ class tftpboot::config {
     owner   => 'root',
     group   => 'nobody',
     mode    => '0750',
-    seltype => 'tftpdir_t'
+    seltype => 'tftpdir_t',
   }
 
   file { $tftpboot::install_root_dir:
@@ -21,14 +21,14 @@ class tftpboot::config {
     owner   => 'root',
     group   => 'nobody',
     mode    => '0640',
-    seltype => 'tftpdir_t'
+    seltype => 'tftpdir_t',
   }
 
   if $tftpboot::use_os_files {
-    $_os_files = tftpboot::get_os_base_filenames($::tftpboot::os_file_info)
-    $_rsync_exclude = [ 'pxelinux.cfg' ] + $_os_files
+    $_os_files = tftpboot::get_os_base_filenames($tftpboot::os_file_info)
+    $_rsync_exclude = ['pxelinux.cfg'] + $_os_files
   } else {
-    $_rsync_exclude = [ 'pxelinux.cfg' ]
+    $_rsync_exclude = ['pxelinux.cfg']
   }
 
   $_downcase_osname = downcase($facts['os']['name'])

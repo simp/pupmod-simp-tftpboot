@@ -28,21 +28,20 @@ define tftpboot::linux_model (
   Optional[String]         $extra  = undef,
   Enum['absent','present'] $ensure = 'present',
   Boolean                  $fips   = false
-){
-
+) {
   if ! ($name =~ /^\S+$/) {
     fail("tftpboot::linux_model '${name}' invalid: name cannot have whitespace")
   }
 
   include 'tftpboot'
 
-  $install_dir = $::tftpboot::install_root_dir
+  $install_dir = $tftpboot::install_root_dir
   file { "${install_dir}/pxelinux.cfg/templates/${name}":
     ensure  => $ensure,
     owner   => 'root',
     group   => 'nobody',
     content => template('tftpboot/entry.erb'),
     mode    => '0644',
-    seltype => 'tftpdir_t'
+    seltype => 'tftpdir_t',
   }
 }

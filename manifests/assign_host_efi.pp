@@ -53,14 +53,13 @@ define tftpboot::assign_host_efi (
   Boolean               $legacy_grub = false,
   Enum['absent','link'] $ensure      = 'link'
 ) {
-
   include 'tftpboot'
 
   if ! ($name =~ /^\S+$/) {
     fail("tftpboot::assign_host_efi '${name}' invalid: name cannot have whitespace")
   }
 
-  $_install_dir = "${::tftpboot::install_root_dir}/efi"
+  $_install_dir = "${tftpboot::install_root_dir}/efi"
 
   if $name == 'default' {
     $_default = true
@@ -84,7 +83,7 @@ define tftpboot::assign_host_efi (
       mode    => '0644',
       seltype => 'tftpdir_t',
       target  => "templates/${model}",
-      force   => true
+      force   => true,
     }
   } else {
     if $legacy_grub {
@@ -102,7 +101,7 @@ define tftpboot::assign_host_efi (
       mode    => '0644',
       seltype => 'tftpdir_t',
       target  => "templates/${model}",
-      force   => true
+      force   => true,
     }
 
     if ! $legacy_grub and $_downname =~ /^01\-/ {
@@ -117,7 +116,7 @@ define tftpboot::assign_host_efi (
         mode    => '0644',
         seltype => 'tftpdir_t',
         target  => "templates/${model}",
-        force   => true
+        force   => true,
       }
     }
 
@@ -131,7 +130,7 @@ define tftpboot::assign_host_efi (
         mode    => '0644',
         seltype => 'tftpdir_t',
         target  => "templates/${model}",
-        force   => true
+        force   => true,
       }
 
       if ! $legacy_grub and $_downname =~ /^01\-/ {
@@ -144,7 +143,7 @@ define tftpboot::assign_host_efi (
           mode    => '0644',
           seltype => 'tftpdir_t',
           target  => "templates/${model}",
-          force   => true
+          force   => true,
         }
       }
     }
