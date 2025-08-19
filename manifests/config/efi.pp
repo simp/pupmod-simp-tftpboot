@@ -5,14 +5,13 @@
 class tftpboot::config::efi {
   assert_private()
 
-
-  $_install_dir = "${::tftpboot::install_root_dir}/efi"
+  $_install_dir = "${tftpboot::install_root_dir}/efi"
   file { $_install_dir:
     ensure  => 'directory',
     owner   => 'root',
     group   => 'nobody',
     mode    => '0640',
-    seltype => 'tftpdir_t'
+    seltype => 'tftpdir_t',
   }
 
   file { "${_install_dir}/templates":
@@ -20,7 +19,7 @@ class tftpboot::config::efi {
     owner   => 'root',
     group   => 'nobody',
     mode    => '0640',
-    seltype => 'tftpdir_t'
+    seltype => 'tftpdir_t',
   }
 
   if $tftpboot::use_os_files {
@@ -44,7 +43,7 @@ class tftpboot::config::efi {
           mode    => '0644',
           seltype => 'tftpdir_t',
           source  => "file://${file}",
-          require => Package[$pkg]
+          require => Package[$pkg],
         }
       }
     }

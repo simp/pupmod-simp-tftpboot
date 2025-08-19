@@ -31,8 +31,7 @@ define tftpboot::linux_model_efi (
   Enum['absent','present'] $ensure      = 'present',
   Boolean                  $fips        = false,
   Boolean                  $legacy_grub = false
-){
-
+) {
   if ! ($name =~ /^\S+$/) {
     fail("tftpboot::linux_model_efi '${name}' invalid: name cannot have whitespace")
   }
@@ -50,12 +49,12 @@ define tftpboot::linux_model_efi (
     $_initrd = "/../${initrd}"
     $_template = 'tftpboot/entry_efi_legacy_grub.erb'
   } else {
-    $_kernel = "/${::tftpboot::linux_install_dir}/${kernel}"
-    $_initrd = "/${::tftpboot::linux_install_dir}/${initrd}"
+    $_kernel = "/${tftpboot::linux_install_dir}/${kernel}"
+    $_initrd = "/${tftpboot::linux_install_dir}/${initrd}"
     $_template = 'tftpboot/entry_efi.erb'
   }
 
-  $install_dir = $::tftpboot::install_root_dir
+  $install_dir = $tftpboot::install_root_dir
 
   file { "${install_dir}/efi/templates/${name}":
     ensure  => $ensure,
@@ -63,6 +62,6 @@ define tftpboot::linux_model_efi (
     group   => 'nobody',
     content => template($_template),
     mode    => '0644',
-    seltype => 'tftpdir_t'
+    seltype => 'tftpdir_t',
   }
 }

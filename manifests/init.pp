@@ -61,35 +61,23 @@ class tftpboot (
   Simplib::Netlist     $trusted_nets      = simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1', '::1'] }),
   Boolean              $rsync_enabled     = true,
   String               $rsync_source      = "tftpboot_${environment}_${facts['os']['name']}/*",
-  String               $rsync_server      = simplib::lookup('simp_options::rsync::server',  { 'default_value' => '127.0.0.1' }),
+  String               $rsync_server      = simplib::lookup('simp_options::rsync::server', { 'default_value' => '127.0.0.1' }),
   Integer              $rsync_timeout     = simplib::lookup('simp_options::rsync::timeout', { 'default_value' => 2 }),
   Boolean              $purge_configs     = true,
   Boolean              $use_os_files      = true,
   String               $package_ensure    = simplib::lookup('simp_options::package_ensure', { 'default_value' => 'installed' })
-){
+) {
   $install_root_dir = "${tftpboot_root_dir}/${linux_install_dir}"
 
   include 'tftpboot::config'
-  include 'xinetd'
 
-  package { 'tftp-server': ensure => $::tftpboot::package_ensure }
+  package { 'tftp-server': ensure => $tftpboot::package_ensure }
 
   Package['tftp-server'] -> Class['tftpboot::config']
 
-  xinetd::service { 'tftp':
-    x_type         => 'UNLISTED',
-    socket_type    => 'dgram',
-    protocol       => 'udp',
-    x_wait         => 'yes',
-    port           => 69,
-    server         => '/usr/sbin/in.tftpd',
-    server_args    => "-s ${tftpboot_root_dir}",
-    libwrap_name   => 'in.tftpd',
-    per_source     => 11,
-    cps            => [100,2],
-    flags          => ['IPv4'],
-    trusted_nets   => simplib::nets2ddq($trusted_nets),
-    log_on_success => ['HOST', 'PID', 'DURATION'],
-    require        => [ Package['tftp-server'], File[$tftpboot_root_dir] ]
+  service { 'tftp.socket':
+    ensure  => 'running',
+    enable  => true,
+    require => Package['tftp-server'],
   }
 }
