@@ -214,14 +214,14 @@ describe 'tftpboot::assign_host_efi' do
           it { is_expected.not_to contain_file("/var/lib/tftpboot/linux-install/efi/#{title.downcase}-") }
 
           it do
-            is_expected.to contain_file("/var/lib/tftpboot/linux-install/efi/#{title.upcase}").with({
-                                                                                                      'ensure' => 'link',
+            is_expected.to contain_file("/var/lib/tftpboot/linux-install/efi/#{title.upcase}").with(
+              'ensure' => 'link',
               'owner'   => 'root',
               'group'   => 'nobody',
               'seltype' => 'tftpdir_t',
               'target'  => "templates/#{params[:model]}",
               'force'   => true,
-                                                                                                    })
+            )
           end
 
           it { is_expected.not_to contain_file("/var/lib/tftpboot/linux-install/efi/#{title.upcase}-") }
