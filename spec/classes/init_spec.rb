@@ -47,7 +47,7 @@ default_boot_files = {
     '/var/lib/tftpboot/linux-install/efi/shimx64.efi' => {
       src: '/boot/efi/EFI/centos/shimx64.efi',
       pkg: 'shim-x64',
-    }
+    },
   },
   'centos-10-x86_64' => {
     '/var/lib/tftpboot/linux-install/menu.c32' => {
@@ -65,7 +65,7 @@ default_boot_files = {
     '/var/lib/tftpboot/linux-install/efi/shimx64.efi' => {
       src: '/boot/efi/EFI/centos/shimx64.efi',
       pkg: 'shim-x64',
-    }
+    },
   },
   'redhat-8-x86_64' => {
     '/var/lib/tftpboot/linux-install/menu.c32' => {
@@ -83,7 +83,7 @@ default_boot_files = {
     '/var/lib/tftpboot/linux-install/efi/shimx64.efi' => {
       src: '/boot/efi/EFI/redhat/shimx64.efi',
       pkg: 'shim-x64',
-    }
+    },
   },
   'redhat-9-x86_64' => {
     '/var/lib/tftpboot/linux-install/menu.c32' => {
@@ -101,7 +101,7 @@ default_boot_files = {
     '/var/lib/tftpboot/linux-install/efi/shimx64.efi' => {
       src: '/boot/efi/EFI/redhat/shimx64.efi',
       pkg: 'shim-x64',
-    }
+    },
   },
   'redhat-10-x86_64' => {
     '/var/lib/tftpboot/linux-install/menu.c32' => {
@@ -119,7 +119,7 @@ default_boot_files = {
     '/var/lib/tftpboot/linux-install/efi/shimx64.efi' => {
       src: '/boot/efi/EFI/redhat/shimx64.efi',
       pkg: 'shim-x64',
-    }
+    },
   },
   'oraclelinux-8-x86_64' => {
     '/var/lib/tftpboot/linux-install/menu.c32' => {
@@ -137,7 +137,7 @@ default_boot_files = {
     '/var/lib/tftpboot/linux-install/efi/shimx64.efi' => {
       src: '/boot/efi/EFI/redhat/shimx64.efi',
       pkg: 'shim-x64',
-    }
+    },
   },
   'oraclelinux-9-x86_64' => {
     '/var/lib/tftpboot/linux-install/menu.c32' => {
@@ -155,7 +155,7 @@ default_boot_files = {
     '/var/lib/tftpboot/linux-install/efi/shimx64.efi' => {
       src: '/boot/efi/EFI/redhat/shimx64.efi',
       pkg: 'shim-x64',
-    }
+    },
   },
   'rocky-8-x86_64' => {
     '/var/lib/tftpboot/linux-install/menu.c32' => {
@@ -173,7 +173,7 @@ default_boot_files = {
     '/var/lib/tftpboot/linux-install/efi/shimx64.efi' => {
       src: '/boot/efi/EFI/rocky/shimx64.efi',
       pkg: 'shim-x64',
-    }
+    },
   },
   'rocky-9-x86_64' => {
     '/var/lib/tftpboot/linux-install/menu.c32' => {
@@ -191,7 +191,7 @@ default_boot_files = {
     '/var/lib/tftpboot/linux-install/efi/shimx64.efi' => {
       src: '/boot/efi/EFI/rocky/shimx64.efi',
       pkg: 'shim-x64',
-    }
+    },
   },
   'almalinux-8-x86_64' => {
     '/var/lib/tftpboot/linux-install/menu.c32' => {

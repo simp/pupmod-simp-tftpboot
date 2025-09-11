@@ -13,13 +13,13 @@ describe 'tftpboot::generic_model' do
         let(:params) { { content: 'foobarbaz' } }
 
         it do
-          is_expected.to contain_file('/var/lib/tftpboot/pxe-linux/templates/rhel_model').with({
-                                                                                                 'ensure' => 'present',
+          is_expected.to contain_file('/var/lib/tftpboot/pxe-linux/templates/rhel_model').with(
+            'ensure'  => 'present',
             'owner'   => 'root',
             'group'   => 'nobody',
             'seltype' => 'tftpdir_t',
-            'content' => 'foobarbaz'
-                                                                                               })
+            'content' => 'foobarbaz',
+          )
         end
       end
 

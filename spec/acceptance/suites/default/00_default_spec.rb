@@ -14,7 +14,7 @@ describe 'tftpboot' do
       context 'with rsync disabled' do
         let(:hieradata) do
           {
-            'tftpboot::rsync_enabled' => false
+            'tftpboot::rsync_enabled' => false,
           }
         end
 

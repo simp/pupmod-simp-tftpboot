@@ -13,28 +13,28 @@ describe 'tftpboot::linux_model_efi' do
         let(:params) do
           {
             kernel: 'centos6_x86_64/vmlinuz',
-         initrd: 'centos6_x86_64/initrd.img',
-         ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg'
+            initrd: 'centos6_x86_64/initrd.img',
+            ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg',
           }
         end
 
         it do
-          is_expected.to contain_file('/var/lib/tftpboot/linux-install/efi/templates/rhel_model').with({
-                                                                                                         'ensure'  => 'present',
+          is_expected.to contain_file('/var/lib/tftpboot/linux-install/efi/templates/rhel_model').with(
+            'ensure'  => 'present',
             'owner'   => 'root',
             'group'   => 'nobody',
             'mode'    => '0644',
             'seltype' => 'tftpdir_t',
-            'content' => <<EOM
-set default="0"
-set timeout=1
+            'content' => <<~EOM,
+              set default="0"
+              set timeout=1
 
-menuentry 'rhel_model' {
-        linuxefi /linux-install/centos6_x86_64/vmlinuz ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=0#{' '}
-        initrdefi /linux-install/centos6_x86_64/initrd.img
-}
-EOM
-                                                                                                       })
+              menuentry 'rhel_model' {
+                      linuxefi /linux-install/centos6_x86_64/vmlinuz ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=0#{' '}
+                      initrdefi /linux-install/centos6_x86_64/initrd.img
+              }
+            EOM
+          )
         end
       end
 
@@ -42,29 +42,29 @@ EOM
         let(:params) do
           {
             kernel: 'centos6_x86_64/vmlinuz',
-         initrd: 'centos6_x86_64/initrd.img',
-         ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg',
-         fips: true
+            initrd: 'centos6_x86_64/initrd.img',
+            ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg',
+            fips: true,
           }
         end
 
         it do
-          is_expected.to contain_file('/var/lib/tftpboot/linux-install/efi/templates/rhel_model').with({
-                                                                                                         'ensure'  => 'present',
+          is_expected.to contain_file('/var/lib/tftpboot/linux-install/efi/templates/rhel_model').with(
+            'ensure'  => 'present',
             'owner'   => 'root',
             'group'   => 'nobody',
             'mode'    => '0644',
             'seltype' => 'tftpdir_t',
-            'content' => <<EOM
-set default="0"
-set timeout=1
+            'content' => <<~EOM,
+              set default="0"
+              set timeout=1
 
-menuentry 'rhel_model' {
-        linuxefi /linux-install/centos6_x86_64/vmlinuz ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=1#{' '}
-        initrdefi /linux-install/centos6_x86_64/initrd.img
-}
-EOM
-                                                                                                       })
+              menuentry 'rhel_model' {
+                      linuxefi /linux-install/centos6_x86_64/vmlinuz ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=1#{' '}
+                      initrdefi /linux-install/centos6_x86_64/initrd.img
+              }
+            EOM
+          )
         end
       end
 
@@ -72,29 +72,29 @@ EOM
         let(:params) do
           {
             kernel: 'centos6_x86_64/vmlinuz',
-         initrd: 'centos6_x86_64/initrd.img',
-         ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg',
-         extra: 'some-extra-args'
+            initrd: 'centos6_x86_64/initrd.img',
+            ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg',
+            extra: 'some-extra-args',
           }
         end
 
         it do
-          is_expected.to contain_file('/var/lib/tftpboot/linux-install/efi/templates/rhel_model').with({
-                                                                                                         'ensure'  => 'present',
+          is_expected.to contain_file('/var/lib/tftpboot/linux-install/efi/templates/rhel_model').with(
+            'ensure'  => 'present',
             'owner'   => 'root',
             'group'   => 'nobody',
             'mode'    => '0644',
             'seltype' => 'tftpdir_t',
-            'content' => <<EOM
-set default="0"
-set timeout=1
+            'content' => <<~EOM,
+              set default="0"
+              set timeout=1
 
-menuentry 'rhel_model' {
-        linuxefi /linux-install/centos6_x86_64/vmlinuz ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=0 some-extra-args
-        initrdefi /linux-install/centos6_x86_64/initrd.img
-}
-EOM
-                                                                                                       })
+              menuentry 'rhel_model' {
+                      linuxefi /linux-install/centos6_x86_64/vmlinuz ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=0 some-extra-args
+                      initrdefi /linux-install/centos6_x86_64/initrd.img
+              }
+            EOM
+          )
         end
       end
 
@@ -102,9 +102,9 @@ EOM
         let(:params) do
           {
             kernel: 'centos6_x86_64/vmlinuz',
-         initrd: 'centos6_x86_64/initrd.img',
-         ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg',
-         ensure: 'absent'
+            initrd: 'centos6_x86_64/initrd.img',
+            ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg',
+            ensure: 'absent',
           }
         end
 
@@ -118,30 +118,30 @@ EOM
           let(:params) do
             {
               kernel: 'centos6_x86_64/vmlinuz',
-           initrd: 'centos6_x86_64/initrd.img',
-           ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg',
-           legacy_grub: true
+              initrd: 'centos6_x86_64/initrd.img',
+              ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg',
+              legacy_grub: true,
             }
           end
 
           it do
-            is_expected.to contain_file('/var/lib/tftpboot/linux-install/efi/templates/rhel_model').with({
-                                                                                                           'ensure'  => 'present',
+            is_expected.to contain_file('/var/lib/tftpboot/linux-install/efi/templates/rhel_model').with(
+              'ensure'  => 'present',
               'owner'   => 'root',
               'group'   => 'nobody',
               'mode'    => '0644',
               'seltype' => 'tftpdir_t',
-              'content' => <<EOM
-default=0
-timeout=1
-hiddenmenu
+              'content' => <<~EOM,
+                default=0
+                timeout=1
+                hiddenmenu
 
-title 'rhel_model'
-        root (nd)
-        kernel /../centos6_x86_64/vmlinuz ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=0#{' '}
-        initrd /../centos6_x86_64/initrd.img
-EOM
-                                                                                                         })
+                title 'rhel_model'
+                        root (nd)
+                        kernel /../centos6_x86_64/vmlinuz ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=0#{' '}
+                        initrd /../centos6_x86_64/initrd.img
+              EOM
+            )
           end
         end
 
@@ -149,31 +149,31 @@ EOM
           let(:params) do
             {
               kernel: 'centos6_x86_64/vmlinuz',
-           initrd: 'centos6_x86_64/initrd.img',
-           ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg',
-           fips: true,
-           legacy_grub: true
+              initrd: 'centos6_x86_64/initrd.img',
+              ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg',
+              fips: true,
+              legacy_grub: true,
             }
           end
 
           it do
-            is_expected.to contain_file('/var/lib/tftpboot/linux-install/efi/templates/rhel_model').with({
-                                                                                                           'ensure'  => 'present',
+            is_expected.to contain_file('/var/lib/tftpboot/linux-install/efi/templates/rhel_model').with(
+              'ensure'  => 'present',
               'owner'   => 'root',
               'group'   => 'nobody',
               'mode'    => '0644',
               'seltype' => 'tftpdir_t',
-              'content' => <<EOM
-default=0
-timeout=1
-hiddenmenu
+              'content' => <<~EOM,
+                default=0
+                timeout=1
+                hiddenmenu
 
-title 'rhel_model'
-        root (nd)
-        kernel /../centos6_x86_64/vmlinuz ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=1#{' '}
-        initrd /../centos6_x86_64/initrd.img
-EOM
-                                                                                                         })
+                title 'rhel_model'
+                        root (nd)
+                        kernel /../centos6_x86_64/vmlinuz ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=1#{' '}
+                        initrd /../centos6_x86_64/initrd.img
+              EOM
+            )
           end
         end
 
@@ -181,31 +181,31 @@ EOM
           let(:params) do
             {
               kernel: 'centos6_x86_64/vmlinuz',
-           initrd: 'centos6_x86_64/initrd.img',
-           ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg',
-           extra: 'some-extra-args',
-           legacy_grub: true
+              initrd: 'centos6_x86_64/initrd.img',
+              ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg',
+              extra: 'some-extra-args',
+              legacy_grub: true,
             }
           end
 
           it do
-            is_expected.to contain_file('/var/lib/tftpboot/linux-install/efi/templates/rhel_model').with({
-                                                                                                           'ensure'  => 'present',
+            is_expected.to contain_file('/var/lib/tftpboot/linux-install/efi/templates/rhel_model').with(
+              'ensure'  => 'present',
               'owner'   => 'root',
               'group'   => 'nobody',
               'mode'    => '0644',
               'seltype' => 'tftpdir_t',
-              'content' => <<EOM
-default=0
-timeout=1
-hiddenmenu
+              'content' => <<~EOM,
+                default=0
+                timeout=1
+                hiddenmenu
 
-title 'rhel_model'
-        root (nd)
-        kernel /../centos6_x86_64/vmlinuz ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=0 some-extra-args
-        initrd /../centos6_x86_64/initrd.img
-EOM
-                                                                                                         })
+                title 'rhel_model'
+                        root (nd)
+                        kernel /../centos6_x86_64/vmlinuz ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=0 some-extra-args
+                        initrd /../centos6_x86_64/initrd.img
+              EOM
+            )
           end
         end
 
@@ -213,10 +213,10 @@ EOM
           let(:params) do
             {
               kernel: 'centos6_x86_64/vmlinuz',
-           initrd: 'centos6_x86_64/initrd.img',
-           ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg',
-           ensure: 'absent',
-           legacy_grub: true
+              initrd: 'centos6_x86_64/initrd.img',
+              ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg',
+              ensure: 'absent',
+              legacy_grub: true,
             }
           end
 
@@ -237,8 +237,8 @@ EOM
             let(:params) do
               {
                 kernel: 'centos6_x86_64/vmlinuz',
-             initrd: 'centos6_x86_64/initrd.img',
-             ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg'
+                initrd: 'centos6_x86_64/initrd.img',
+                ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg',
               }
             end
 

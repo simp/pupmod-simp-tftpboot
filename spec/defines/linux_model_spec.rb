@@ -13,25 +13,25 @@ describe 'tftpboot::linux_model' do
         let(:params) do
           {
             kernel: 'centos6_x86_64/vmlinuz',
-         initrd: 'centos6_x86_64/initrd.img',
-         ks: 'http://localhost/ks/pupclient_x86_64.cfg'
+            initrd: 'centos6_x86_64/initrd.img',
+            ks: 'http://localhost/ks/pupclient_x86_64.cfg',
           }
         end
 
         it do
-          is_expected.to contain_file('/var/lib/tftpboot/linux-install/pxelinux.cfg/templates/rhel_model').with({
-                                                                                                                  'ensure'  => 'present',
+          is_expected.to contain_file('/var/lib/tftpboot/linux-install/pxelinux.cfg/templates/rhel_model').with(
+            'ensure'  => 'present',
             'owner'   => 'root',
             'group'   => 'nobody',
             'mode'    => '0644',
             'seltype' => 'tftpdir_t',
-            'content' => <<EOM
-default 0
-label 0
-        kernel centos6_x86_64/vmlinuz
-        append initrd=centos6_x86_64/initrd.img ks=http://localhost/ks/pupclient_x86_64.cfg fips=0#{' '}
-EOM
-                                                                                                                })
+            'content' => <<~EOM,
+              default 0
+              label 0
+                      kernel centos6_x86_64/vmlinuz
+                      append initrd=centos6_x86_64/initrd.img ks=http://localhost/ks/pupclient_x86_64.cfg fips=0#{' '}
+            EOM
+          )
         end
       end
 
@@ -39,52 +39,52 @@ EOM
         let(:params) do
           {
             kernel: 'centos6_x86_64/vmlinuz',
-         initrd: 'centos6_x86_64/initrd.img',
-         ks: 'http://localhost/ks/pupclient_x86_64.cfg',
-         fips: true
+            initrd: 'centos6_x86_64/initrd.img',
+            ks: 'http://localhost/ks/pupclient_x86_64.cfg',
+            fips: true,
           }
         end
 
         it do
-          is_expected.to contain_file('/var/lib/tftpboot/linux-install/pxelinux.cfg/templates/rhel_model').with({
-                                                                                                                  'ensure'  => 'present',
+          is_expected.to contain_file('/var/lib/tftpboot/linux-install/pxelinux.cfg/templates/rhel_model').with(
+            'ensure'  => 'present',
             'owner'   => 'root',
             'group'   => 'nobody',
             'mode'    => '0644',
             'seltype' => 'tftpdir_t',
-            'content' => <<EOM
-default 0
-label 0
-        kernel centos6_x86_64/vmlinuz
-        append initrd=centos6_x86_64/initrd.img ks=http://localhost/ks/pupclient_x86_64.cfg fips=1#{' '}
-EOM
-                                                                                                                })
+            'content' => <<~EOM,
+              default 0
+              label 0
+                      kernel centos6_x86_64/vmlinuz
+                      append initrd=centos6_x86_64/initrd.img ks=http://localhost/ks/pupclient_x86_64.cfg fips=1#{' '}
+            EOM
+          )
         end
       end
       context 'with extra set' do
         let(:params) do
           {
             kernel: 'centos6_x86_64/vmlinuz',
-         initrd: 'centos6_x86_64/initrd.img',
-         ks: 'http://localhost/ks/pupclient_x86_64.cfg',
-         extra: 'some-extra-args'
+            initrd: 'centos6_x86_64/initrd.img',
+            ks: 'http://localhost/ks/pupclient_x86_64.cfg',
+            extra: 'some-extra-args',
           }
         end
 
         it do
-          is_expected.to contain_file('/var/lib/tftpboot/linux-install/pxelinux.cfg/templates/rhel_model').with({
-                                                                                                                  'ensure'  => 'present',
+          is_expected.to contain_file('/var/lib/tftpboot/linux-install/pxelinux.cfg/templates/rhel_model').with(
+            'ensure'  => 'present',
             'owner'   => 'root',
             'group'   => 'nobody',
             'mode'    => '0644',
             'seltype' => 'tftpdir_t',
-            'content' => <<EOM
-default 0
-label 0
-        kernel centos6_x86_64/vmlinuz
-        append initrd=centos6_x86_64/initrd.img ks=http://localhost/ks/pupclient_x86_64.cfg fips=0 some-extra-args
-EOM
-                                                                                                                })
+            'content' => <<~EOM,
+              default 0
+              label 0
+                      kernel centos6_x86_64/vmlinuz
+                      append initrd=centos6_x86_64/initrd.img ks=http://localhost/ks/pupclient_x86_64.cfg fips=0 some-extra-args
+            EOM
+          )
         end
       end
 
@@ -99,8 +99,8 @@ EOM
             let(:params) do
               {
                 kernel: 'centos6_x86_64/vmlinuz',
-             initrd: 'centos6_x86_64/initrd.img',
-             ks: 'http://localhost/ks/pupclient_x86_64.cfg'
+                initrd: 'centos6_x86_64/initrd.img',
+                ks: 'http://localhost/ks/pupclient_x86_64.cfg',
               }
             end
 

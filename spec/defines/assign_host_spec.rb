@@ -14,14 +14,14 @@ describe 'tftpboot::assign_host' do
           let(:params) { { model: 'rhel-6-x86_64-base' } }
 
           it do
-            is_expected.to contain_file('/var/lib/tftpboot/linux-install/pxelinux.cfg/default').with({
-                                                                                                       'ensure' => 'link',
+            is_expected.to contain_file('/var/lib/tftpboot/linux-install/pxelinux.cfg/default').with(
+              'ensure'  => 'link',
               'owner'   => 'root',
               'group'   => 'nobody',
               'seltype' => 'tftpdir_t',
               'target'  => "templates/#{params[:model]}",
-              'force'   => true
-                                                                                                     })
+              'force'   => true,
+            )
           end
 
           it { is_expected.not_to contain_file('/var/lib/tftpboot/linux-install/pxeclinux.cfg/DEFAULT') }
@@ -32,14 +32,14 @@ describe 'tftpboot::assign_host' do
           let(:params) { { model: 'rhel-6-x86_64-base' } }
 
           it do
-            is_expected.to contain_file("/var/lib/tftpboot/linux-install/pxelinux.cfg/#{title}").with({
-                                                                                                        'ensure' => 'link',
+            is_expected.to contain_file("/var/lib/tftpboot/linux-install/pxelinux.cfg/#{title}").with(
+              'ensure'  => 'link',
               'owner'   => 'root',
               'group'   => 'nobody',
               'seltype' => 'tftpdir_t',
               'target'  => "templates/#{params[:model]}",
-              'force'   => true
-                                                                                                      })
+              'force'   => true,
+            )
           end
         end
 
@@ -60,25 +60,25 @@ describe 'tftpboot::assign_host' do
             let(:params) { { model: '64_bit_rhel6' } }
 
             it do
-              is_expected.to contain_file("/var/lib/tftpboot/linux-install/pxelinux.cfg/#{entry.downcase}").with({
-                                                                                                                   'ensure' => 'link',
+              is_expected.to contain_file("/var/lib/tftpboot/linux-install/pxelinux.cfg/#{entry.downcase}").with(
+                'ensure'  => 'link',
                 'owner'   => 'root',
                 'group'   => 'nobody',
                 'seltype' => 'tftpdir_t',
                 'target'  => "templates/#{params[:model]}",
-                'force'   => true
-                                                                                                                 })
+                'force'   => true,
+              )
             end
 
             it do
-              is_expected.to contain_file("/var/lib/tftpboot/linux-install/pxelinux.cfg/#{entry.upcase}").with({
-                                                                                                                 'ensure' => 'link',
+              is_expected.to contain_file("/var/lib/tftpboot/linux-install/pxelinux.cfg/#{entry.upcase}").with(
+                'ensure'  => 'link',
                 'owner'   => 'root',
                 'group'   => 'nobody',
                 'seltype' => 'tftpdir_t',
                 'target'  => "templates/#{params[:model]}",
-                'force'   => true
-                                                                                                               })
+                'force'   => true,
+              )
             end
           end
         end
