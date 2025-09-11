@@ -2,7 +2,6 @@ require 'spec_helper'
 require 'securerandom'
 
 describe 'tftpboot::assign_host_efi' do
-
   on_supported_os.each do |os, os_facts|
     context "on #{os}" do
       let(:facts) do
@@ -12,91 +11,91 @@ describe 'tftpboot::assign_host_efi' do
       context 'efi boot grub2' do
         [
           'default',
-          'grub.cfg'
+          'grub.cfg',
         ].each do |default_name|
           context "'#{default_name}' name" do
             let(:title) { default_name }
-            let(:params) { { :model => 'rhel-7-x86_64-base', } }
+            let(:params) { { model: 'rhel-7-x86_64-base' } }
 
             it do
-              is_expected.to contain_file('/var/lib/tftpboot/linux-install/efi/grub.cfg').with({
+              is_expected.to contain_file('/var/lib/tftpboot/linux-install/efi/grub.cfg').with(
                 'ensure'  => 'link',
                 'owner'   => 'root',
                 'group'   => 'nobody',
                 'seltype' => 'tftpdir_t',
                 'target'  => "templates/#{params[:model]}",
-                'force'   => true
-              })
+                'force'   => true,
+              )
             end
 
-            it { is_expected.to_not contain_file('/var/lib/tftpboot/linux-install/efi/default') }
-            it { is_expected.to_not contain_file('/var/lib/tftpboot/linux-install/efi/DEFAULT') }
-            it { is_expected.to_not contain_file('/var/lib/tftpboot/linux-install/efi/GRUB.CFG') }
+            it { is_expected.not_to contain_file('/var/lib/tftpboot/linux-install/efi/default') }
+            it { is_expected.not_to contain_file('/var/lib/tftpboot/linux-install/efi/DEFAULT') }
+            it { is_expected.not_to contain_file('/var/lib/tftpboot/linux-install/efi/GRUB.CFG') }
           end
         end
 
         context 'uppercase name equals lowercase name' do
           let(:title) { '01020304' }
-          let(:params) { { :model => 'rhel-7-x86_64-base', } }
+          let(:params) { { model: 'rhel-7-x86_64-base' } }
 
           it do
-            is_expected.to contain_file("/var/lib/tftpboot/linux-install/efi/grub.cfg-#{title}").with({
+            is_expected.to contain_file("/var/lib/tftpboot/linux-install/efi/grub.cfg-#{title}").with(
               'ensure'  => 'link',
               'owner'   => 'root',
               'group'   => 'nobody',
               'seltype' => 'tftpdir_t',
               'target'  => "templates/#{params[:model]}",
-              'force'   => true
-            })
+              'force'   => true,
+            )
           end
         end
 
         context 'MAC address name' do
           let(:title) { '01-DE-AD-BE-EF-00-01' }
-          let(:params) { { :model => 'rhel-7-x86_64-base', } }
+          let(:params) { { model: 'rhel-7-x86_64-base' } }
 
           it do
-            is_expected.to contain_file("/var/lib/tftpboot/linux-install/efi/grub.cfg-#{title.downcase}").with({
+            is_expected.to contain_file("/var/lib/tftpboot/linux-install/efi/grub.cfg-#{title.downcase}").with(
               'ensure'  => 'link',
               'owner'   => 'root',
               'group'   => 'nobody',
               'seltype' => 'tftpdir_t',
               'target'  => "templates/#{params[:model]}",
-              'force'   => true
-            })
+              'force'   => true,
+            )
           end
 
           it do
-            is_expected.to contain_file("/var/lib/tftpboot/linux-install/efi/grub.cfg-#{title.downcase}-").with({
+            is_expected.to contain_file("/var/lib/tftpboot/linux-install/efi/grub.cfg-#{title.downcase}-").with(
               'ensure'  => 'link',
               'owner'   => 'root',
               'group'   => 'nobody',
               'seltype' => 'tftpdir_t',
               'target'  => "templates/#{params[:model]}",
-              'force'   => true
-            })
+              'force'   => true,
+            )
           end
 
           it do
-            is_expected.to contain_file("/var/lib/tftpboot/linux-install/efi/grub.cfg-#{title.upcase}").with({
+            is_expected.to contain_file("/var/lib/tftpboot/linux-install/efi/grub.cfg-#{title.upcase}").with(
               'ensure'  => 'link',
               'owner'   => 'root',
               'group'   => 'nobody',
               'seltype' => 'tftpdir_t',
               'target'  => "templates/#{params[:model]}",
-              'force'  => true
-            })
+              'force'   => true,
+            )
           end
 
           it do
-            is_expected.to contain_file("/var/lib/tftpboot/linux-install/efi/grub.cfg-#{title.upcase}-").with({
+            is_expected.to contain_file("/var/lib/tftpboot/linux-install/efi/grub.cfg-#{title.upcase}-").with(
               'ensure'  => 'link',
               'owner'   => 'root',
               'group'   => 'nobody',
               'seltype' => 'tftpdir_t',
               'target'  => "templates/#{params[:model]}",
-              'force'   => true
-            })
+              'force'   => true,
+            )
           end
         end
 
@@ -109,32 +108,32 @@ describe 'tftpboot::assign_host_efi' do
           'C000',
           'C00',
           'C0',
-          'C'
+          'C',
         ].each do |entry|
           context "with name => #{entry}" do
             let(:title) { entry }
-            let(:params) { { :model => 'rhel-7-x86_64-base', } }
+            let(:params) { { model: 'rhel-7-x86_64-base' } }
 
             it do
-              is_expected.to contain_file("/var/lib/tftpboot/linux-install/efi/grub.cfg-#{entry.downcase}").with({
+              is_expected.to contain_file("/var/lib/tftpboot/linux-install/efi/grub.cfg-#{entry.downcase}").with(
                 'ensure'  => 'link',
                 'owner'   => 'root',
                 'group'   => 'nobody',
                 'seltype' => 'tftpdir_t',
                 'target'  => "templates/#{params[:model]}",
-                'force'   => true
-              })
+                'force'   => true,
+              )
             end
 
             it do
-              is_expected.to contain_file("/var/lib/tftpboot/linux-install/efi/grub.cfg-#{entry.upcase}").with({
+              is_expected.to contain_file("/var/lib/tftpboot/linux-install/efi/grub.cfg-#{entry.upcase}").with(
                 'ensure'  => 'link',
                 'owner'   => 'root',
                 'group'   => 'nobody',
                 'seltype' => 'tftpdir_t',
                 'target'  => "templates/#{params[:model]}",
-                'force'  => true
-              })
+                'force'   => true,
+              )
             end
           end
         end
@@ -147,79 +146,85 @@ describe 'tftpboot::assign_host_efi' do
         ].each do |default_name|
           context "'#{default_name}' name" do
             let(:title) { default_name }
-            let(:params) { {
-              :model       => 'rhel-6-x86_64-base',
-              :legacy_grub => true
-            } }
+            let(:params) do
+              {
+                model: 'rhel-6-x86_64-base',
+                legacy_grub: true,
+              }
+            end
 
             it do
-              is_expected.to contain_file('/var/lib/tftpboot/linux-install/efi/efidefault').with({
+              is_expected.to contain_file('/var/lib/tftpboot/linux-install/efi/efidefault').with(
                 'ensure'  => 'link',
                 'owner'   => 'root',
                 'group'   => 'nobody',
                 'seltype' => 'tftpdir_t',
                 'target'  => "templates/#{params[:model]}",
-                'force'   => true
-              })
+                'force'   => true,
+              )
             end
 
-            it { is_expected.to_not contain_file('/var/lib/tftpboot/linux-install/efi/default') }
-            it { is_expected.to_not contain_file('/var/lib/tftpboot/linux-install/efi/DEFAULT') }
-            it { is_expected.to_not contain_file('/var/lib/tftpboot/linux-install/efi/EFIDEFAULT') }
+            it { is_expected.not_to contain_file('/var/lib/tftpboot/linux-install/efi/default') }
+            it { is_expected.not_to contain_file('/var/lib/tftpboot/linux-install/efi/DEFAULT') }
+            it { is_expected.not_to contain_file('/var/lib/tftpboot/linux-install/efi/EFIDEFAULT') }
           end
         end
 
         context 'uppercase name equals lowercase name' do
           let(:title) { '01020304' }
-          let(:params) { {
-            :model       => 'rhel-6-x86_64-base',
-            :legacy_grub => true
-          } }
+          let(:params) do
+            {
+              model: 'rhel-6-x86_64-base',
+              legacy_grub: true,
+            }
+          end
 
           it do
-            is_expected.to contain_file("/var/lib/tftpboot/linux-install/efi/#{title}").with({
+            is_expected.to contain_file("/var/lib/tftpboot/linux-install/efi/#{title}").with(
               'ensure'  => 'link',
               'owner'   => 'root',
               'group'   => 'nobody',
               'seltype' => 'tftpdir_t',
               'target'  => "templates/#{params[:model]}",
-              'force'   => true
-            })
+              'force'   => true,
+            )
           end
         end
 
         context 'MAC address name' do
           let(:title) { '01-DE-AD-BE-EF-00-01' }
-          let(:params) { {
-            :model       => 'rhel-6-x86_64-base',
-            :legacy_grub => true
-          } }
+          let(:params) do
+            {
+              model: 'rhel-6-x86_64-base',
+              legacy_grub: true,
+            }
+          end
 
           it do
-            is_expected.to contain_file("/var/lib/tftpboot/linux-install/efi/#{title.downcase}").with({
+            is_expected.to contain_file("/var/lib/tftpboot/linux-install/efi/#{title.downcase}").with(
               'ensure'  => 'link',
               'owner'   => 'root',
               'group'   => 'nobody',
               'seltype' => 'tftpdir_t',
               'target'  => "templates/#{params[:model]}",
-              'force'   => true
-            })
+              'force'   => true,
+            )
           end
 
-          it { is_expected.to_not contain_file("/var/lib/tftpboot/linux-install/efi/#{title.downcase}-") }
+          it { is_expected.not_to contain_file("/var/lib/tftpboot/linux-install/efi/#{title.downcase}-") }
 
           it do
-            is_expected.to contain_file("/var/lib/tftpboot/linux-install/efi/#{title.upcase}").with({
-              'ensure'  => 'link',
+            is_expected.to contain_file("/var/lib/tftpboot/linux-install/efi/#{title.upcase}").with(
+              'ensure' => 'link',
               'owner'   => 'root',
               'group'   => 'nobody',
               'seltype' => 'tftpdir_t',
               'target'  => "templates/#{params[:model]}",
-              'force'   => true
-            })
+              'force'   => true,
+            )
           end
 
-          it { is_expected.to_not contain_file("/var/lib/tftpboot/linux-install/efi/#{title.upcase}-") }
+          it { is_expected.not_to contain_file("/var/lib/tftpboot/linux-install/efi/#{title.upcase}-") }
         end
 
         [
@@ -231,35 +236,37 @@ describe 'tftpboot::assign_host_efi' do
           'C000',
           'C00',
           'C0',
-          'C'
+          'C',
         ].each do |entry|
           context "with name => #{entry}" do
             let(:title) { entry }
-            let(:params) { {
-              :model       => 'rhel-6-x86_64-base',
-              :legacy_grub => true
-            } }
-
-            it do
-              is_expected.to contain_file("/var/lib/tftpboot/linux-install/efi/#{entry.downcase}").with({
-                'ensure'  => 'link',
-                'owner'   => 'root',
-                'group'   => 'nobody',
-                'seltype' => 'tftpdir_t',
-                'target'  => "templates/#{params[:model]}",
-                'force'   => true
-              })
+            let(:params) do
+              {
+                model: 'rhel-6-x86_64-base',
+                legacy_grub: true,
+              }
             end
 
             it do
-              is_expected.to contain_file("/var/lib/tftpboot/linux-install/efi/#{entry.upcase}").with({
+              is_expected.to contain_file("/var/lib/tftpboot/linux-install/efi/#{entry.downcase}").with(
                 'ensure'  => 'link',
                 'owner'   => 'root',
                 'group'   => 'nobody',
                 'seltype' => 'tftpdir_t',
                 'target'  => "templates/#{params[:model]}",
-                'force'  => true
-              })
+                'force'   => true,
+              )
+            end
+
+            it do
+              is_expected.to contain_file("/var/lib/tftpboot/linux-install/efi/#{entry.upcase}").with(
+                'ensure'  => 'link',
+                'owner'   => 'root',
+                'group'   => 'nobody',
+                'seltype' => 'tftpdir_t',
+                'target'  => "templates/#{params[:model]}",
+                'force'   => true,
+              )
             end
           end
         end
@@ -269,17 +276,16 @@ describe 'tftpboot::assign_host_efi' do
         [
           "\tstarts_with_whitespace",
           'ends_with_whitespace ',
-          'name contains whitespace'
+          'name contains whitespace',
         ].each do |invalid_name|
           context "invalid name '#{invalid_name}'" do
             let(:title) { invalid_name }
-            let(:params) { {:model => 'rhel-6-x86_64-base'} }
+            let(:params) { { model: 'rhel-6-x86_64-base' } }
 
-            it { is_expected.to raise_error(/tftpboot..assign_host_efi '#{title}' invalid. name cannot have whitespace/) }
+            it { is_expected.to raise_error(%r{tftpboot..assign_host_efi '#{title}' invalid. name cannot have whitespace}) }
           end
         end
       end
     end
   end
-
 end

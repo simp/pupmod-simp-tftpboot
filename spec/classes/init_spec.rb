@@ -33,218 +33,218 @@ default_packages = {
 default_boot_files = {
   'centos-9-x86_64' => {
     '/var/lib/tftpboot/linux-install/menu.c32' => {
-      :src => '/tftpboot/menu.c32',
-      :pkg => 'syslinux-tftpboot'
+      src: '/tftpboot/menu.c32',
+      pkg: 'syslinux-tftpboot',
     },
     '/var/lib/tftpboot/linux-install/pxelinux.0' => {
-      :src => '/tftpboot/pxelinux.0',
-      :pkg => 'syslinux-tftpboot'
+      src: '/tftpboot/pxelinux.0',
+      pkg: 'syslinux-tftpboot',
     },
     '/var/lib/tftpboot/linux-install/efi/grubx64.efi' => {
-      :src => '/boot/efi/EFI/centos/grubx64.efi',
-      :pkg => 'grub2-efi-x64'
+      src: '/boot/efi/EFI/centos/grubx64.efi',
+      pkg: 'grub2-efi-x64',
     },
     '/var/lib/tftpboot/linux-install/efi/shimx64.efi' => {
-      :src => '/boot/efi/EFI/centos/shimx64.efi',
-      :pkg => 'shim-x64'
-    }
+      src: '/boot/efi/EFI/centos/shimx64.efi',
+      pkg: 'shim-x64',
+    },
   },
   'centos-10-x86_64' => {
     '/var/lib/tftpboot/linux-install/menu.c32' => {
-      :src => '/tftpboot/menu.c32',
-      :pkg => 'syslinux-tftpboot'
+      src: '/tftpboot/menu.c32',
+      pkg: 'syslinux-tftpboot',
     },
     '/var/lib/tftpboot/linux-install/pxelinux.0' => {
-      :src => '/tftpboot/pxelinux.0',
-      :pkg => 'syslinux-tftpboot'
+      src: '/tftpboot/pxelinux.0',
+      pkg: 'syslinux-tftpboot',
     },
     '/var/lib/tftpboot/linux-install/efi/grubx64.efi' => {
-      :src => '/boot/efi/EFI/centos/grubx64.efi',
-      :pkg => 'grub2-efi-x64'
+      src: '/boot/efi/EFI/centos/grubx64.efi',
+      pkg: 'grub2-efi-x64',
     },
     '/var/lib/tftpboot/linux-install/efi/shimx64.efi' => {
-      :src => '/boot/efi/EFI/centos/shimx64.efi',
-      :pkg => 'shim-x64'
-    }
+      src: '/boot/efi/EFI/centos/shimx64.efi',
+      pkg: 'shim-x64',
+    },
   },
   'redhat-8-x86_64' => {
     '/var/lib/tftpboot/linux-install/menu.c32' => {
-      :src => '/tftpboot/menu.c32',
-      :pkg => 'syslinux-tftpboot'
+      src: '/tftpboot/menu.c32',
+      pkg: 'syslinux-tftpboot',
     },
     '/var/lib/tftpboot/linux-install/pxelinux.0' => {
-      :src => '/tftpboot/pxelinux.0',
-      :pkg => 'syslinux-tftpboot'
+      src: '/tftpboot/pxelinux.0',
+      pkg: 'syslinux-tftpboot',
     },
     '/var/lib/tftpboot/linux-install/efi/grubx64.efi' => {
-      :src => '/boot/efi/EFI/redhat/grubx64.efi',
-      :pkg => 'grub2-efi-x64'
+      src: '/boot/efi/EFI/redhat/grubx64.efi',
+      pkg: 'grub2-efi-x64',
     },
     '/var/lib/tftpboot/linux-install/efi/shimx64.efi' => {
-      :src => '/boot/efi/EFI/redhat/shimx64.efi',
-      :pkg => 'shim-x64'
-    }
+      src: '/boot/efi/EFI/redhat/shimx64.efi',
+      pkg: 'shim-x64',
+    },
   },
   'redhat-9-x86_64' => {
     '/var/lib/tftpboot/linux-install/menu.c32' => {
-      :src => '/tftpboot/menu.c32',
-      :pkg => 'syslinux-tftpboot'
+      src: '/tftpboot/menu.c32',
+      pkg: 'syslinux-tftpboot',
     },
     '/var/lib/tftpboot/linux-install/pxelinux.0' => {
-      :src => '/tftpboot/pxelinux.0',
-      :pkg => 'syslinux-tftpboot'
+      src: '/tftpboot/pxelinux.0',
+      pkg: 'syslinux-tftpboot',
     },
     '/var/lib/tftpboot/linux-install/efi/grubx64.efi' => {
-      :src => '/boot/efi/EFI/redhat/grubx64.efi',
-      :pkg => 'grub2-efi-x64'
+      src: '/boot/efi/EFI/redhat/grubx64.efi',
+      pkg: 'grub2-efi-x64',
     },
     '/var/lib/tftpboot/linux-install/efi/shimx64.efi' => {
-      :src => '/boot/efi/EFI/redhat/shimx64.efi',
-      :pkg => 'shim-x64'
-    }
+      src: '/boot/efi/EFI/redhat/shimx64.efi',
+      pkg: 'shim-x64',
+    },
   },
   'redhat-10-x86_64' => {
     '/var/lib/tftpboot/linux-install/menu.c32' => {
-      :src => '/tftpboot/menu.c32',
-      :pkg => 'syslinux-tftpboot'
+      src: '/tftpboot/menu.c32',
+      pkg: 'syslinux-tftpboot',
     },
     '/var/lib/tftpboot/linux-install/pxelinux.0' => {
-      :src => '/tftpboot/pxelinux.0',
-      :pkg => 'syslinux-tftpboot'
+      src: '/tftpboot/pxelinux.0',
+      pkg: 'syslinux-tftpboot',
     },
     '/var/lib/tftpboot/linux-install/efi/grubx64.efi' => {
-      :src => '/boot/efi/EFI/redhat/grubx64.efi',
-      :pkg => 'grub2-efi-x64'
+      src: '/boot/efi/EFI/redhat/grubx64.efi',
+      pkg: 'grub2-efi-x64',
     },
     '/var/lib/tftpboot/linux-install/efi/shimx64.efi' => {
-      :src => '/boot/efi/EFI/redhat/shimx64.efi',
-      :pkg => 'shim-x64'
-    }
+      src: '/boot/efi/EFI/redhat/shimx64.efi',
+      pkg: 'shim-x64',
+    },
   },
   'oraclelinux-8-x86_64' => {
     '/var/lib/tftpboot/linux-install/menu.c32' => {
-      :src => '/usr/share/syslinux/menu.c32',
-      :pkg => 'syslinux'
+      src: '/usr/share/syslinux/menu.c32',
+      pkg: 'syslinux',
     },
     '/var/lib/tftpboot/linux-install/pxelinux.0' => {
-      :src => '/usr/share/syslinux/pxelinux.0',
-      :pkg => 'syslinux'
+      src: '/usr/share/syslinux/pxelinux.0',
+      pkg: 'syslinux',
     },
     '/var/lib/tftpboot/linux-install/efi/grubx64.efi' => {
-      :src => '/boot/efi/EFI/redhat/grubx64.efi',
-      :pkg => 'grub2-efi-x64'
+      src: '/boot/efi/EFI/redhat/grubx64.efi',
+      pkg: 'grub2-efi-x64',
     },
     '/var/lib/tftpboot/linux-install/efi/shimx64.efi' => {
-      :src => '/boot/efi/EFI/redhat/shimx64.efi',
-      :pkg => 'shim-x64'
-    }
+      src: '/boot/efi/EFI/redhat/shimx64.efi',
+      pkg: 'shim-x64',
+    },
   },
   'oraclelinux-9-x86_64' => {
     '/var/lib/tftpboot/linux-install/menu.c32' => {
-      :src => '/usr/share/syslinux/menu.c32',
-      :pkg => 'syslinux'
+      src: '/usr/share/syslinux/menu.c32',
+      pkg: 'syslinux',
     },
     '/var/lib/tftpboot/linux-install/pxelinux.0' => {
-      :src => '/usr/share/syslinux/pxelinux.0',
-      :pkg => 'syslinux'
+      src: '/usr/share/syslinux/pxelinux.0',
+      pkg: 'syslinux',
     },
     '/var/lib/tftpboot/linux-install/efi/grubx64.efi' => {
-      :src => '/boot/efi/EFI/redhat/grubx64.efi',
-      :pkg => 'grub2-efi-x64'
+      src: '/boot/efi/EFI/redhat/grubx64.efi',
+      pkg: 'grub2-efi-x64',
     },
     '/var/lib/tftpboot/linux-install/efi/shimx64.efi' => {
-      :src => '/boot/efi/EFI/redhat/shimx64.efi',
-      :pkg => 'shim-x64'
-    }
+      src: '/boot/efi/EFI/redhat/shimx64.efi',
+      pkg: 'shim-x64',
+    },
   },
   'rocky-8-x86_64' => {
     '/var/lib/tftpboot/linux-install/menu.c32' => {
-      :src => '/tftpboot/menu.c32',
-      :pkg => 'syslinux-tftpboot'
+      src: '/tftpboot/menu.c32',
+      pkg: 'syslinux-tftpboot',
     },
     '/var/lib/tftpboot/linux-install/pxelinux.0' => {
-      :src => '/tftpboot/pxelinux.0',
-      :pkg => 'syslinux-tftpboot'
+      src: '/tftpboot/pxelinux.0',
+      pkg: 'syslinux-tftpboot',
     },
     '/var/lib/tftpboot/linux-install/efi/grubx64.efi' => {
-      :src => '/boot/efi/EFI/rocky/grubx64.efi',
-      :pkg => 'grub2-efi-x64'
+      src: '/boot/efi/EFI/rocky/grubx64.efi',
+      pkg: 'grub2-efi-x64',
     },
     '/var/lib/tftpboot/linux-install/efi/shimx64.efi' => {
-      :src => '/boot/efi/EFI/rocky/shimx64.efi',
-      :pkg => 'shim-x64'
-    }
+      src: '/boot/efi/EFI/rocky/shimx64.efi',
+      pkg: 'shim-x64',
+    },
   },
   'rocky-9-x86_64' => {
     '/var/lib/tftpboot/linux-install/menu.c32' => {
-      :src => '/tftpboot/menu.c32',
-      :pkg => 'syslinux-tftpboot'
+      src: '/tftpboot/menu.c32',
+      pkg: 'syslinux-tftpboot',
     },
     '/var/lib/tftpboot/linux-install/pxelinux.0' => {
-      :src => '/tftpboot/pxelinux.0',
-      :pkg => 'syslinux-tftpboot'
+      src: '/tftpboot/pxelinux.0',
+      pkg: 'syslinux-tftpboot',
     },
     '/var/lib/tftpboot/linux-install/efi/grubx64.efi' => {
-      :src => '/boot/efi/EFI/rocky/grubx64.efi',
-      :pkg => 'grub2-efi-x64'
+      src: '/boot/efi/EFI/rocky/grubx64.efi',
+      pkg: 'grub2-efi-x64',
     },
     '/var/lib/tftpboot/linux-install/efi/shimx64.efi' => {
-      :src => '/boot/efi/EFI/rocky/shimx64.efi',
-      :pkg => 'shim-x64'
-    }
+      src: '/boot/efi/EFI/rocky/shimx64.efi',
+      pkg: 'shim-x64',
+    },
   },
   'almalinux-8-x86_64' => {
     '/var/lib/tftpboot/linux-install/menu.c32' => {
-      :src => '/tftpboot/menu.c32',
-      :pkg => 'syslinux-tftpboot',
+      src: '/tftpboot/menu.c32',
+      pkg: 'syslinux-tftpboot',
     },
     '/var/lib/tftpboot/linux-install/pxelinux.0' => {
-      :src => '/tftpboot/pxelinux.0',
-      :pkg => 'syslinux-tftpboot',
+      src: '/tftpboot/pxelinux.0',
+      pkg: 'syslinux-tftpboot',
     },
     '/var/lib/tftpboot/linux-install/efi/grubx64.efi' => {
-      :src => '/boot/efi/EFI/almalinux/grubx64.efi',
-      :pkg => 'grub2-efi-x64',
+      src: '/boot/efi/EFI/almalinux/grubx64.efi',
+      pkg: 'grub2-efi-x64',
     },
     '/var/lib/tftpboot/linux-install/efi/shimx64.efi' => {
-      :src => '/boot/efi/EFI/almalinux/shimx64.efi',
-      :pkg => 'shim-x64'
+      src: '/boot/efi/EFI/almalinux/shimx64.efi',
+      pkg: 'shim-x64',
     },
   },
   'almalinux-9-x86_64' => {
     '/var/lib/tftpboot/linux-install/menu.c32' => {
-      :src => '/tftpboot/menu.c32',
-      :pkg => 'syslinux-tftpboot',
+      src: '/tftpboot/menu.c32',
+      pkg: 'syslinux-tftpboot',
     },
     '/var/lib/tftpboot/linux-install/pxelinux.0' => {
-      :src => '/tftpboot/pxelinux.0',
-      :pkg => 'syslinux-tftpboot',
+      src: '/tftpboot/pxelinux.0',
+      pkg: 'syslinux-tftpboot',
     },
     '/var/lib/tftpboot/linux-install/efi/grubx64.efi' => {
-      :src => '/boot/efi/EFI/almalinux/grubx64.efi',
-      :pkg => 'grub2-efi-x64',
+      src: '/boot/efi/EFI/almalinux/grubx64.efi',
+      pkg: 'grub2-efi-x64',
     },
     '/var/lib/tftpboot/linux-install/efi/shimx64.efi' => {
-      :src => '/boot/efi/EFI/almalinux/shimx64.efi',
-      :pkg => 'shim-x64'
+      src: '/boot/efi/EFI/almalinux/shimx64.efi',
+      pkg: 'shim-x64',
     },
   },
   'almalinux-10-x86_64' => {
     '/var/lib/tftpboot/linux-install/menu.c32' => {
-      :src => '/tftpboot/menu.c32',
-      :pkg => 'syslinux-tftpboot',
+      src: '/tftpboot/menu.c32',
+      pkg: 'syslinux-tftpboot',
     },
     '/var/lib/tftpboot/linux-install/pxelinux.0' => {
-      :src => '/tftpboot/pxelinux.0',
-      :pkg => 'syslinux-tftpboot',
+      src: '/tftpboot/pxelinux.0',
+      pkg: 'syslinux-tftpboot',
     },
     '/var/lib/tftpboot/linux-install/efi/grubx64.efi' => {
-      :src => '/boot/efi/EFI/almalinux/grubx64.efi',
-      :pkg => 'grub2-efi-x64',
+      src: '/boot/efi/EFI/almalinux/grubx64.efi',
+      pkg: 'grub2-efi-x64',
     },
     '/var/lib/tftpboot/linux-install/efi/shimx64.efi' => {
-      :src => '/boot/efi/EFI/almalinux/shimx64.efi',
-      :pkg => 'shim-x64'
+      src: '/boot/efi/EFI/almalinux/shimx64.efi',
+      pkg: 'shim-x64',
     },
   },
 }
@@ -252,10 +252,9 @@ default_boot_files = {
 describe 'tftpboot' do
   on_supported_os.each do |os, facts|
     context "on #{os}" do
-     let(:facts) { facts }
+      let(:facts) { facts }
 
       context 'with default parameters' do
-
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to create_class('tftpboot') }
         it { is_expected.to create_class('tftpboot::config') }
@@ -263,27 +262,27 @@ describe 'tftpboot' do
         it { is_expected.to create_class('tftpboot::config::efi') }
 
         it do
-          is_expected.to contain_file('/var/lib/tftpboot').with({
+          is_expected.to contain_file('/var/lib/tftpboot').with(
             'ensure'  => 'directory',
             'owner'   => 'root',
             'group'   => 'nobody',
             'mode'    => '0750',
-            'seltype' => 'tftpdir_t'
-          })
+            'seltype' => 'tftpdir_t',
+          )
         end
 
         it do
-          is_expected.to contain_file('/var/lib/tftpboot/linux-install').with({
+          is_expected.to contain_file('/var/lib/tftpboot/linux-install').with(
             'ensure'  => 'directory',
             'owner'   => 'root',
             'group'   => 'nobody',
             'mode'    => '0640',
-            'seltype' => 'tftpdir_t'
-          })
+            'seltype' => 'tftpdir_t',
+          )
         end
 
         it do
-          is_expected.to contain_file('/var/lib/tftpboot/linux-install/pxelinux.cfg').with({
+          is_expected.to contain_file('/var/lib/tftpboot/linux-install/pxelinux.cfg').with(
             'ensure'       => 'directory',
             'owner'        => 'root',
             'group'        => 'nobody',
@@ -292,39 +291,39 @@ describe 'tftpboot' do
             'purge'        => true,
             'recurse'      => true,
             'recurselimit' => 1,
-            'require'      => ['File[/var/lib/tftpboot/linux-install]']
-          })
+            'require'      => ['File[/var/lib/tftpboot/linux-install]'],
+          )
         end
 
         it do
-          is_expected.to contain_file('/var/lib/tftpboot/linux-install/pxelinux.cfg/templates').with({
+          is_expected.to contain_file('/var/lib/tftpboot/linux-install/pxelinux.cfg/templates').with(
             'ensure'  => 'directory',
             'owner'   => 'root',
             'group'   => 'nobody',
             'mode'    => '0640',
             'seltype' => 'tftpdir_t',
             'recurse' => true,
-          })
+          )
         end
 
         it do
-          is_expected.to contain_file('/var/lib/tftpboot/linux-install/efi').with({
+          is_expected.to contain_file('/var/lib/tftpboot/linux-install/efi').with(
             'ensure'  => 'directory',
             'owner'   => 'root',
             'group'   => 'nobody',
             'mode'    => '0640',
-            'seltype' => 'tftpdir_t'
-          })
+            'seltype' => 'tftpdir_t',
+          )
         end
 
         it do
-          is_expected.to contain_file('/var/lib/tftpboot/linux-install/efi/templates').with({
+          is_expected.to contain_file('/var/lib/tftpboot/linux-install/efi/templates').with(
             'ensure'  => 'directory',
             'owner'   => 'root',
             'group'   => 'nobody',
             'mode'    => '0640',
-            'seltype' => 'tftpdir_t'
-          })
+            'seltype' => 'tftpdir_t',
+          )
         end
 
         default_packages[os].each do |pkg|
@@ -333,45 +332,47 @@ describe 'tftpboot' do
 
         default_boot_files[os].each do |file, info_hash|
           it do
-            is_expected.to contain_file(file).with( {
+            is_expected.to contain_file(file).with(
               'ensure'  => 'file',
               'owner'   => 'root',
               'group'   => 'nobody',
               'mode'    => '0644',
               'seltype' => 'tftpdir_t',
               'source'  => "file://#{info_hash[:src]}",
-              'require' => "Package[#{info_hash[:pkg]}]"
-            } )
+              'require' => "Package[#{info_hash[:pkg]}]",
+            )
           end
         end
 
-
         it do
           expected_exclude = default_rsync_exclude[os]
-          is_expected.to contain_rsync('tftpboot').with({
-            'user' => "tftpboot_rsync_#{environment}_#{facts[:os][:name].downcase}",
-            'password' => /^.+$/,
-            'source' => "tftpboot_#{environment}_#{facts[:os][:name]}/*",
-            'target' => '/var/lib/tftpboot',
-            'server' => 'rsync.bar.baz',
-            'timeout' => 2,
-            'exclude' => expected_exclude
-          })
+          is_expected.to contain_rsync('tftpboot').with(
+            'user'     => "tftpboot_rsync_#{environment}_#{facts[:os][:name].downcase}",
+            'password' => %r{^.+$},
+            'source'   => "tftpboot_#{environment}_#{facts[:os][:name]}/*",
+            'target'   => '/var/lib/tftpboot',
+            'server'   => 'rsync.bar.baz',
+            'timeout'  => 2,
+            'exclude'  => expected_exclude,
+          )
         end
 
         it do
-          is_expected.to contain_service('tftp.socket').with({
+          is_expected.to contain_service('tftp.socket').with(
             'ensure' => 'running',
-            'enable' => 'true'
-          })
+            'enable' => 'true',
+          )
         end
       end
 
       context 'with install location overrides' do
-        let(:params) {{
-          :tftpboot_root_dir => '/opt/tftpboot',
-          :linux_install_dir => 'install'
-        }}
+        let(:params) do
+          {
+            tftpboot_root_dir: '/opt/tftpboot',
+            linux_install_dir: 'install',
+          }
+        end
+
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_file('/opt/tftpboot').with_ensure('directory') }
         it { is_expected.to contain_file('/opt/tftpboot/install').with_ensure('directory') }
@@ -380,7 +381,7 @@ describe 'tftpboot' do
         it { is_expected.to contain_file('/opt/tftpboot/install/efi').with_ensure('directory') }
         it { is_expected.to contain_file('/opt/tftpboot/install/efi/templates').with_ensure('directory') }
         default_boot_files[os].each do |file, info_hash|
-          expected_file = file.gsub('/var/lib/tftpboot','/opt/tftpboot')
+          expected_file = file.gsub('/var/lib/tftpboot', '/opt/tftpboot')
           expected_file.gsub!('linux-install', 'install')
           it { is_expected.to contain_file(expected_file).with_source("file://#{info_hash[:src]}") }
         end
@@ -389,46 +390,54 @@ describe 'tftpboot' do
       end
 
       context 'with rsync_enabled = false' do
-        let(:params) {{
-          :rsync_enabled => false
-        }}
+        let(:params) do
+          {
+            rsync_enabled: false,
+          }
+        end
 
         it { is_expected.to compile.with_all_deps }
-        it { is_expected.to_not contain_rsync('tftpboot') }
+        it { is_expected.not_to contain_rsync('tftpboot') }
       end
 
       context 'with purge_configs => false' do
-        let(:params) {{
-          :purge_configs => false
-        }}
+        let(:params) do
+          {
+            purge_configs: false,
+          }
+        end
 
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_file('/var/lib/tftpboot/linux-install/pxelinux.cfg').with_purge(false) }
       end
 
       context 'with use_os_files => false' do
-        let(:params) {{
-          :use_os_files => false
-        }}
+        let(:params) do
+          {
+            use_os_files: false,
+          }
+        end
 
         it { is_expected.to compile.with_all_deps }
 
         default_packages[os].each do |pkg|
           next if pkg == 'tftp-server'
-          it { is_expected.to_not contain_package(pkg) }
+          it { is_expected.not_to contain_package(pkg) }
         end
 
-        default_boot_files[os].each do |file, info_hash|
-          it { is_expected.to_not contain_file(file) }
+        default_boot_files[os].each_key do |file|
+          it { is_expected.not_to contain_file(file) }
         end
 
         it { is_expected.to contain_rsync('tftpboot').with_exclude(['pxelinux.cfg']) }
       end
 
       context "with package_ensure => 'latest'" do
-        let(:params) {{
-          :package_ensure => 'latest'
-        }}
+        let(:params) do
+          {
+            package_ensure: 'latest',
+          }
+        end
 
         it { is_expected.to compile.with_all_deps }
         default_packages[os].each do |pkg|
