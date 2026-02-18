@@ -68,7 +68,7 @@ Default value: `'linux-install'`
 
 Data type: `Simplib::Netlist`
 
-See `only_from` in `xinetd.conf(5)`.
+Trusted networks that are allowed to connect to the tftp service.
 
 Default value: `simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1', '::1'] })`
 
