@@ -35,7 +35,7 @@ place to use the tftpboot module.
 Manages the following:
 
 * `tftp-server` package
-* `tftp` service (via `xinetd`)
+* `tftp.socket` service
 * `/var/lib/tftpboot/linux-install` directory and its contents
 
 ## Usage

@@ -10,7 +10,7 @@
 #   contains files used to PXEboot a server.
 #
 # @param trusted_nets
-#   See `only_from` in `xinetd.conf(5)`.
+#   Trusted networks that are allowed to connect to the tftp service.
 #
 # @param rsync_enabled
 #   Whether to use rsync to efficiently pull initial boot files from a central

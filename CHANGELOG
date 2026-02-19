@@ -1,3 +1,6 @@
+* Wed Feb 18 2026 Steven Pritchard <steve@sicura.us> - 7.0.1
+- Remove stale xinetd references
+
 * Mon Aug 18 2025 Mike Riddle <mike@sicura.us> - 7.0.0
 - Removed el7 support
 - Added el10 support

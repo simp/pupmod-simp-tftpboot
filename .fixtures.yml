@@ -10,7 +10,6 @@ fixtures:
     selinux_core: https://github.com/simp/pupmod-puppetlabs-selinux_core.git
     simplib: https://github.com/simp/pupmod-simp-simplib.git
     stdlib: https://github.com/simp/puppetlabs-stdlib.git
-    xinetd: https://github.com/simp/pupmod-simp-xinetd.git
     compliance_markup: https://github.com/simp/pupmod-simp-compliance_markup.git
   symlinks:
     tftpboot: "#{source_dir}"
