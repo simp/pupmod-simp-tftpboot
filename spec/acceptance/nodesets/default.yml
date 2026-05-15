@@ -11,8 +11,9 @@ HOSTS:
         baseurl: https://packages.chef.io/repos/yum/current/el/10/$basearch
         gpgkeys:
         - https://packages.chef.io/chef.asc
-    family: centos-cloud/centos-stream-10
-    gce_machine_type: n1-standard-2
+    # There are not currently any el10 images available on google cloud
+    # family: centos-cloud/centos-stream-10
+    # gce_machine_type: n1-standard-2
 CONFIG:
   log_level: verbose
   synced_folder: disabled
