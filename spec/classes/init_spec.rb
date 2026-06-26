@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-default_rsync_exclude = {
+DEFAULT_RSYNC_EXCLUDE = {
   'centos-9-x86_64'      => ['pxelinux.cfg', 'chain.c32', 'ldlinux.c32', 'libcom32.c32', 'libutil.c32', 'memdisk', 'menu.c32', 'pxechn.c32', 'pxelinux.0', 'grubx64.efi', 'shimx64.efi'],
   'centos-10-x86_64'     => ['pxelinux.cfg', 'chain.c32', 'ldlinux.c32', 'libcom32.c32', 'libutil.c32', 'memdisk', 'menu.c32', 'pxechn.c32', 'pxelinux.0', 'grubx64.efi', 'shimx64.efi'],
   'redhat-8-x86_64'      => ['pxelinux.cfg', 'chain.c32', 'ldlinux.c32', 'libcom32.c32', 'libutil.c32', 'memdisk', 'menu.c32', 'pxechn.c32', 'pxelinux.0', 'grubx64.efi', 'shimx64.efi'],
@@ -15,9 +15,9 @@ default_rsync_exclude = {
   'almalinux-8-x86_64'   => ['pxelinux.cfg', 'chain.c32', 'ldlinux.c32', 'libcom32.c32', 'libutil.c32', 'memdisk', 'menu.c32', 'pxechn.c32', 'pxelinux.0', 'grubx64.efi', 'shimx64.efi'],
   'almalinux-9-x86_64'   => ['pxelinux.cfg', 'chain.c32', 'ldlinux.c32', 'libcom32.c32', 'libutil.c32', 'memdisk', 'menu.c32', 'pxechn.c32', 'pxelinux.0', 'grubx64.efi', 'shimx64.efi'],
   'almalinux-10-x86_64'  => ['pxelinux.cfg', 'chain.c32', 'ldlinux.c32', 'libcom32.c32', 'libutil.c32', 'memdisk', 'menu.c32', 'pxechn.c32', 'pxelinux.0', 'grubx64.efi', 'shimx64.efi'],
-}
+}.freeze
 
-default_packages = {
+DEFAULT_PACKAGES = {
   'centos-9-x86_64'      => ['tftp-server', 'syslinux-tftpboot', 'grub2-efi-x64', 'shim-x64'],
   'centos-10-x86_64'     => ['tftp-server', 'syslinux-tftpboot', 'grub2-efi-x64', 'shim-x64'],
   'redhat-8-x86_64'      => ['tftp-server', 'syslinux-tftpboot', 'grub2-efi-x64', 'shim-x64'],
@@ -32,9 +32,9 @@ default_packages = {
   'almalinux-8-x86_64'   => ['tftp-server', 'syslinux-tftpboot', 'grub2-efi-x64', 'shim-x64'],
   'almalinux-9-x86_64'   => ['tftp-server', 'syslinux-tftpboot', 'grub2-efi-x64', 'shim-x64'],
   'almalinux-10-x86_64'  => ['tftp-server', 'syslinux-tftpboot', 'grub2-efi-x64', 'shim-x64'],
-}
+}.freeze
 
-default_boot_files = {
+DEFAULT_BOOT_FILES = {
   'centos-9-x86_64' => {
     '/var/lib/tftpboot/linux-install/menu.c32' => {
       src: '/tftpboot/menu.c32',
@@ -287,7 +287,7 @@ default_boot_files = {
       pkg: 'shim-x64',
     },
   },
-}
+}.freeze
 
 describe 'tftpboot' do
   on_supported_os.each do |os, facts|
@@ -366,11 +366,11 @@ describe 'tftpboot' do
           )
         end
 
-        default_packages[os].each do |pkg|
+        DEFAULT_PACKAGES[os].each do |pkg|
           it { is_expected.to contain_package(pkg).with_ensure('installed') }
         end
 
-        default_boot_files[os].each do |file, info_hash|
+        DEFAULT_BOOT_FILES[os].each do |file, info_hash|
           it do
             is_expected.to contain_file(file).with(
               'ensure'  => 'file',
@@ -385,7 +385,7 @@ describe 'tftpboot' do
         end
 
         it do
-          expected_exclude = default_rsync_exclude[os]
+          expected_exclude = DEFAULT_RSYNC_EXCLUDE[os]
           is_expected.to contain_rsync('tftpboot').with(
             'user'     => "tftpboot_rsync_#{environment}_#{facts[:os][:name].downcase}",
             'password' => %r{^.+$},
@@ -420,10 +420,11 @@ describe 'tftpboot' do
         it { is_expected.to contain_file('/opt/tftpboot/install/pxelinux.cfg/templates').with_ensure('directory') }
         it { is_expected.to contain_file('/opt/tftpboot/install/efi').with_ensure('directory') }
         it { is_expected.to contain_file('/opt/tftpboot/install/efi/templates').with_ensure('directory') }
-        default_boot_files[os].each do |file, info_hash|
-          expected_file = file.gsub('/var/lib/tftpboot', '/opt/tftpboot')
-          expected_file.gsub!('linux-install', 'install')
-          it { is_expected.to contain_file(expected_file).with_source("file://#{info_hash[:src]}") }
+        DEFAULT_BOOT_FILES[os].each do |file, info_hash|
+          it do
+            expected_file = file.gsub('/var/lib/tftpboot', '/opt/tftpboot').gsub('linux-install', 'install')
+            is_expected.to contain_file(expected_file).with_source("file://#{info_hash[:src]}")
+          end
         end
         it { is_expected.to contain_rsync('tftpboot').with_target('/opt/tftpboot') }
         it { is_expected.to contain_service('tftp.socket') }
@@ -460,12 +461,12 @@ describe 'tftpboot' do
 
         it { is_expected.to compile.with_all_deps }
 
-        default_packages[os].each do |pkg|
+        DEFAULT_PACKAGES[os].each do |pkg|
           next if pkg == 'tftp-server'
           it { is_expected.not_to contain_package(pkg) }
         end
 
-        default_boot_files[os].each_key do |file|
+        DEFAULT_BOOT_FILES[os].each_key do |file|
           it { is_expected.not_to contain_file(file) }
         end
 
@@ -480,7 +481,7 @@ describe 'tftpboot' do
         end
 
         it { is_expected.to compile.with_all_deps }
-        default_packages[os].each do |pkg|
+        DEFAULT_PACKAGES[os].each do |pkg|
           it { is_expected.to contain_package(pkg).with_ensure('latest') }
         end
       end
