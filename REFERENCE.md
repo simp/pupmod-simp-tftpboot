@@ -90,7 +90,7 @@ Data type: `String`
 
 The source of the content to be rsync'd.
 
-Default value: `"tftpboot_${::environment}_${facts['os']['name']}/*"`
+Default value: `"tftpboot_${environment}_${facts['os']['name']}/*"`
 
 ##### <a name="-tftpboot--rsync_server"></a>`rsync_server`
 
@@ -100,7 +100,7 @@ The rsync server FQDN from which to pull the tftpboot configuration. This
 should contain the entire PXEboot hierarchy if you wish to use this to
 PXEboot servers.
 
-Default value: `simplib::lookup('simp_options::rsync::server',  { 'default_value' => '127.0.0.1' })`
+Default value: `simplib::lookup('simp_options::rsync::server', { 'default_value' => '127.0.0.1' })`
 
 ##### <a name="-tftpboot--rsync_timeout"></a>`rsync_timeout`
 
