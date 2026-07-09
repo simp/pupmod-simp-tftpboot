@@ -87,7 +87,7 @@ Defined types (all `include 'tftpboot'` and reject whitespace in `$name`):
 - **`tftpboot::linux_model_efi` (`manifests/linux_model_efi.pp`)** — same
   params plus `$legacy_grub`. Picks `entry_efi_legacy_grub.erb` (with `/../`
   relative kernel/initrd paths, `linux_model_efi.pp`) or `entry_efi.erb`
-  (with `/${linux_install_dir}/` paths, `:51-55`) and writes
+  (with `/${linux_install_dir}/` paths) and writes
   `<install_root>/efi/templates/${name}`.
 - **`tftpboot::generic_model` (`manifests/generic_model.pp`)** — params
   `$content` (verbatim), `$ensure`. Writes
@@ -228,10 +228,10 @@ modules, this one runs on **podman/docker**, *not* `vagrant_libvirt`: it starts
 the rootless podman socket and exports
 `DOCKER_HOST=unix:///run/user/<uid>/podman/podman.sock`
 (`pr_tests.yml`), then runs
-`bundle exec rake beaker:suites[default,<node>]` (`:160-162`). The matrix has 9
+`bundle exec rake beaker:suites[default,<node>]`. The matrix has 9
 nodes: `docker_alma8`, `docker_alma9`, `docker_alma10`, `docker_centos9`,
 `docker_centos10`, `docker_oel8`, `docker_oel9`, `docker_rocky8`,
-`docker_rocky9` (`:135-144`). `spec/acceptance/nodesets/` ships 14 nodeset files
+`docker_rocky9`. `spec/acceptance/nodesets/` ships 14 nodeset files
 (the `docker_*` set including `docker_rhel8/9/10.yml`, plus `default.yml` and
 `oel.yml`); there is 1 acceptance suite,
 `spec/acceptance/suites/default/00_default_spec.rb`.
