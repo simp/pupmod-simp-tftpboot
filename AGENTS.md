@@ -22,10 +22,10 @@ The initial boot files (kernels, `pxelinux.0`, `menu.c32`, `grubx64.efi`,
 
 - **From OS packages** (`$use_os_files = true`, the default): the config classes
   install the OS packages named in `$os_file_info` and copy each listed file
-  into the TFTP tree (`config/bios.pp`, `config/efi.pp`).
+  into the TFTP tree (`manifests/config/bios.pp`, `manifests/config/efi.pp`).
 - **From a central rsync server** (`$rsync_enabled = true`, the default): the
   entire PXEboot hierarchy is pulled from an rsync server into
-  `$tftpboot_root_dir` (`config.pp`). This is why `simp/rsync` is a **hard
+  `$tftpboot_root_dir` (`manifests/config.pp`). This is why `simp/rsync` is a **hard
   runtime dependency**, not optional.
 
 On top of the environment, the module's defined types let you describe *what to
@@ -46,31 +46,31 @@ boot* and *who boots it*:
   `include 'tftpboot'`. It is **not** `assert_private()`'d.
   - `$os_file_info` (`Hash`, **no default**) — required; supplied from module
     data (`data/os/*.yaml`). Maps `'bios'`/`'efi'` → OS package → list of files
-    that package provides (`init.pp`, `data/os/RedHat.yaml`).
+    that package provides (`manifests/init.pp`, `data/os/RedHat.yaml`).
   - `$tftpboot_root_dir` (`Stdlib::Absolutepath`, default `/var/lib/tftpboot`)
     and `$linux_install_dir` (`String`, default `linux-install`) combine into
     `$install_root_dir = "${tftpboot_root_dir}/${linux_install_dir}"`
-    (`init.pp`) — the path most of the module hangs off of.
+    (`manifests/init.pp`) — the path most of the module hangs off of.
   - `$rsync_source` defaults to
-    `"tftpboot_${environment}_${facts['os']['name']}/*"` (`init.pp`).
+    `"tftpboot_${environment}_${facts['os']['name']}/*"` (`manifests/init.pp`).
   - Installs `Package['tftp-server']` at `$package_ensure`, orders it before
     `Class['tftpboot::config']`, and runs `service { 'tftp.socket' }`
-    (`init.pp`).
+    (`manifests/init.pp`).
 - **`tftpboot::config` (`manifests/config.pp`)** — private (`assert_private()`,
-  `config.pp`). `contain`s `tftpboot::config::bios` and
-  `tftpboot::config::efi` (`config.pp`), creates the root and install
+  `manifests/config.pp`). `contain`s `tftpboot::config::bios` and
+  `tftpboot::config::efi` (`manifests/config.pp`), creates the root and install
   directories, and — when `$rsync_enabled` — `include`s `rsync` and declares the
-  `rsync { 'tftpboot' }` pull (`config.pp`). When `$use_os_files`, it
+  `rsync { 'tftpboot' }` pull (`manifests/config.pp`). When `$use_os_files`, it
   excludes the OS-provided base filenames (via
   `tftpboot::get_os_base_filenames`) plus `pxelinux.cfg` from the rsync so the
-  OS-package copies win (`config.pp`).
+  OS-package copies win (`manifests/config.pp`).
 - **`tftpboot::config::bios` (`manifests/config/bios.pp`)** — private
-  (`assert_private()`, `bios.pp`). Manages `pxelinux.cfg/` (purged per
+  (`assert_private()`, `manifests/config/bios.pp`). Manages `pxelinux.cfg/` (purged per
   `$purge_configs`, `recurselimit => 1`) and `pxelinux.cfg/templates/`, and when
   `$use_os_files` installs the `bios` OS packages and copies their files into the
   install dir via `file { ...: source => "file://${file}" }`.
 - **`tftpboot::config::efi` (`manifests/config/efi.pp`)** — private
-  (`assert_private()`, `efi.pp`). Same pattern as bios but under `efi/` and
+  (`assert_private()`, `manifests/config/efi.pp`). Same pattern as bios but under `efi/` and
   using the `efi` half of `$os_file_info`.
 - **`tftpboot::get_os_base_filenames` (`functions/get_os_base_filenames.pp`)** —
   Puppet-language function. Takes the `$os_file_info` Hash and returns a flat
@@ -86,7 +86,7 @@ Defined types (all `include 'tftpboot'` and reject whitespace in `$name`):
   `template('tftpboot/entry.erb')`.
 - **`tftpboot::linux_model_efi` (`manifests/linux_model_efi.pp`)** — same
   params plus `$legacy_grub`. Picks `entry_efi_legacy_grub.erb` (with `/../`
-  relative kernel/initrd paths, `linux_model_efi.pp`) or `entry_efi.erb`
+  relative kernel/initrd paths, `manifests/linux_model_efi.pp`) or `entry_efi.erb`
   (with `/${linux_install_dir}/` paths) and writes
   `<install_root>/efi/templates/${name}`.
 - **`tftpboot::generic_model` (`manifests/generic_model.pp`)** — params
@@ -104,39 +104,39 @@ Defined types (all `include 'tftpboot'` and reject whitespace in `$name`):
   prefixes non-default names with `grub.cfg-` (grub2) or nothing (legacy grub),
   symlinking down/up-cased variants. Includes a **RedHat 7.4 grub2 workaround**
   that also creates trailing-`-` filenames for `01-MAC` names
-  (`assign_host_efi.pp`; see
+  (`manifests/assign_host_efi.pp`; see
   <https://bugzilla.redhat.com/show_bug.cgi?id=1487107>).
 
 ## Gotchas / non-obvious details
 
 - **`simp/rsync` is a hard dependency, not optional.** By default the module
   pulls the entire PXEboot hierarchy from an rsync server
-  (`$rsync_enabled = true`, `config.pp`). If you set `$rsync_enabled =
+  (`$rsync_enabled = true`, `manifests/config.pp`). If you set `$rsync_enabled =
   false` you **must** supply the boot files into `$tftpboot_root_dir` by some
-  other means (`init.pp`). There are no `optional_dependencies` in this
+  other means (`manifests/init.pp`). There are no `optional_dependencies` in this
   module.
-- **`$os_file_info` has no default** (`init.pp`); it is data-in-modules and
+- **`$os_file_info` has no default** (`manifests/init.pp`); it is data-in-modules and
   must come from Hiera (`data/os/*.yaml`). Applying with an empty/absent value
   will fail compilation.
 - **rsync exclude protects the OS-package files.** When both `$use_os_files` and
   `$rsync_enabled` are true, the OS-package copies and `pxelinux.cfg` are added
-  to the rsync `exclude` list (`config.pp`) so the rsync pull does not
+  to the rsync `exclude` list (`manifests/config.pp`) so the rsync pull does not
   clobber them — the OS files and the rsync content are meant to be
   complementary, not overlapping.
 - **BIOS and UEFI live in parallel trees and have parallel defines.**
   `pxelinux.cfg/` (BIOS) vs `efi/` (UEFI). Anything you add for one boot path
   usually needs an `_efi` counterpart. Note the asymmetry called out in the
   code: **there is no purge mechanism for the `efi/` tree** — `$purge_configs`
-  only purges `pxelinux.cfg/` (`init.pp`, `bios.pp`).
+  only purges `pxelinux.cfg/` (`manifests/init.pp`, `manifests/config/bios.pp`).
 - **`assign_host*` symlinks both cases of the name on purpose.** Puppet's
   comparison operators are case-invariant, so the code compares via `member()`
-  and creates both `downcase` and `upcase` files (`assign_host.pp`) —
+  and creates both `downcase` and `upcase` files (`manifests/assign_host.pp`) —
   because the PXE/TFTP filename search itself *is* case-sensitive.
 - **`assign_host_efi` carries a live grub2 bug workaround.** For `01-MAC` names
   under grub2 it deliberately creates an extra filename with a trailing `-`
   (RH 7.4 bug 1487107). Don't "clean this up" without understanding it.
 - **`generic_model` writes to a different directory** (`pxe-linux/templates`,
-  `generic_model.pp`) than the `linux_model*` defines (which use
+  `manifests/generic_model.pp`) than the `linux_model*` defines (which use
   `$install_root_dir/{pxelinux.cfg,efi}/templates`). This looks inconsistent but
   is intentional per the docstring.
 - **`entry*.erb` templates read define-local `@`-variables** (`@kernel`,
@@ -145,7 +145,7 @@ Defined types (all `include 'tftpboot'` and reject whitespace in `$name`):
   come from the define's scope (`templates/entry.erb`, `entry_efi.erb`,
   `entry_efi_legacy_grub.erb`).
 - **`simp/simp_options` is NOT a declared dependency** in `metadata.json`, yet
-  `init.pp` consumes the `simp_options::*` seam via `simplib::lookup` (provided
+  `manifests/init.pp` consumes the `simp_options::*` seam via `simplib::lookup` (provided
   by `simp/simplib`). Keep routing feature toggles through that seam with an
   explicit `default_value` rather than assuming `simp_options` is included.
 
@@ -155,10 +155,10 @@ All calls are in `manifests/init.pp`:
 
 | File | Key | `default_value` |
 |------|-----|-----------------|
-| `init.pp` | `simp_options::trusted_nets` | `['127.0.0.1', '::1']` |
-| `init.pp` | `simp_options::rsync::server` | `'127.0.0.1'` |
-| `init.pp` | `simp_options::rsync::timeout` | `2` |
-| `init.pp` | `simp_options::package_ensure` | `'installed'` |
+| `manifests/init.pp` | `simp_options::trusted_nets` | `['127.0.0.1', '::1']` |
+| `manifests/init.pp` | `simp_options::rsync::server` | `'127.0.0.1'` |
+| `manifests/init.pp` | `simp_options::rsync::timeout` | `2` |
+| `manifests/init.pp` | `simp_options::package_ensure` | `'installed'` |
 
 ## Dependencies
 
@@ -167,10 +167,10 @@ Module dependencies (from `metadata.json`):
 - `puppetlabs/stdlib` `>= 8.0.0 < 10.0.0` (provides `member()`, `keys()`,
   `basename()`, `flatten()`, etc.).
 - `simp/rsync` `>= 6.1.1 < 8.0.0` — **hard runtime dependency**; provides the
-  `rsync` class and `rsync` type used to pull boot files (`config.pp`).
+  `rsync` class and `rsync` type used to pull boot files (`manifests/config.pp`).
 - `simp/simplib` `>= 4.9.0 < 5.0.0` — provides `simplib::lookup`,
-  `simplib::passgen` (`config.pp`), and the `Simplib::Netlist` type
-  (`init.pp`).
+  `simplib::passgen` (`manifests/config.pp`), and the `Simplib::Netlist` type
+  (`manifests/init.pp`).
 
 There are **no** `optional_dependencies` and no `assert_optional_dependency`
 calls in this module.
@@ -280,8 +280,6 @@ Relevant gem pins (from `Gemfile`): `puppetlabs_spec_helper ~> 8.0.0`
   explicit default rather than assuming `simp_options` is included.
 - Guard against whitespace in `$name` in defined types, as the existing defines
   do (`fail(...)` on `! ($name =~ /^\S+$/)`).
-- `Gemfile`, `spec/spec_helper.rb`, and `.github/workflows/pr_tests.yml` carry a
-  **puppetsync** notice — they are baseline-managed and the next sync overwrites
-  local edits. Push changes to those files upstream to the baseline, not here.
+- Several baseline files carry a **puppetsync** notice — e.g. `Gemfile`, `spec/spec_helper.rb`, `.github/workflows/pr_tests.yml`, and the `.gitignore`/`.pdkignore` dotfiles — so they are baseline-managed and the next sync overwrites local edits. Check each file's header for the notice rather than treating this list as exhaustive; push changes to any such file upstream to the baseline, not here.
 - Match the existing 2-space Puppet indentation and aligned-arrow parameter
   style used throughout `manifests/`.
