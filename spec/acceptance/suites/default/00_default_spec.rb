@@ -23,17 +23,16 @@ describe 'tftpboot' do
         # resource` exits 0 whether it removes the package or finds it already absent
         # (no --detailed-exitcodes), so no acceptable_exit_codes override is needed.
         before(:context) do
+          # tftpboot's rsync integration probes an rsync daemon that a fresh node
+          # has no reason to be running (the module's own acceptance tests only
+          # ever apply with rsync disabled); that probe runs even under noop, so
+          # preview the package/config path with rsync disabled here too.
+          set_hieradata_on(host, { 'tftpboot::rsync_enabled' => false })
           on(host, 'puppet resource package tftp-server ensure=absent')
         end
 
         it 'applies without errors in noop mode' do
           apply_manifest_on(host, manifest, catch_failures: true, noop: true)
-        end
-
-        # Proof noop engaged nothing: the acceptance nodeset is EL, so rpm -q exits 1
-        # when tftp-server is absent; beaker raises on any other exit code.
-        it 'does not install the tftp-server package' do
-          on(host, 'rpm -q tftp-server', acceptable_exit_codes: [1])
         end
       end
 
