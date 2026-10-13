@@ -420,4 +420,3 @@ Hash of Hashes.  The outer Hash key is either
 The inner Hash is a Hash of Arrays. Each inner Hash key is an
 OS package.  Each inner Hash value is the list of PXEboot files
 provided by the named package.  See the module data for specifics.
-
