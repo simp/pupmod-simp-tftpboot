@@ -12,8 +12,8 @@ describe 'tftpboot::linux_model_efi' do
       context 'with default parameters' do
         let(:params) do
           {
-            kernel: 'centos6_x86_64/vmlinuz',
-            initrd: 'centos6_x86_64/initrd.img',
+            kernel: 'rocky9_x86_64/vmlinuz',
+            initrd: 'rocky9_x86_64/initrd.img',
             ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg',
           }
         end
@@ -30,8 +30,8 @@ describe 'tftpboot::linux_model_efi' do
               set timeout=1
 
               menuentry 'rhel_model' {
-                      linuxefi /linux-install/centos6_x86_64/vmlinuz inst.ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=0#{' '}
-                      initrdefi /linux-install/centos6_x86_64/initrd.img
+                      linuxefi /linux-install/rocky9_x86_64/vmlinuz inst.ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=0#{' '}
+                      initrdefi /linux-install/rocky9_x86_64/initrd.img
               }
             EOM
           )
@@ -41,8 +41,8 @@ describe 'tftpboot::linux_model_efi' do
       context 'with fips=true' do
         let(:params) do
           {
-            kernel: 'centos6_x86_64/vmlinuz',
-            initrd: 'centos6_x86_64/initrd.img',
+            kernel: 'rocky9_x86_64/vmlinuz',
+            initrd: 'rocky9_x86_64/initrd.img',
             ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg',
             fips: true,
           }
@@ -60,8 +60,8 @@ describe 'tftpboot::linux_model_efi' do
               set timeout=1
 
               menuentry 'rhel_model' {
-                      linuxefi /linux-install/centos6_x86_64/vmlinuz inst.ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=1#{' '}
-                      initrdefi /linux-install/centos6_x86_64/initrd.img
+                      linuxefi /linux-install/rocky9_x86_64/vmlinuz inst.ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=1#{' '}
+                      initrdefi /linux-install/rocky9_x86_64/initrd.img
               }
             EOM
           )
@@ -72,8 +72,8 @@ describe 'tftpboot::linux_model_efi' do
         let(:facts) { os_facts.merge(custom_hiera: 'simp_options_fips') }
         let(:params) do
           {
-            kernel: 'centos6_x86_64/vmlinuz',
-            initrd: 'centos6_x86_64/initrd.img',
+            kernel: 'rocky9_x86_64/vmlinuz',
+            initrd: 'rocky9_x86_64/initrd.img',
             ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg',
           }
         end
@@ -90,8 +90,8 @@ describe 'tftpboot::linux_model_efi' do
       context 'with legacy installer options in extra' do
         let(:params) do
           {
-            kernel: 'centos6_x86_64/vmlinuz',
-            initrd: 'centos6_x86_64/initrd.img',
+            kernel: 'rocky9_x86_64/vmlinuz',
+            initrd: 'rocky9_x86_64/initrd.img',
             ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg',
             extra: 'ksdevice=bootif repo=http://localhost/repo',
           }
@@ -117,8 +117,8 @@ describe 'tftpboot::linux_model_efi' do
       context 'with extra set' do
         let(:params) do
           {
-            kernel: 'centos6_x86_64/vmlinuz',
-            initrd: 'centos6_x86_64/initrd.img',
+            kernel: 'rocky9_x86_64/vmlinuz',
+            initrd: 'rocky9_x86_64/initrd.img',
             ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg',
             extra: 'some-extra-args',
           }
@@ -136,8 +136,8 @@ describe 'tftpboot::linux_model_efi' do
               set timeout=1
 
               menuentry 'rhel_model' {
-                      linuxefi /linux-install/centos6_x86_64/vmlinuz inst.ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=0 some-extra-args
-                      initrdefi /linux-install/centos6_x86_64/initrd.img
+                      linuxefi /linux-install/rocky9_x86_64/vmlinuz inst.ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=0 some-extra-args
+                      initrdefi /linux-install/rocky9_x86_64/initrd.img
               }
             EOM
           )
@@ -147,8 +147,8 @@ describe 'tftpboot::linux_model_efi' do
       context 'with ensure=absent' do
         let(:params) do
           {
-            kernel: 'centos6_x86_64/vmlinuz',
-            initrd: 'centos6_x86_64/initrd.img',
+            kernel: 'rocky9_x86_64/vmlinuz',
+            initrd: 'rocky9_x86_64/initrd.img',
             ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg',
             ensure: 'absent',
           }
@@ -156,157 +156,6 @@ describe 'tftpboot::linux_model_efi' do
 
         it do
           is_expected.to contain_file('/var/lib/tftpboot/linux-install/efi/templates/rhel_model').with_ensure('absent')
-        end
-      end
-
-      context 'with legacy_grub=true ' do
-        context 'with all other parameters default' do
-          let(:params) do
-            {
-              kernel: 'centos6_x86_64/vmlinuz',
-              initrd: 'centos6_x86_64/initrd.img',
-              ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg',
-              legacy_grub: true,
-            }
-          end
-
-          it do
-            is_expected.to contain_file('/var/lib/tftpboot/linux-install/efi/templates/rhel_model').with(
-              'ensure'  => 'present',
-              'owner'   => 'root',
-              'group'   => 'nobody',
-              'mode'    => '0644',
-              'seltype' => 'tftpdir_t',
-              'content' => <<~EOM,
-                default=0
-                timeout=1
-                hiddenmenu
-
-                title 'rhel_model'
-                        root (nd)
-                        kernel /../centos6_x86_64/vmlinuz ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=0#{' '}
-                        initrd /../centos6_x86_64/initrd.img
-              EOM
-            )
-          end
-        end
-
-        context 'with fips=true' do
-          let(:params) do
-            {
-              kernel: 'centos6_x86_64/vmlinuz',
-              initrd: 'centos6_x86_64/initrd.img',
-              ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg',
-              fips: true,
-              legacy_grub: true,
-            }
-          end
-
-          it do
-            is_expected.to contain_file('/var/lib/tftpboot/linux-install/efi/templates/rhel_model').with(
-              'ensure'  => 'present',
-              'owner'   => 'root',
-              'group'   => 'nobody',
-              'mode'    => '0644',
-              'seltype' => 'tftpdir_t',
-              'content' => <<~EOM,
-                default=0
-                timeout=1
-                hiddenmenu
-
-                title 'rhel_model'
-                        root (nd)
-                        kernel /../centos6_x86_64/vmlinuz ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=1#{' '}
-                        initrd /../centos6_x86_64/initrd.img
-              EOM
-            )
-          end
-        end
-
-        context 'with simp_options::fips set' do
-          let(:facts) { os_facts.merge(custom_hiera: 'simp_options_fips') }
-          let(:params) do
-            {
-              kernel: 'centos6_x86_64/vmlinuz',
-              initrd: 'centos6_x86_64/initrd.img',
-              ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg',
-              legacy_grub: true,
-            }
-          end
-
-          it { is_expected.to contain_file('/var/lib/tftpboot/linux-install/efi/templates/rhel_model').with_content(%r{ ks=http://localhost/ks/pupclient_x86_64_efi\.cfg fips=1 }) }
-
-          context 'with fips=false' do
-            let(:params) { super().merge(fips: false) }
-
-            it { is_expected.to contain_file('/var/lib/tftpboot/linux-install/efi/templates/rhel_model').with_content(%r{ fips=0 }) }
-          end
-        end
-
-        context 'with legacy installer options in extra' do
-          let(:params) do
-            {
-              kernel: 'centos6_x86_64/vmlinuz',
-              initrd: 'centos6_x86_64/initrd.img',
-              ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg',
-              extra: 'ksdevice=bootif',
-              legacy_grub: true,
-            }
-          end
-
-          it 'does not warn' do
-            allow(Puppet::Util::Log).to receive(:log_func).and_call_original
-            expect(Puppet::Util::Log).not_to receive(:log_func).with(anything, :warning, anything)
-            is_expected.to compile.with_all_deps
-          end
-        end
-
-        context 'with extra set' do
-          let(:params) do
-            {
-              kernel: 'centos6_x86_64/vmlinuz',
-              initrd: 'centos6_x86_64/initrd.img',
-              ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg',
-              extra: 'some-extra-args',
-              legacy_grub: true,
-            }
-          end
-
-          it do
-            is_expected.to contain_file('/var/lib/tftpboot/linux-install/efi/templates/rhel_model').with(
-              'ensure'  => 'present',
-              'owner'   => 'root',
-              'group'   => 'nobody',
-              'mode'    => '0644',
-              'seltype' => 'tftpdir_t',
-              'content' => <<~EOM,
-                default=0
-                timeout=1
-                hiddenmenu
-
-                title 'rhel_model'
-                        root (nd)
-                        kernel /../centos6_x86_64/vmlinuz ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=0 some-extra-args
-                        initrd /../centos6_x86_64/initrd.img
-              EOM
-            )
-          end
-        end
-
-        context 'with ensure=absent' do
-          let(:params) do
-            {
-              kernel: 'centos6_x86_64/vmlinuz',
-              initrd: 'centos6_x86_64/initrd.img',
-              ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg',
-              ensure: 'absent',
-              legacy_grub: true,
-            }
-          end
-
-          it do
-            is_expected.to contain_file('/var/lib/tftpboot/linux-install/efi/templates/rhel_model').with_ensure('absent')
-          end
         end
       end
 
@@ -320,8 +169,8 @@ describe 'tftpboot::linux_model_efi' do
             let(:title) { invalid_name }
             let(:params) do
               {
-                kernel: 'centos6_x86_64/vmlinuz',
-                initrd: 'centos6_x86_64/initrd.img',
+                kernel: 'rocky9_x86_64/vmlinuz',
+                initrd: 'rocky9_x86_64/initrd.img',
                 ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg',
               }
             end

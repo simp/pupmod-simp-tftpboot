@@ -1,10 +1,11 @@
 * Thu Nov 12 2026 Steven Pritchard <steve@sicura.us> - 9.0.0
 - BREAKING: BIOS and UEFI (grub2) PXE entries pass the kickstart location as
-  `inst.ks=` instead of `ks=`. EL9 and EL10 ignore `ks=`; EL7 and later
-  accept `inst.ks=`. Legacy grub (`legacy_grub => true`) entries keep `ks=`
-  for EL6-era installers. Any `extra` boot options still using un-prefixed
-  spellings (`repo=`, `ksdevice=`, `stage2=`) need the `inst.` prefix for
-  EL9/EL10.
+  `inst.ks=` instead of `ks=`, which EL9 and EL10 ignore. Any `extra` boot
+  options still using un-prefixed spellings (`repo=`, `ksdevice=`,
+  `stage2=`) need the `inst.` prefix for EL9/EL10.
+- BREAKING: Remove the `legacy_grub` parameter of `tftpboot::linux_model_efi`
+  and `tftpboot::assign_host_efi`, and the legacy grub EFI template. Legacy
+  grub EFI only booted EL6-era installers; this module supports EL8 and later.
 - `tftpboot::linux_model` and `tftpboot::linux_model_efi` log a warning when
   `extra` contains un-prefixed installer options (`ks=`, `repo=`,
   `ksdevice=`, `stage2=`, `method=`).

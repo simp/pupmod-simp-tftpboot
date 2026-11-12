@@ -50,9 +50,7 @@ for detailed examples of using this module.
 ### Kernel arguments
 
 The PXE entries boot the installer with `inst.ks=<ks> fips=<0|1> <extra>`.
-The `inst.` prefix is mandatory on EL9 and EL10 (and accepted on EL7 and EL8).
-Legacy grub EFI entries (`legacy_grub => true`), which only boot EL6-era
-installers, pass `ks=` instead.
+The `inst.` prefix is mandatory on EL9 and EL10.
 
 `fips` defaults to `simp_options::fips`; the EL8/9/10 SIMP kickstarts install
 the host in FIPS mode only when it is `1`. `fips=1` *may not work* with all
@@ -72,8 +70,10 @@ interface:
 
 ## Breaking changes in 9.0.0
 
-* The kickstart location is passed as `inst.ks=` instead of `ks=` (except in
-  legacy grub entries).
+* The kickstart location is passed as `inst.ks=` instead of `ks=`.
+* The `legacy_grub` parameter of `tftpboot::linux_model_efi` and
+  `tftpboot::assign_host_efi` is removed, with its template. Legacy grub EFI
+  only booted EL6-era installers.
 * `fips` defaults to `simp_options::fips` instead of `false`. Set
   `fips => false` on a model to keep the old behavior.
 

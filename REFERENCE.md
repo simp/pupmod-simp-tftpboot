@@ -203,17 +203,8 @@ define tftpboot:assign_host_efi
 
 The following parameters are available in the `tftpboot::assign_host_efi` defined type:
 
-* [`legacy_grub`](#-tftpboot--assign_host_efi--legacy_grub)
 * [`model`](#-tftpboot--assign_host_efi--model)
 * [`ensure`](#-tftpboot--assign_host_efi--ensure)
-
-##### <a name="-tftpboot--assign_host_efi--legacy_grub"></a>`legacy_grub`
-
-Data type: `Boolean`
-
-Whether this host uses legacy grub.
-
-Default value: `false`
 
 ##### <a name="-tftpboot--assign_host_efi--model"></a>`model`
 
@@ -351,7 +342,6 @@ The following parameters are available in the `tftpboot::linux_model_efi` define
 * [`extra`](#-tftpboot--linux_model_efi--extra)
 * [`ensure`](#-tftpboot--linux_model_efi--ensure)
 * [`fips`](#-tftpboot--linux_model_efi--fips)
-* [`legacy_grub`](#-tftpboot--linux_model_efi--legacy_grub)
 
 ##### <a name="-tftpboot--linux_model_efi--kernel"></a>`kernel`
 
@@ -372,8 +362,7 @@ Path is relative to `$::tftpboot::install_root_dir`.
 Data type: `String`
 
 The full URL to the location of the kickstart file. It is
-passed to the installer as `inst.ks=`, or as `ks=` when
-`legacy_grub` is set.
+passed to the installer as `inst.ks=`.
 
 ##### <a name="-tftpboot--linux_model_efi--extra"></a>`extra`
 
@@ -384,7 +373,7 @@ Use the `inst.`-prefixed installer options (`inst.repo=`,
 `inst.stage2=`). The un-prefixed legacy spellings (`ks=`,
 `repo=`, `ksdevice=`, `stage2=`, `method=`) are ignored by EL9
 and EL10, and a warning is logged when `extra` contains
-one (unless `legacy_grub` is set).
+one.
 
 On a host with several NICs, name the interface the
 installer should use, e.g. `ip=eth2:dhcp` or
@@ -413,16 +402,6 @@ without dracut's `fips` module can fail to boot with `fips=1`.
 Set `fips => false` on such a model.
 
 Default value: `simplib::lookup('simp_options::fips', { 'default_value' => false })`
-
-##### <a name="-tftpboot--linux_model_efi--legacy_grub"></a>`legacy_grub`
-
-Data type: `Boolean`
-
-Whether this host uses legacy grub. This is the
-EL6-era EFI boot path, so its entry passes the kickstart as
-`ks=`, which those installers require.
-
-Default value: `false`
 
 ## Functions
 

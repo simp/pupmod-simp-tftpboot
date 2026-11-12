@@ -10,15 +10,14 @@
 #               Path is relative to `$::tftpboot::install_root_dir`.
 #
 # @param ks The full URL to the location of the kickstart file. It is
-#            passed to the installer as `inst.ks=`, or as `ks=` when
-#            `legacy_grub` is set.
+#            passed to the installer as `inst.ks=`.
 #
 # @param extra Any other kernel parameters that you would like to pass at boot.
 #              Use the `inst.`-prefixed installer options (`inst.repo=`,
 #              `inst.stage2=`). The un-prefixed legacy spellings (`ks=`,
 #              `repo=`, `ksdevice=`, `stage2=`, `method=`) are ignored by EL9
 #              and EL10, and a warning is logged when `extra` contains
-#              one (unless `legacy_grub` is set).
+#              one.
 #
 #              On a host with several NICs, name the interface the
 #              installer should use, e.g. `ip=eth2:dhcp` or
@@ -34,10 +33,6 @@
 #             without dracut's `fips` module can fail to boot with `fips=1`.
 #             Set `fips => false` on such a model.
 #
-# @param legacy_grub Whether this host uses legacy grub. This is the
-#              EL6-era EFI boot path, so its entry passes the kickstart as
-#              `ks=`, which those installers require.
-#
 define tftpboot::linux_model_efi (
   String                   $kernel,
   String                   $initrd,
@@ -45,33 +40,20 @@ define tftpboot::linux_model_efi (
   Optional[String]         $extra       = undef,
   Enum['absent','present'] $ensure      = 'present',
   Boolean                  $fips        = simplib::lookup('simp_options::fips', { 'default_value' => false }),
-  Boolean                  $legacy_grub = false
 ) {
   if ! ($name =~ /^\S+$/) {
     fail("tftpboot::linux_model_efi '${name}' invalid: name cannot have whitespace")
   }
 
-  if !$legacy_grub and $extra and $extra =~ /(^|\s)(ks|repo|ksdevice|stage2|method)=/ {
+  if $extra and $extra =~ /(^|\s)(ks|repo|ksdevice|stage2|method)=/ {
     warning("tftpboot::linux_model_efi '${name}': `extra` contains un-prefixed installer options (ks=, repo=, ksdevice=, stage2=, method=), which EL9 and EL10 ignore. Use the inst. prefix (for example inst.repo=).")
   }
 
   include 'tftpboot'
 
-  if $legacy_grub {
-    # In legacy grub, the root directory for tftboot is ASSUMED to be
-    # the directory in which the EFI grub configuration file resides.
-    # In a SIMP system, however, the image directories are one directory
-    # up.  So, to specify the correct location of the images and satisfy
-    # a weak, legacy grub check for absolute paths to images, we have to
-    # use '/../' here.
-    $_kernel = "/../${kernel}"
-    $_initrd = "/../${initrd}"
-    $_template = 'tftpboot/entry_efi_legacy_grub.erb'
-  } else {
-    $_kernel = "/${tftpboot::linux_install_dir}/${kernel}"
-    $_initrd = "/${tftpboot::linux_install_dir}/${initrd}"
-    $_template = 'tftpboot/entry_efi.erb'
-  }
+  $_kernel = "/${tftpboot::linux_install_dir}/${kernel}"
+  $_initrd = "/${tftpboot::linux_install_dir}/${initrd}"
+  $_template = 'tftpboot/entry_efi.erb'
 
   $install_dir = $tftpboot::install_root_dir
 

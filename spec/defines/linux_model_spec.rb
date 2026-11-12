@@ -12,8 +12,8 @@ describe 'tftpboot::linux_model' do
       context 'with default parameters' do
         let(:params) do
           {
-            kernel: 'centos6_x86_64/vmlinuz',
-            initrd: 'centos6_x86_64/initrd.img',
+            kernel: 'rocky9_x86_64/vmlinuz',
+            initrd: 'rocky9_x86_64/initrd.img',
             ks: 'http://localhost/ks/pupclient_x86_64.cfg',
           }
         end
@@ -28,8 +28,8 @@ describe 'tftpboot::linux_model' do
             'content' => <<~EOM,
               default 0
               label 0
-                      kernel centos6_x86_64/vmlinuz
-                      append initrd=centos6_x86_64/initrd.img inst.ks=http://localhost/ks/pupclient_x86_64.cfg fips=0#{' '}
+                      kernel rocky9_x86_64/vmlinuz
+                      append initrd=rocky9_x86_64/initrd.img inst.ks=http://localhost/ks/pupclient_x86_64.cfg fips=0#{' '}
             EOM
           )
         end
@@ -38,8 +38,8 @@ describe 'tftpboot::linux_model' do
       context 'with fips=true' do
         let(:params) do
           {
-            kernel: 'centos6_x86_64/vmlinuz',
-            initrd: 'centos6_x86_64/initrd.img',
+            kernel: 'rocky9_x86_64/vmlinuz',
+            initrd: 'rocky9_x86_64/initrd.img',
             ks: 'http://localhost/ks/pupclient_x86_64.cfg',
             fips: true,
           }
@@ -55,8 +55,8 @@ describe 'tftpboot::linux_model' do
             'content' => <<~EOM,
               default 0
               label 0
-                      kernel centos6_x86_64/vmlinuz
-                      append initrd=centos6_x86_64/initrd.img inst.ks=http://localhost/ks/pupclient_x86_64.cfg fips=1#{' '}
+                      kernel rocky9_x86_64/vmlinuz
+                      append initrd=rocky9_x86_64/initrd.img inst.ks=http://localhost/ks/pupclient_x86_64.cfg fips=1#{' '}
             EOM
           )
         end
@@ -66,8 +66,8 @@ describe 'tftpboot::linux_model' do
         let(:facts) { os_facts.merge(custom_hiera: 'simp_options_fips') }
         let(:params) do
           {
-            kernel: 'centos6_x86_64/vmlinuz',
-            initrd: 'centos6_x86_64/initrd.img',
+            kernel: 'rocky9_x86_64/vmlinuz',
+            initrd: 'rocky9_x86_64/initrd.img',
             ks: 'http://localhost/ks/pupclient_x86_64.cfg',
           }
         end
@@ -84,8 +84,8 @@ describe 'tftpboot::linux_model' do
       context 'with legacy installer options in extra' do
         let(:params) do
           {
-            kernel: 'centos6_x86_64/vmlinuz',
-            initrd: 'centos6_x86_64/initrd.img',
+            kernel: 'rocky9_x86_64/vmlinuz',
+            initrd: 'rocky9_x86_64/initrd.img',
             ks: 'http://localhost/ks/pupclient_x86_64.cfg',
             extra: 'ksdevice=bootif repo=http://localhost/repo',
           }
@@ -111,8 +111,8 @@ describe 'tftpboot::linux_model' do
       context 'with extra set' do
         let(:params) do
           {
-            kernel: 'centos6_x86_64/vmlinuz',
-            initrd: 'centos6_x86_64/initrd.img',
+            kernel: 'rocky9_x86_64/vmlinuz',
+            initrd: 'rocky9_x86_64/initrd.img',
             ks: 'http://localhost/ks/pupclient_x86_64.cfg',
             extra: 'some-extra-args',
           }
@@ -128,8 +128,8 @@ describe 'tftpboot::linux_model' do
             'content' => <<~EOM,
               default 0
               label 0
-                      kernel centos6_x86_64/vmlinuz
-                      append initrd=centos6_x86_64/initrd.img inst.ks=http://localhost/ks/pupclient_x86_64.cfg fips=0 some-extra-args
+                      kernel rocky9_x86_64/vmlinuz
+                      append initrd=rocky9_x86_64/initrd.img inst.ks=http://localhost/ks/pupclient_x86_64.cfg fips=0 some-extra-args
             EOM
           )
         end
@@ -145,8 +145,8 @@ describe 'tftpboot::linux_model' do
             let(:title) { invalid_name }
             let(:params) do
               {
-                kernel: 'centos6_x86_64/vmlinuz',
-                initrd: 'centos6_x86_64/initrd.img',
+                kernel: 'rocky9_x86_64/vmlinuz',
+                initrd: 'rocky9_x86_64/initrd.img',
                 ks: 'http://localhost/ks/pupclient_x86_64.cfg',
               }
             end
