@@ -1,8 +1,13 @@
 * Thu Nov 12 2026 Steven Pritchard <steve@sicura.us> - 9.0.0
-- BREAKING: PXE entries pass the kickstart location as `inst.ks=` instead of
-  `ks=`. EL9 and EL10 ignore `ks=`; EL7 and later accept `inst.ks=`. Any
-  `extra` boot options still using un-prefixed spellings (`repo=`,
-  `ksdevice=`) need the `inst.` prefix (or `ip=dhcp`) for EL9/EL10.
+- BREAKING: BIOS and UEFI (grub2) PXE entries pass the kickstart location as
+  `inst.ks=` instead of `ks=`. EL9 and EL10 ignore `ks=`; EL7 and later
+  accept `inst.ks=`. Legacy grub (`legacy_grub => true`) entries keep `ks=`
+  for EL6-era installers. Any `extra` boot options still using un-prefixed
+  spellings (`repo=`, `ksdevice=`, `stage2=`) need the `inst.` prefix for
+  EL9/EL10.
+- `tftpboot::linux_model` and `tftpboot::linux_model_efi` log a warning when
+  `extra` contains un-prefixed installer options (`ks=`, `repo=`,
+  `ksdevice=`, `stage2=`, `method=`).
 - BREAKING: The `fips` parameter of `tftpboot::linux_model` and
   `tftpboot::linux_model_efi` now defaults to `simp_options::fips` (still
   `false` when that is unset), so hosts PXE booted from models that don't set

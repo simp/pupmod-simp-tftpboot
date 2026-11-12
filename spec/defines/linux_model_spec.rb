@@ -61,6 +61,7 @@ describe 'tftpboot::linux_model' do
           )
         end
       end
+
       context 'with simp_options::fips set' do
         let(:facts) { os_facts.merge(custom_hiera: 'simp_options_fips') }
         let(:params) do
@@ -74,16 +75,36 @@ describe 'tftpboot::linux_model' do
         it { is_expected.to contain_file('/var/lib/tftpboot/linux-install/pxelinux.cfg/templates/rhel_model').with_content(%r{ inst\.ks=http://localhost/ks/pupclient_x86_64\.cfg fips=1 }) }
 
         context 'with fips=false' do
-          let(:params) do
-            {
-              kernel: 'centos6_x86_64/vmlinuz',
-              initrd: 'centos6_x86_64/initrd.img',
-              ks: 'http://localhost/ks/pupclient_x86_64.cfg',
-              fips: false,
-            }
-          end
+          let(:params) { super().merge(fips: false) }
 
           it { is_expected.to contain_file('/var/lib/tftpboot/linux-install/pxelinux.cfg/templates/rhel_model').with_content(%r{ fips=0 }) }
+        end
+      end
+
+      context 'with legacy installer options in extra' do
+        let(:params) do
+          {
+            kernel: 'centos6_x86_64/vmlinuz',
+            initrd: 'centos6_x86_64/initrd.img',
+            ks: 'http://localhost/ks/pupclient_x86_64.cfg',
+            extra: 'ksdevice=bootif repo=http://localhost/repo',
+          }
+        end
+
+        it 'warns about the un-prefixed options' do
+          allow(Puppet::Util::Log).to receive(:log_func).and_call_original
+          expect(Puppet::Util::Log).to receive(:log_func).with(anything, :warning, [%r{tftpboot::linux_model 'rhel_model': `extra` contains un-prefixed installer options}])
+          is_expected.to compile.with_all_deps
+        end
+
+        context 'with inst.-prefixed options' do
+          let(:params) { super().merge(extra: 'inst.repo=http://localhost/repo ip=dhcp') }
+
+          it 'does not warn' do
+            allow(Puppet::Util::Log).to receive(:log_func).and_call_original
+            expect(Puppet::Util::Log).not_to receive(:log_func).with(anything, :warning, anything)
+            is_expected.to compile.with_all_deps
+          end
         end
       end
 

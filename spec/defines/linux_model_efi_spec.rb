@@ -81,16 +81,36 @@ describe 'tftpboot::linux_model_efi' do
         it { is_expected.to contain_file('/var/lib/tftpboot/linux-install/efi/templates/rhel_model').with_content(%r{ inst\.ks=http://localhost/ks/pupclient_x86_64_efi\.cfg fips=1 }) }
 
         context 'with fips=false' do
-          let(:params) do
-            {
-              kernel: 'centos6_x86_64/vmlinuz',
-              initrd: 'centos6_x86_64/initrd.img',
-              ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg',
-              fips: false,
-            }
-          end
+          let(:params) { super().merge(fips: false) }
 
           it { is_expected.to contain_file('/var/lib/tftpboot/linux-install/efi/templates/rhel_model').with_content(%r{ fips=0 }) }
+        end
+      end
+
+      context 'with legacy installer options in extra' do
+        let(:params) do
+          {
+            kernel: 'centos6_x86_64/vmlinuz',
+            initrd: 'centos6_x86_64/initrd.img',
+            ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg',
+            extra: 'ksdevice=bootif repo=http://localhost/repo',
+          }
+        end
+
+        it 'warns about the un-prefixed options' do
+          allow(Puppet::Util::Log).to receive(:log_func).and_call_original
+          expect(Puppet::Util::Log).to receive(:log_func).with(anything, :warning, [%r{tftpboot::linux_model_efi 'rhel_model': `extra` contains un-prefixed installer options}])
+          is_expected.to compile.with_all_deps
+        end
+
+        context 'with inst.-prefixed options' do
+          let(:params) { super().merge(extra: 'inst.repo=http://localhost/repo ip=dhcp') }
+
+          it 'does not warn' do
+            allow(Puppet::Util::Log).to receive(:log_func).and_call_original
+            expect(Puppet::Util::Log).not_to receive(:log_func).with(anything, :warning, anything)
+            is_expected.to compile.with_all_deps
+          end
         end
       end
 
@@ -164,7 +184,7 @@ describe 'tftpboot::linux_model_efi' do
 
                 title 'rhel_model'
                         root (nd)
-                        kernel /../centos6_x86_64/vmlinuz inst.ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=0#{' '}
+                        kernel /../centos6_x86_64/vmlinuz ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=0#{' '}
                         initrd /../centos6_x86_64/initrd.img
               EOM
             )
@@ -196,10 +216,48 @@ describe 'tftpboot::linux_model_efi' do
 
                 title 'rhel_model'
                         root (nd)
-                        kernel /../centos6_x86_64/vmlinuz inst.ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=1#{' '}
+                        kernel /../centos6_x86_64/vmlinuz ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=1#{' '}
                         initrd /../centos6_x86_64/initrd.img
               EOM
             )
+          end
+        end
+
+        context 'with simp_options::fips set' do
+          let(:facts) { os_facts.merge(custom_hiera: 'simp_options_fips') }
+          let(:params) do
+            {
+              kernel: 'centos6_x86_64/vmlinuz',
+              initrd: 'centos6_x86_64/initrd.img',
+              ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg',
+              legacy_grub: true,
+            }
+          end
+
+          it { is_expected.to contain_file('/var/lib/tftpboot/linux-install/efi/templates/rhel_model').with_content(%r{ ks=http://localhost/ks/pupclient_x86_64_efi\.cfg fips=1 }) }
+
+          context 'with fips=false' do
+            let(:params) { super().merge(fips: false) }
+
+            it { is_expected.to contain_file('/var/lib/tftpboot/linux-install/efi/templates/rhel_model').with_content(%r{ fips=0 }) }
+          end
+        end
+
+        context 'with legacy installer options in extra' do
+          let(:params) do
+            {
+              kernel: 'centos6_x86_64/vmlinuz',
+              initrd: 'centos6_x86_64/initrd.img',
+              ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg',
+              extra: 'ksdevice=bootif',
+              legacy_grub: true,
+            }
+          end
+
+          it 'does not warn' do
+            allow(Puppet::Util::Log).to receive(:log_func).and_call_original
+            expect(Puppet::Util::Log).not_to receive(:log_func).with(anything, :warning, anything)
+            is_expected.to compile.with_all_deps
           end
         end
 
@@ -228,7 +286,7 @@ describe 'tftpboot::linux_model_efi' do
 
                 title 'rhel_model'
                         root (nd)
-                        kernel /../centos6_x86_64/vmlinuz inst.ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=0 some-extra-args
+                        kernel /../centos6_x86_64/vmlinuz ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=0 some-extra-args
                         initrd /../centos6_x86_64/initrd.img
               EOM
             )

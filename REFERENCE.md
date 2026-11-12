@@ -301,9 +301,18 @@ passed to the installer as `inst.ks=`.
 Data type: `Optional[String]`
 
 Any other kernel parameters that you would like to pass at boot.
-Use the `inst.`-prefixed options (`inst.repo=`, `inst.stage2=`)
-and `ip=dhcp`; the un-prefixed legacy spellings (`repo=`,
-`ksdevice=`) are ignored by EL9 and EL10.
+Use the `inst.`-prefixed installer options (`inst.repo=`,
+`inst.stage2=`). The un-prefixed legacy spellings (`ks=`,
+`repo=`, `ksdevice=`, `stage2=`, `method=`) are ignored by EL9
+and EL10, and a warning is logged when `extra` contains
+one.
+
+On a host with several NICs, add pxelinux's `IPAPPEND 2`
+on its own line so pxelinux appends `BOOTIF=<MAC>` and the
+installer uses the interface it PXE booted from, e.g.
+`"ip=dhcp\nIPAPPEND 2"` (double quotes, so `\n` is a
+newline). Alternatively name the interface with
+`ip=<iface>:dhcp` or `bootdev=<iface>`.
 
 Default value: `undef`
 
@@ -322,6 +331,9 @@ Data type: `Boolean`
 If true, boots the installer with `fips=1`, which makes the
 installed host FIPS-enabled. The EL8/9/10 kickstarts take FIPS
 mode from this option. Defaults to `simp_options::fips`.
+This *may not work* with all initrd images: an initrd built
+without dracut's `fips` module can fail to boot with `fips=1`.
+Set `fips => false` on such a model.
 
 Default value: `simplib::lookup('simp_options::fips', { 'default_value' => false })`
 
@@ -360,16 +372,24 @@ Path is relative to `$::tftpboot::install_root_dir`.
 Data type: `String`
 
 The full URL to the location of the kickstart file. It is
-passed to the installer as `inst.ks=`.
+passed to the installer as `inst.ks=`, or as `ks=` when
+`legacy_grub` is set.
 
 ##### <a name="-tftpboot--linux_model_efi--extra"></a>`extra`
 
 Data type: `Optional[String]`
 
 Any other kernel parameters that you would like to pass at boot.
-Use the `inst.`-prefixed options (`inst.repo=`, `inst.stage2=`)
-and `ip=dhcp`; the un-prefixed legacy spellings (`repo=`,
-`ksdevice=`) are ignored by EL9 and EL10.
+Use the `inst.`-prefixed installer options (`inst.repo=`,
+`inst.stage2=`). The un-prefixed legacy spellings (`ks=`,
+`repo=`, `ksdevice=`, `stage2=`, `method=`) are ignored by EL9
+and EL10, and a warning is logged when `extra` contains
+one (unless `legacy_grub` is set).
+
+On a host with several NICs, name the interface the
+installer should use, e.g. `ip=eth2:dhcp` or
+`bootdev=eth2 ip=dhcp`; grub2 has no equivalent of pxelinux's
+`IPAPPEND 2`, so without one dracut tries DHCP on every NIC.
 
 Default value: `undef`
 
@@ -388,6 +408,9 @@ Data type: `Boolean`
 If true, boots the installer with `fips=1`, which makes the
 installed host FIPS-enabled. The EL8/9/10 kickstarts take FIPS
 mode from this option. Defaults to `simp_options::fips`.
+This *may not work* with all initrd images: an initrd built
+without dracut's `fips` module can fail to boot with `fips=1`.
+Set `fips => false` on such a model.
 
 Default value: `simplib::lookup('simp_options::fips', { 'default_value' => false })`
 
@@ -395,7 +418,9 @@ Default value: `simplib::lookup('simp_options::fips', { 'default_value' => false
 
 Data type: `Boolean`
 
-Whether this host uses legacy grub.
+Whether this host uses legacy grub. This is the
+EL6-era EFI boot path, so its entry passes the kickstart as
+`ks=`, which those installers require.
 
 Default value: `false`
 

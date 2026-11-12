@@ -51,14 +51,29 @@ for detailed examples of using this module.
 
 The PXE entries boot the installer with `inst.ks=<ks> fips=<0|1> <extra>`.
 The `inst.` prefix is mandatory on EL9 and EL10 (and accepted on EL7 and EL8).
+Legacy grub EFI entries (`legacy_grub => true`), which only boot EL6-era
+installers, pass `ks=` instead.
+
 `fips` defaults to `simp_options::fips`; the EL8/9/10 SIMP kickstarts install
-the host in FIPS mode only when it is `1`. Options you add through `extra`
-need the `inst.` prefix too (`inst.repo=`, `inst.stage2=`), and `ksdevice=`
-is replaced by `ip=dhcp` or `bootdev=`.
+the host in FIPS mode only when it is `1`. `fips=1` *may not work* with all
+initrd images: one built without dracut's `fips` module can fail to boot with
+it, so set `fips => false` on such a model.
+
+Options you add through `extra` need the `inst.` prefix too (`inst.repo=`,
+`inst.stage2=`); the models log a warning when they find an un-prefixed
+installer option. On a host with several NICs, pin the installer to the right
+interface:
+
+* BIOS (`tftpboot::linux_model`): add pxelinux's `IPAPPEND 2` on its own line,
+  for example `extra => "ip=dhcp\nIPAPPEND 2"`. pxelinux then appends
+  `BOOTIF=<MAC>`, and the installer uses the interface it PXE booted from.
+* UEFI (`tftpboot::linux_model_efi`): grub2 has no `IPAPPEND`, so name the
+  interface with `ip=<iface>:dhcp` or `bootdev=<iface> ip=dhcp`.
 
 ## Breaking changes in 9.0.0
 
-* The kickstart location is passed as `inst.ks=` instead of `ks=`.
+* The kickstart location is passed as `inst.ks=` instead of `ks=` (except in
+  legacy grub entries).
 * `fips` defaults to `simp_options::fips` instead of `false`. Set
   `fips => false` on a model to keep the old behavior.
 

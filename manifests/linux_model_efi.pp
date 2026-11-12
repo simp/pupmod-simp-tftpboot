@@ -10,20 +10,33 @@
 #               Path is relative to `$::tftpboot::install_root_dir`.
 #
 # @param ks The full URL to the location of the kickstart file. It is
-#            passed to the installer as `inst.ks=`.
+#            passed to the installer as `inst.ks=`, or as `ks=` when
+#            `legacy_grub` is set.
 #
 # @param extra Any other kernel parameters that you would like to pass at boot.
-#              Use the `inst.`-prefixed options (`inst.repo=`, `inst.stage2=`)
-#              and `ip=dhcp`; the un-prefixed legacy spellings (`repo=`,
-#              `ksdevice=`) are ignored by EL9 and EL10.
+#              Use the `inst.`-prefixed installer options (`inst.repo=`,
+#              `inst.stage2=`). The un-prefixed legacy spellings (`ks=`,
+#              `repo=`, `ksdevice=`, `stage2=`, `method=`) are ignored by EL9
+#              and EL10, and a warning is logged when `extra` contains
+#              one (unless `legacy_grub` is set).
+#
+#              On a host with several NICs, name the interface the
+#              installer should use, e.g. `ip=eth2:dhcp` or
+#              `bootdev=eth2 ip=dhcp`; grub2 has no equivalent of pxelinux's
+#              `IPAPPEND 2`, so without one dracut tries DHCP on every NIC.
 #
 # @param ensure Set or delete this entry.  Options: ['absent'|'present']
 #
 # @param fips If true, boots the installer with `fips=1`, which makes the
 #             installed host FIPS-enabled. The EL8/9/10 kickstarts take FIPS
 #             mode from this option. Defaults to `simp_options::fips`.
+#             This *may not work* with all initrd images: an initrd built
+#             without dracut's `fips` module can fail to boot with `fips=1`.
+#             Set `fips => false` on such a model.
 #
-# @param legacy_grub Whether this host uses legacy grub.
+# @param legacy_grub Whether this host uses legacy grub. This is the
+#              EL6-era EFI boot path, so its entry passes the kickstart as
+#              `ks=`, which those installers require.
 #
 define tftpboot::linux_model_efi (
   String                   $kernel,
@@ -36,6 +49,10 @@ define tftpboot::linux_model_efi (
 ) {
   if ! ($name =~ /^\S+$/) {
     fail("tftpboot::linux_model_efi '${name}' invalid: name cannot have whitespace")
+  }
+
+  if !$legacy_grub and $extra and $extra =~ /(^|\s)(ks|repo|ksdevice|stage2|method)=/ {
+    warning("tftpboot::linux_model_efi '${name}': `extra` contains un-prefixed installer options (ks=, repo=, ksdevice=, stage2=, method=), which EL9 and EL10 ignore. Use the inst. prefix (for example inst.repo=).")
   }
 
   include 'tftpboot'
