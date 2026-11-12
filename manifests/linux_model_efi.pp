@@ -9,17 +9,19 @@
 # @param initrd The location of the initial RAM disk within the tftpboot tree.
 #               Path is relative to `$::tftpboot::install_root_dir`.
 #
-# @param ks The full URL to the location of the kickstart file.
+# @param ks The full URL to the location of the kickstart file. It is
+#            passed to the installer as `inst.ks=`.
 #
 # @param extra Any other kernel parameters that you would like to pass at boot.
-#              You will probably want this to be
-#              'ksdevice=bootif\nIPAPPEND 2' if you are kickstarting
-#              systems.
+#              Use the `inst.`-prefixed options (`inst.repo=`, `inst.stage2=`)
+#              and `ip=dhcp`; the un-prefixed legacy spellings (`repo=`,
+#              `ksdevice=`) are ignored by EL9 and EL10.
 #
 # @param ensure Set or delete this entry.  Options: ['absent'|'present']
 #
-# @param fips If true, enables FIPS in the kernel parameters at PXE
-#             time. This *may not work* with all initrd images.
+# @param fips If true, boots the installer with `fips=1`, which makes the
+#             installed host FIPS-enabled. The EL8/9/10 kickstarts take FIPS
+#             mode from this option. Defaults to `simp_options::fips`.
 #
 # @param legacy_grub Whether this host uses legacy grub.
 #
@@ -29,7 +31,7 @@ define tftpboot::linux_model_efi (
   String                   $ks,
   Optional[String]         $extra       = undef,
   Enum['absent','present'] $ensure      = 'present',
-  Boolean                  $fips        = false,
+  Boolean                  $fips        = simplib::lookup('simp_options::fips', { 'default_value' => false }),
   Boolean                  $legacy_grub = false
 ) {
   if ! ($name =~ /^\S+$/) {

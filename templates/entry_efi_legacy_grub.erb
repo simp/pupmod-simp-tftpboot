@@ -6,5 +6,5 @@ hiddenmenu
 
 title <%= "'" + @name + "'" %>
         root (nd)
-        kernel <%= @_kernel %> ks=<%= @ks %> fips=<%= _fips %> <% if @extra then %><%= @extra %><% end %>
+        kernel <%= @_kernel %> inst.ks=<%= @ks %> fips=<%= _fips %> <% if @extra then %><%= @extra %><% end %>
         initrd <%= @_initrd %>

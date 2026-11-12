@@ -14,6 +14,8 @@
 * [Setup](#setup)
   * [What tftpboot affects](#what-tftpboot-affects)
 * [Usage](#usage)
+  * [Kernel arguments](#kernel-arguments)
+* [Breaking changes in 9.0.0](#breaking-changes-in-900)
 * [Limitations](#limitations)
 * [Development](#development)
 
@@ -44,6 +46,21 @@ Manages the following:
 
 See the [SIMP Documentation](https://simp.readthedocs.io/en/master/search.html?q=tftpboot&check_keywords=yes&area=default)
 for detailed examples of using this module.
+
+### Kernel arguments
+
+The PXE entries boot the installer with `inst.ks=<ks> fips=<0|1> <extra>`.
+The `inst.` prefix is mandatory on EL9 and EL10 (and accepted on EL7 and EL8).
+`fips` defaults to `simp_options::fips`; the EL8/9/10 SIMP kickstarts install
+the host in FIPS mode only when it is `1`. Options you add through `extra`
+need the `inst.` prefix too (`inst.repo=`, `inst.stage2=`), and `ksdevice=`
+is replaced by `ip=dhcp` or `bootdev=`.
+
+## Breaking changes in 9.0.0
+
+* The kickstart location is passed as `inst.ks=` instead of `ks=`.
+* `fips` defaults to `simp_options::fips` instead of `false`. Set
+  `fips => false` on a model to keep the old behavior.
 
 ## Limitations
 

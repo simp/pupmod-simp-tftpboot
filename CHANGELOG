@@ -1,3 +1,15 @@
+* Thu Nov 12 2026 Steven Pritchard <steve@sicura.us> - 9.0.0
+- BREAKING: PXE entries pass the kickstart location as `inst.ks=` instead of
+  `ks=`. EL9 and EL10 ignore `ks=`; EL7 and later accept `inst.ks=`. Any
+  `extra` boot options still using un-prefixed spellings (`repo=`,
+  `ksdevice=`) need the `inst.` prefix (or `ip=dhcp`) for EL9/EL10.
+- BREAKING: The `fips` parameter of `tftpboot::linux_model` and
+  `tftpboot::linux_model_efi` now defaults to `simp_options::fips` (still
+  `false` when that is unset), so hosts PXE booted from models that don't set
+  `fips` are installed in FIPS mode on a SIMP server with
+  `simp_options::fips: true`. Set `fips => false` on a model to keep the old
+  behavior. The EL8/9/10 kickstarts take FIPS mode from this option.
+
 * Thu Oct 08 2026 Steven Pritchard <steve@sicura.us> - 8.1.0
 - Add support for OpenVox 9
 - Update metadata.json dependency ranges from the Forge

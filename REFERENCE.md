@@ -293,16 +293,17 @@ Path is relative to `$::tftpboot::install_root_dir`.
 
 Data type: `String`
 
-The full URL to the location of the kickstart file.
+The full URL to the location of the kickstart file. It is
+passed to the installer as `inst.ks=`.
 
 ##### <a name="-tftpboot--linux_model--extra"></a>`extra`
 
 Data type: `Optional[String]`
 
 Any other kernel parameters that you would like to pass at boot.
-You will probably want this to be
-'ksdevice=bootif\nIPAPPEND 2' if you are kickstarting
-systems.
+Use the `inst.`-prefixed options (`inst.repo=`, `inst.stage2=`)
+and `ip=dhcp`; the un-prefixed legacy spellings (`repo=`,
+`ksdevice=`) are ignored by EL9 and EL10.
 
 Default value: `undef`
 
@@ -318,10 +319,11 @@ Default value: `'present'`
 
 Data type: `Boolean`
 
-If true, enables FIPS in the kernel parameters at PXE
-time. This *may not work* with all initrd images.
+If true, boots the installer with `fips=1`, which makes the
+installed host FIPS-enabled. The EL8/9/10 kickstarts take FIPS
+mode from this option. Defaults to `simp_options::fips`.
 
-Default value: `false`
+Default value: `simplib::lookup('simp_options::fips', { 'default_value' => false })`
 
 ### <a name="tftpboot--linux_model_efi"></a>`tftpboot::linux_model_efi`
 
@@ -357,16 +359,17 @@ Path is relative to `$::tftpboot::install_root_dir`.
 
 Data type: `String`
 
-The full URL to the location of the kickstart file.
+The full URL to the location of the kickstart file. It is
+passed to the installer as `inst.ks=`.
 
 ##### <a name="-tftpboot--linux_model_efi--extra"></a>`extra`
 
 Data type: `Optional[String]`
 
 Any other kernel parameters that you would like to pass at boot.
-You will probably want this to be
-'ksdevice=bootif\nIPAPPEND 2' if you are kickstarting
-systems.
+Use the `inst.`-prefixed options (`inst.repo=`, `inst.stage2=`)
+and `ip=dhcp`; the un-prefixed legacy spellings (`repo=`,
+`ksdevice=`) are ignored by EL9 and EL10.
 
 Default value: `undef`
 
@@ -382,10 +385,11 @@ Default value: `'present'`
 
 Data type: `Boolean`
 
-If true, enables FIPS in the kernel parameters at PXE
-time. This *may not work* with all initrd images.
+If true, boots the installer with `fips=1`, which makes the
+installed host FIPS-enabled. The EL8/9/10 kickstarts take FIPS
+mode from this option. Defaults to `simp_options::fips`.
 
-Default value: `false`
+Default value: `simplib::lookup('simp_options::fips', { 'default_value' => false })`
 
 ##### <a name="-tftpboot--linux_model_efi--legacy_grub"></a>`legacy_grub`
 
@@ -420,3 +424,4 @@ Hash of Hashes.  The outer Hash key is either
 The inner Hash is a Hash of Arrays. Each inner Hash key is an
 OS package.  Each inner Hash value is the list of PXEboot files
 provided by the named package.  See the module data for specifics.
+

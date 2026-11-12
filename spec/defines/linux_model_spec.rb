@@ -29,7 +29,7 @@ describe 'tftpboot::linux_model' do
               default 0
               label 0
                       kernel centos6_x86_64/vmlinuz
-                      append initrd=centos6_x86_64/initrd.img ks=http://localhost/ks/pupclient_x86_64.cfg fips=0#{' '}
+                      append initrd=centos6_x86_64/initrd.img inst.ks=http://localhost/ks/pupclient_x86_64.cfg fips=0#{' '}
             EOM
           )
         end
@@ -56,11 +56,37 @@ describe 'tftpboot::linux_model' do
               default 0
               label 0
                       kernel centos6_x86_64/vmlinuz
-                      append initrd=centos6_x86_64/initrd.img ks=http://localhost/ks/pupclient_x86_64.cfg fips=1#{' '}
+                      append initrd=centos6_x86_64/initrd.img inst.ks=http://localhost/ks/pupclient_x86_64.cfg fips=1#{' '}
             EOM
           )
         end
       end
+      context 'with simp_options::fips set' do
+        let(:facts) { os_facts.merge(custom_hiera: 'simp_options_fips') }
+        let(:params) do
+          {
+            kernel: 'centos6_x86_64/vmlinuz',
+            initrd: 'centos6_x86_64/initrd.img',
+            ks: 'http://localhost/ks/pupclient_x86_64.cfg',
+          }
+        end
+
+        it { is_expected.to contain_file('/var/lib/tftpboot/linux-install/pxelinux.cfg/templates/rhel_model').with_content(%r{ inst\.ks=http://localhost/ks/pupclient_x86_64\.cfg fips=1 }) }
+
+        context 'with fips=false' do
+          let(:params) do
+            {
+              kernel: 'centos6_x86_64/vmlinuz',
+              initrd: 'centos6_x86_64/initrd.img',
+              ks: 'http://localhost/ks/pupclient_x86_64.cfg',
+              fips: false,
+            }
+          end
+
+          it { is_expected.to contain_file('/var/lib/tftpboot/linux-install/pxelinux.cfg/templates/rhel_model').with_content(%r{ fips=0 }) }
+        end
+      end
+
       context 'with extra set' do
         let(:params) do
           {
@@ -82,7 +108,7 @@ describe 'tftpboot::linux_model' do
               default 0
               label 0
                       kernel centos6_x86_64/vmlinuz
-                      append initrd=centos6_x86_64/initrd.img ks=http://localhost/ks/pupclient_x86_64.cfg fips=0 some-extra-args
+                      append initrd=centos6_x86_64/initrd.img inst.ks=http://localhost/ks/pupclient_x86_64.cfg fips=0 some-extra-args
             EOM
           )
         end

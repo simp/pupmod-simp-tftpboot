@@ -30,7 +30,7 @@ describe 'tftpboot::linux_model_efi' do
               set timeout=1
 
               menuentry 'rhel_model' {
-                      linuxefi /linux-install/centos6_x86_64/vmlinuz ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=0#{' '}
+                      linuxefi /linux-install/centos6_x86_64/vmlinuz inst.ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=0#{' '}
                       initrdefi /linux-install/centos6_x86_64/initrd.img
               }
             EOM
@@ -60,11 +60,37 @@ describe 'tftpboot::linux_model_efi' do
               set timeout=1
 
               menuentry 'rhel_model' {
-                      linuxefi /linux-install/centos6_x86_64/vmlinuz ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=1#{' '}
+                      linuxefi /linux-install/centos6_x86_64/vmlinuz inst.ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=1#{' '}
                       initrdefi /linux-install/centos6_x86_64/initrd.img
               }
             EOM
           )
+        end
+      end
+
+      context 'with simp_options::fips set' do
+        let(:facts) { os_facts.merge(custom_hiera: 'simp_options_fips') }
+        let(:params) do
+          {
+            kernel: 'centos6_x86_64/vmlinuz',
+            initrd: 'centos6_x86_64/initrd.img',
+            ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg',
+          }
+        end
+
+        it { is_expected.to contain_file('/var/lib/tftpboot/linux-install/efi/templates/rhel_model').with_content(%r{ inst\.ks=http://localhost/ks/pupclient_x86_64_efi\.cfg fips=1 }) }
+
+        context 'with fips=false' do
+          let(:params) do
+            {
+              kernel: 'centos6_x86_64/vmlinuz',
+              initrd: 'centos6_x86_64/initrd.img',
+              ks: 'http://localhost/ks/pupclient_x86_64_efi.cfg',
+              fips: false,
+            }
+          end
+
+          it { is_expected.to contain_file('/var/lib/tftpboot/linux-install/efi/templates/rhel_model').with_content(%r{ fips=0 }) }
         end
       end
 
@@ -90,7 +116,7 @@ describe 'tftpboot::linux_model_efi' do
               set timeout=1
 
               menuentry 'rhel_model' {
-                      linuxefi /linux-install/centos6_x86_64/vmlinuz ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=0 some-extra-args
+                      linuxefi /linux-install/centos6_x86_64/vmlinuz inst.ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=0 some-extra-args
                       initrdefi /linux-install/centos6_x86_64/initrd.img
               }
             EOM
@@ -138,7 +164,7 @@ describe 'tftpboot::linux_model_efi' do
 
                 title 'rhel_model'
                         root (nd)
-                        kernel /../centos6_x86_64/vmlinuz ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=0#{' '}
+                        kernel /../centos6_x86_64/vmlinuz inst.ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=0#{' '}
                         initrd /../centos6_x86_64/initrd.img
               EOM
             )
@@ -170,7 +196,7 @@ describe 'tftpboot::linux_model_efi' do
 
                 title 'rhel_model'
                         root (nd)
-                        kernel /../centos6_x86_64/vmlinuz ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=1#{' '}
+                        kernel /../centos6_x86_64/vmlinuz inst.ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=1#{' '}
                         initrd /../centos6_x86_64/initrd.img
               EOM
             )
@@ -202,7 +228,7 @@ describe 'tftpboot::linux_model_efi' do
 
                 title 'rhel_model'
                         root (nd)
-                        kernel /../centos6_x86_64/vmlinuz ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=0 some-extra-args
+                        kernel /../centos6_x86_64/vmlinuz inst.ks=http://localhost/ks/pupclient_x86_64_efi.cfg fips=0 some-extra-args
                         initrd /../centos6_x86_64/initrd.img
               EOM
             )
