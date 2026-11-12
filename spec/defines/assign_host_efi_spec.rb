@@ -65,16 +65,7 @@ describe 'tftpboot::assign_host_efi' do
             )
           end
 
-          it do
-            is_expected.to contain_file("/var/lib/tftpboot/linux-install/efi/grub.cfg-#{title.downcase}-").with(
-              'ensure'  => 'link',
-              'owner'   => 'root',
-              'group'   => 'nobody',
-              'seltype' => 'tftpdir_t',
-              'target'  => "templates/#{params[:model]}",
-              'force'   => true,
-            )
-          end
+          it { is_expected.not_to contain_file("/var/lib/tftpboot/linux-install/efi/grub.cfg-#{title.downcase}-") }
 
           it do
             is_expected.to contain_file("/var/lib/tftpboot/linux-install/efi/grub.cfg-#{title.upcase}").with(
@@ -87,16 +78,7 @@ describe 'tftpboot::assign_host_efi' do
             )
           end
 
-          it do
-            is_expected.to contain_file("/var/lib/tftpboot/linux-install/efi/grub.cfg-#{title.upcase}-").with(
-              'ensure'  => 'link',
-              'owner'   => 'root',
-              'group'   => 'nobody',
-              'seltype' => 'tftpdir_t',
-              'target'  => "templates/#{params[:model]}",
-              'force'   => true,
-            )
-          end
+          it { is_expected.not_to contain_file("/var/lib/tftpboot/linux-install/efi/grub.cfg-#{title.upcase}-") }
         end
 
         [

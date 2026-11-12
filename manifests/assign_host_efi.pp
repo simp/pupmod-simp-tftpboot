@@ -75,22 +75,6 @@ define tftpboot::assign_host_efi (
       force   => true,
     }
 
-    if $_downname =~ /^01\-/ {
-      # WORKAROUND
-      # RedHat 7.4 introduced a grub2 bug in which it erroneously adds
-      # a '-' to the end of the MAC address-based grub config filename.
-      # https://bugzilla.redhat.com/show_bug.cgi?id=1487107
-      file { "${_install_dir}/${_prefix}${_downname}-":
-        ensure  => $ensure,
-        owner   => 'root',
-        group   => 'nobody',
-        mode    => '0644',
-        seltype => 'tftpdir_t',
-        target  => "templates/${model}",
-        force   => true,
-      }
-    }
-
     # normal comparison operators (==, !=, =~, etc.) are case invariant
     # in Puppet, so have to compare via a different method
     if !member([$_downname], $_upname) {
@@ -102,20 +86,6 @@ define tftpboot::assign_host_efi (
         seltype => 'tftpdir_t',
         target  => "templates/${model}",
         force   => true,
-      }
-
-      if $_downname =~ /^01\-/ {
-        # WORKAROUND grub2 bug
-        # https://bugzilla.redhat.com/show_bug.cgi?id=1487107
-        file { "${_install_dir}/${_prefix}${_upname}-":
-          ensure  => $ensure,
-          owner   => 'root',
-          group   => 'nobody',
-          mode    => '0644',
-          seltype => 'tftpdir_t',
-          target  => "templates/${model}",
-          force   => true,
-        }
       }
     }
   }
