@@ -11,7 +11,7 @@ describe 'tftpboot::assign_host' do
       context 'valid parameters' do
         context "'default' name" do
           let(:title) { 'default' }
-          let(:params) { { model: 'rhel-6-x86_64-base' } }
+          let(:params) { { model: 'rhel-9-x86_64-base' } }
 
           it do
             is_expected.to contain_file('/var/lib/tftpboot/linux-install/pxelinux.cfg/default').with(
@@ -29,7 +29,7 @@ describe 'tftpboot::assign_host' do
 
         context 'uppercase name equals lowercase name' do
           let(:title) { '01020304' }
-          let(:params) { { model: 'rhel-6-x86_64-base' } }
+          let(:params) { { model: 'rhel-9-x86_64-base' } }
 
           it do
             is_expected.to contain_file("/var/lib/tftpboot/linux-install/pxelinux.cfg/#{title}").with(
@@ -92,7 +92,7 @@ describe 'tftpboot::assign_host' do
         ].each do |invalid_name|
           context "invalid name '#{invalid_name}'" do
             let(:title) { invalid_name }
-            let(:params) { { model: 'rhel-6-x86_64-base' } }
+            let(:params) { { model: 'rhel-9-x86_64-base' } }
 
             it { is_expected.to raise_error(%r{tftpboot..assign_host '#{title}' invalid. name cannot have whitespace}) }
           end
